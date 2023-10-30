@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Utilidad">
+      <UniqueIdentifier>{c5e45563-dee2-4b8b-bf93-ea63ada5f4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Clases">
+      <UniqueIdentifier>{bf92a87b-51dc-46c2-8a18-7273ee657de5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Clases\Persona y Derivadas">
+      <UniqueIdentifier>{8fae5c50-c39e-417f-9077-c3c411fd0575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Clases\Manejo">
+      <UniqueIdentifier>{f7b5b2da-32a1-4b3b-86bf-f908259b8eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Archivos">
+      <UniqueIdentifier>{48d011cb-c1bb-4885-82a9-4ad63859ce3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Clases">
+      <UniqueIdentifier>{32e01bf8-8c0e-4a1a-8c85-ff7b5c1da1f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Clases\Manejo">
+      <UniqueIdentifier>{2a690260-fbd0-41d6-b382-808af040bb17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Clases\Persona Y Derivadas">
+      <UniqueIdentifier>{ebb5ca51-3bbf-45ae-963c-6ac16b700c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilidades">
+      <UniqueIdentifier>{4e419c3b-4991-43e3-803b-d041359fe4bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Archivos">
+      <UniqueIdentifier>{2f1bbd04-4760-4a09-8afa-e0926fe39eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sistema">
+      <UniqueIdentifier>{a45ecd30-3454-4a2c-a976-607f501684fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sistema\Ingreso %281%29">
+      <UniqueIdentifier>{5360a91c-8039-4e58-b255-a0087d2ed2b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sistema\Control %282%29">
+      <UniqueIdentifier>{2fcece0c-93ec-4829-bdac-b77a3cba9aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sistema">
+      <UniqueIdentifier>{0c6c1c8a-0274-481a-b602-01db8d052736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sistema\Control %282%29">
+      <UniqueIdentifier>{0780c83e-246c-4dce-92ae-8f7f9a8cd635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sistema\Gestion %283%29">
+      <UniqueIdentifier>{fcbbf33e-ee2d-4bb9-81ea-c9b06f0c72a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sistema\Gestion %283%29">
+      <UniqueIdentifier>{fdf78701-da35-45bc-bfa7-e512f78e6642}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Persona.cpp">
+      <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
+    </ClCompile>
+    <ClCompile Include="Fecha.cpp">
+      <Filter>Source Files\Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Empleado.cpp">
+      <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
+    </ClCompile>
+    <ClCompile Include="Proveedor.cpp">
+      <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
+    </ClCompile>
+    <ClCompile Include="Visita.cpp">
+      <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
+    </ClCompile>
+    <ClCompile Include="Empresa.cpp">
+      <Filter>Source Files\Clases\Manejo</Filter>
+    </ClCompile>
+    <ClCompile Include="Ingreso.cpp">
+      <Filter>Source Files\Sistema\Ingreso %281%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Control_General.cpp">
+      <Filter>Source Files\Sistema\Control %282%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Unidad.cpp">
+      <Filter>Source Files\Clases\Manejo</Filter>
+    </ClCompile>
+    <ClCompile Include="Movimientos.cpp">
+      <Filter>Source Files\Clases\Manejo</Filter>
+    </ClCompile>
+    <ClCompile Include="Autorizaciones.cpp">
+      <Filter>Source Files\Clases\Manejo</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehiculo.cpp">
+      <Filter>Source Files\Clases\Manejo</Filter>
+    </ClCompile>
+    <ClCompile Include="Fecha_Hora.cpp">
+      <Filter>Source Files\Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Horario.cpp">
+      <Filter>Source Files\Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Consultas.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Altas.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestion_General.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Residente.cpp">
+      <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Listados.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Informes.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Persona.h">
+      <Filter>Header Files\Clases\Persona y Derivadas</Filter>
+    </ClInclude>
+    <ClInclude Include="Fecha.h">
+      <Filter>Header Files\Utilidad</Filter>
+    </ClInclude>
+    <ClInclude Include="Empleado.h">
+      <Filter>Header Files\Clases\Persona y Derivadas</Filter>
+    </ClInclude>
+    <ClInclude Include="Proveedor.h">
+      <Filter>Header Files\Clases\Persona y Derivadas</Filter>
+    </ClInclude>
+    <ClInclude Include="Visita.h">
+      <Filter>Header Files\Clases\Persona y Derivadas</Filter>
+    </ClInclude>
+    <ClInclude Include="Empresa.h">
+      <Filter>Header Files\Clases\Manejo</Filter>
+    </ClInclude>
+    <ClInclude Include="Archivos_Templates.h">
+      <Filter>Header Files\Archivos</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Control_General.h">
+      <Filter>Header Files\Sistema\Control %282%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Residente.h">
+      <Filter>Header Files\Clases\Persona y Derivadas</Filter>
+    </ClInclude>
+    <ClInclude Include="Autorizaciones.h">
+      <Filter>Header Files\Clases\Manejo</Filter>
+    </ClInclude>
+    <ClInclude Include="Movimientos.h">
+      <Filter>Header Files\Clases\Manejo</Filter>
+    </ClInclude>
+    <ClInclude Include="Unidad.h">
+      <Filter>Header Files\Clases\Manejo</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehiculo.h">
+      <Filter>Header Files\Clases\Manejo</Filter>
+    </ClInclude>
+    <ClInclude Include="Fecha_Hora.h">
+      <Filter>Header Files\Utilidad</Filter>
+    </ClInclude>
+    <ClInclude Include="Horario.h">
+      <Filter>Header Files\Utilidad</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Consultas.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Altas.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestion_General.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Listados.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Informes.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Sistema Accesos.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
