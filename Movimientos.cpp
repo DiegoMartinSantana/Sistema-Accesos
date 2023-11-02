@@ -14,10 +14,11 @@ Movimientos::Movimientos( int idunidad, int dni,int sentido, std::string observa
     setTipoAutorizacion(tipoautorizacion);
 
 }
-
-Movimientos::Movimientos() {
+Movimientos::Movimientos () {
 
 }
+
+
 int Movimientos::getDni()
 {
     return _dnipersona;

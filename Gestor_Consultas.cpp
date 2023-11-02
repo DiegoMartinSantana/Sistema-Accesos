@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "ArchivosTemplate.h"
 #include "Gestor_Consultas.h"
 #include "Persona.h"
 #include "Autorizaciones.h"
@@ -78,57 +79,45 @@ void Gestor_Consultas::AutorizadosporDni() {
 	cin >> dni;
 
 	Autorizaciones autorizado(0,0);
-	FILE* file;
-	file = fopen(_archivoAutorizados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-	}
-	while (fread(&autorizado, sizeof autorizado, 1, file)) {
+	ArchivosTemplate archiauto;
 
+	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
+
+	for (int x = 0;x < total;x++) {
+
+		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
 		if (autorizado.getDniPersona() == dni) {
 			autorizado.mostrar();
-			fclose(file);
+			
 			return;
 		}
-
 	}
+	
 	cout << "No se ha encontrado ninguna Persona Autorizada junto a ese Dni" << endl;
 
-
-	fclose(file);
-	
 }
 void Gestor_Consultas::AutorizadosporApellido() {
 	string apellido;
 	cin.ignore();
 	cout << "Ingrese Apellido " << endl;
 	getline(cin, apellido);
+	Autorizaciones autorizado(0, 0);
+	ArchivosTemplate archiauto;
 
-	Autorizaciones autorizado(0,0);
-	FILE* file;
-	file = fopen(_archivoAutorizados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-	}
-	while (fread(&autorizado, sizeof autorizado, 1, file)) {
+	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
 
+	for (int x = 0;x < total;x++) {
+
+		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
 		int igual = strcmp(apellido.c_str(), autorizado.getApellido().c_str());
 		if (igual == 0) {
 			autorizado.mostrar();
-			fclose(file);
+			
 			return;
 		}
-
 	}
+	
 	cout << "No se ha encontrado ninguna Persona Autorizada con ese apellido" << endl;
-
-
-
-
-	fclose(file);
-
 
 }
 void Gestor_Consultas::ResidentesporIdUnidad() {
@@ -138,15 +127,13 @@ void Gestor_Consultas::ResidentesporIdUnidad() {
 	cin >> id;
 
 	Residente res;
-	FILE* file;
-	file = fopen(_archivoResidentes.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-	}
-	bool a = false;
-	while (fread(&res, sizeof res, 1, file)) {
+	ArchivosTemplate archires;
 
+	int total = archires.contarRegistros(_archivoResidentes, res);
+
+	bool a = false;
+	for (int x = 0;x < total;x++) {
+		res = archires.ObtenerObjeto(_archivoResidentes, res, 0);
 		if (res.getUnidad() == id) {
 			a = true;
 			res.mostrar();
@@ -156,9 +143,6 @@ void Gestor_Consultas::ResidentesporIdUnidad() {
 	if (!a) {
 		cout << "No se ha encontrado ningun residente junto a ese id " << endl;
 	}
-
-	fclose(file);
-
 }
 void Gestor_Consultas::ResidentesporApellido() {
 	string apellido;
@@ -167,34 +151,25 @@ void Gestor_Consultas::ResidentesporApellido() {
 	getline(cin, apellido);
 
 	Residente res;
-	FILE* file;
-	file = fopen(_archivoResidentes.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-	}
-	bool a = false;
+	ArchivosTemplate archires;
 
-	while (fread(&res, sizeof res, 1, file)) {
+	int total = archires.contarRegistros(_archivoResidentes, res);
+
+	bool a = false;
+	for (int x = 0;x < total;x++) {
+		res = archires.ObtenerObjeto(_archivoResidentes, res, 0);
 		int igual = strcmp(apellido.c_str(), res.getApellidos().c_str());
 		if (igual == 0) {
 			res.mostrar();
-			fclose(file);
 			a = true;
 		}
-
-
 	}
+	
 	if (!a) {
 		cout << "No se ha encontrado ningun residente con ese apellido" << endl;
 	}
-
-	fclose(file);
-
 }
 void Gestor_Consultas::ProveedoresporRazonSocial() {
-	
-
 
 	//mostrar razones sociales existentes
 	//1 
@@ -203,52 +178,41 @@ void Gestor_Consultas::ProveedoresporRazonSocial() {
 
  // realziar busqueda 
 	//2
-	FILE* fileprov;
+	ArchivosTemplate archiprov;
 	Proveedor prov;
-	fileprov = fopen(_archivoProveedores.c_str(), "rb");
-
-
-	if (fileprov == NULL) {
-		cout << "No se pudo abrir el archivo proveedores" << endl;
-		return;
-	}
+	
 	bool a = true;
-	while (fread(&prov, sizeof prov, 1, fileprov)) {
+	int total = archiprov.contarRegistros(_archivoProveedores, prov);
+	for (int x = 0;x < total;x++) {
 
-		if(strcmp(vec[opc].c_str(), prov.getEmpresa().c_str()) == 0){
+		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		if (strcmp(vec[opc].c_str(), prov.getEmpresa().c_str()) == 0) {
 			prov.mostrar();
 			a = false;
 		}
 	}
 	if (a) { cout << "No hay ningun proveedor con esa razon social " << endl; }
-	fclose(fileprov);
 
 }
 
-void Gestor_Consultas::ProveedoresporCuit() {
+void Gestor_Consultas::ProveedoresporDni() {
 	int dni;
 	cout << "Ingrese Dni " << endl;
 	cin >> dni;
-
-	FILE* fileprov;
+	ArchivosTemplate archiprov;
 	Proveedor prov;
-	fileprov = fopen(_archivoProveedores.c_str(), "rb");
 
-
-	if (fileprov == NULL) {
-		cout << "No se pudo abrir el archivo proveedores" << endl;
-		return;
-	}
-
-	while (fread(&prov, sizeof prov, 1, fileprov)) {
-		if (prov.getDni()==dni) {
+	int total = archiprov.contarRegistros(_archivoProveedores, prov);
+	Proveedor prov;
+	for (int x = 0;x < total;x++) {
+		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		if (prov.getDni() == dni) {
 			prov.mostrar();
-			fclose(fileprov);
 			return;
 		}
 	}
+	
 	cout << "No se ha encontrado ningun proveedor con dicho Dni" << endl;
-	fclose(fileprov);
 }
 void Gestor_Consultas::EmpleadoporNroLegajo() {
 	int nrolegajo;
@@ -375,7 +339,7 @@ void Gestor_Consultas::Ejecutar() {
 			ProveedoresporRazonSocial();
 			break;
 		case 6:
-			ProveedoresporCuit();
+			ProveedoresporDni();
 			break;
 		case 7:
 			EmpleadoporNroLegajo();

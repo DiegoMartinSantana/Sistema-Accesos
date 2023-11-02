@@ -8,7 +8,7 @@ public:
 	void ResidentesporIdUnidad();
 	void ResidentesporApellido();
 	void ProveedoresporRazonSocial();
-	void ProveedoresporCuit();
+	void ProveedoresporDni();
 	void EmpleadoporNroLegajo();
 	void EmpleadoporApellido();
 	void UnidadesporId();
