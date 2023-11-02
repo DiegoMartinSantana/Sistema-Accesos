@@ -146,7 +146,7 @@
     <ClInclude Include="Empresa.h">
       <Filter>Header Files\Clases\Manejo</Filter>
     </ClInclude>
-    <ClInclude Include="Archivos_Templates.h">
+    <ClInclude Include="ArchivosTemplate.h">
       <Filter>Header Files\Archivos</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -190,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="Gestor_Informes.h">
       <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivosMovimientos.h">
+      <Filter>Header Files\Archivos</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivosUnidades.h">
+      <Filter>Header Files\Archivos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

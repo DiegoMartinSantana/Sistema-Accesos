@@ -162,7 +162,9 @@
     <ClCompile Include="Visita.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Archivos_Templates.h" />
+    <ClInclude Include="ArchivosMovimientos.h" />
+    <ClInclude Include="ArchivosTemplate.h" />
+    <ClInclude Include="ArchivosUnidades.h" />
     <ClInclude Include="Autorizaciones.h" />
     <ClInclude Include="Control_General.h" />
     <ClInclude Include="Empleado.h" />
