@@ -7,6 +7,7 @@
 class Proveedor : public Persona {
 
 public:
+	Proveedor();
 	char getTipo() const;
 	std::string getArt();
 	std::string getEmpresa() ;

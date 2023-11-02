@@ -6,7 +6,9 @@
 #include<iostream>
 
 using namespace std;
+Proveedor::Proveedor(){
 
+}
 char Proveedor::getTipo() const {
 	return _tipo;
 

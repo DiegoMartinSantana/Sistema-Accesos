@@ -11,6 +11,26 @@ class ArchivosTemplate {
 
 public:
 	template <typename tipo>
+
+	int contarRegistros(string& nombre,tipo &t) {
+
+		FILE* file;
+
+		file = fopen(nombre.c_str(), "rb");
+		if (file == NULL) {
+			return -1;
+		}
+		fseek(file, 0, 2);
+		
+	
+		int tam = ftell(file);
+		int tamf = tam / sizeof t;
+		
+		fclose(file);
+		return tamf;
+
+	}
+	template <typename tipo>
 	bool Idexistenteono(string& nombre, tipo& t, int id) { //validado
 
 		FILE* file;
@@ -60,7 +80,6 @@ public:
 		
 		FILE* file;
 		file = fopen(nombre.c_str(), "ab");
-		fseek(file, 0, SEEK_END);
 		if (file == NULL) {
 			cout << "No se pudo abrir el archivo" << endl;
 			return false;
@@ -104,6 +123,7 @@ public:
 	}
 	template <typename tipo>
 
+	
 	tipo ObtenerObjeto(string& nombre, tipo& t, int pos) {  //validado
 
 		//posible validacion que la posicion no sea inexistente. diviendo el total de archivos por el tamaño..
@@ -118,7 +138,7 @@ public:
 
 			return t2;
 		}
-		fseek(file, (sizeof t * pos), 0);
+		fseek(file, sizeof t * pos, 0);
 		fread(&t, sizeof t, 1, file);
 
 		fclose(file);

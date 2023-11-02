@@ -7,6 +7,9 @@
 
 
 using namespace std;
+Visita::Visita() {
+
+}
 
 void Visita::setUnidad(int unidad) {
 	_unidad = unidad;

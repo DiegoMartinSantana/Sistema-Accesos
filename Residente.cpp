@@ -5,7 +5,9 @@
 #include <iostream>
 using namespace std;
 
+Residente::Residente() {
 
+}
 int Residente::getUnidad() const {
     return _unidad;
 }

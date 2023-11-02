@@ -24,7 +24,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 		cout << "Error apertura archivo movimientos " << endl;
 		return;
 	}
-	int total = sizeof(filemov) / sizeof(mov);
+	int total = sizeof filemov/ sizeof mov;
 	int* vec = new int [total] {}; // inicializo todo en cero
 	int* vecidunidad = new int[total]; // en este paralelo guardo las posiciones relativas de idunidad!
 
@@ -69,8 +69,8 @@ void Gestor_Informes::UnidadesMayor50movs() {
 	}
 
 
-	delete vec;
-	delete vecidunidad;
+	delete []vec;
+	delete []vecidunidad;
 	fclose(fileunidad);
 }
 void Gestor_Informes::InformeProveedoresIngresados() {
@@ -146,7 +146,7 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 	int cantidad;
 	int cantidadmayor = 0;
 	int idmayor;
-	int posmayor;
+	int posmayor=0;
 	for (int x = 0;x < totaluni;x++) {
 
 		auxuni = archiuni.obtenerRegistro(x);

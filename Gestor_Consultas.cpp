@@ -105,7 +105,7 @@ void Gestor_Consultas::AutorizadosporApellido() {
 	cout << "Ingrese Apellido " << endl;
 	getline(cin, apellido);
 
-	Autorizaciones autorizado(0, 0);
+	Autorizaciones autorizado(0,0);
 	FILE* file;
 	file = fopen(_archivoAutorizados.c_str(), "rb");
 	if (file == NULL) {

@@ -5,7 +5,7 @@
 class Residente :public Persona
 {
 public:
-
+    Residente();
     std::string getIngreso();
     bool getPropietario_Inquilino() const;
     int getUnidad() const;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "ArchivosTemplate.h"
 #include "Gestor_Listados.h"
 #include "Residente.h"
 #include "Persona.h"
@@ -9,6 +10,16 @@
 #include "Unidad.h"
 
 using namespace std;
+bool compararcadenas(string a, string b) {
+
+	if (strcmp(a.c_str(), b.c_str()) == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}
 void ordenarburbujeo(int* vec, int& total) {
 	int aux;
 	for (int x = 0;x < total;x++) {
@@ -34,7 +45,7 @@ void burbujeocaracter(vector <string> vec, int total) {
 
 		for (int y = 0;x < (total - 1);x++) {
 
-			if (toupper(vec[y][0]) > toupper(vec[y + 1][0])) { // si vec en la pos .. en su primer caracter > , compara nros ASCII en mayus para llevar orden ..
+			if (toupper(vec[x][0]) > toupper(vec[y + 1][0])) { // si vec en la pos .. en su primer caracter > , compara nros ASCII en mayus para llevar orden ..
 				aux = vec[y + 1];
 				vec[y + 1] = vec[y];
 				vec[y] = aux;
@@ -46,99 +57,63 @@ void burbujeocaracter(vector <string> vec, int total) {
 
 }
 void Gestor_Listados::AutorizadosOrdenadosporApellido() {
-	
-	FILE* file;
-	file = fopen(_archivoAutorizados.c_str(), "rb");
 
 	Autorizaciones autorizado(0,0);
+	ArchivosTemplate archiauto;
 
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
 
-	}
-
-	int total = sizeof(file) / sizeof(autorizado);
+	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
 
 	vector <string> vec;
-	int con = 0;
 
-	while (fread(&autorizado, sizeof autorizado, 1, file)) {
-
-		vec[con] = autorizado.getApellido();
-		
-		con++;
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getApellido();
 
 	}
 
-	fclose(file);
-
-	// YA TENGO EL VEC CARGADO
+	// YA TENGO EL VEC CARGADO con todos los apellidos
 	// ahora tengo que pasar todas las primeras letras a toupper para tener mismo todo
 	// y despues compararlas em burbujeo tambien , compara por valores ASCII
-
+	//lo hago en esta func, trabaja con toupper y vector
 	burbujeocaracter(vec, total);
 
-	file = fopen(_archivoAutorizados.c_str(), "rb");
 
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-
-	}
 	for (int x = 0;x < total;x++) {
 
+		for (int y = 0;y < total;y++) {
 
-		while (fread(&autorizado, sizeof autorizado, 1, file)) {
-			
-			if (strcmp(vec[x].c_str(), autorizado.getApellido().c_str())== 0) {
+			autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+
+			if (compararcadenas(vec[x], autorizado.getApellido())) {
 				autorizado.mostrar();
 			}
 		}
 	}
-	fclose(file);
-	
+	vec.clear(); //libero la memoria
 }
 
 void Gestor_Listados::AutorizadosOrdenadosporDni() {
 	//capturar todo 
+	Autorizaciones autorizado(0,0);
 
-	Autorizaciones autorizado(0, 0);
-	FILE* file;
+	ArchivosTemplate archiauto;
+	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
 
-	file = fopen(_archivoAutorizados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
+
+	int* vec = new int[total]; //guardo todo aca
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getDniPersona();
 	}
-	int total = sizeof (file) / sizeof(autorizado); // sizeof de file (tam total ) dividido los autorizados = total registros 
-	 
-	int *vec = new int [total]; //guardo todo aca
-	int con = 0;
-	while (fread(&autorizado, sizeof autorizado, 1, file)) {
-
-		vec[con] = autorizado.getDniPersona();
-		con++;
-	}
-
-	fclose(file);
 
 	//ordenar vec .. por burbujeo
 	ordenarburbujeo(vec, total);
 
-
 	//mostrar
 
-	for (int x = 0;x < total;x++) { //recorro todo y a medida que encutra muestra,
+	for (int x = 0;x < total;x++) { //recorro todo y a medida que encuentra muestra
 
-		Autorizaciones autorizado(0, 0);
-		FILE* file;
-		file = fopen(_archivoAutorizados.c_str(), "rb");
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return;
-		}
-		while (fread(&autorizado, sizeof autorizado, 1, file)) {
+		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+		for (int y = 0;y < total;y++) {
 
 			if (autorizado.getDniPersona() == vec[x]) {
 				autorizado.mostrar();
@@ -146,254 +121,158 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 
 		}
 
-		fclose(file);
 
 	}
-	delete vec;
+	delete[] vec;
 }
 
 void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
-	
+
 	Residente res;
 
-	FILE* file;
+	ArchivosTemplate archires;
 
-	file = fopen(_archivoResidentes.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-	}
-	int total = sizeof(res) / sizeof(res); 
+	int total = archires.contarRegistros(_archivoResidentes, res);
 
-	int* vec = new int[total]; 
+	int* vec = new int[total];
 	int con = 0;
-	while (fread(&res, sizeof res, 1, file)) {
-
-		vec[con] = res.getUnidad();
-		con++;
+	for (int x = 0;x < total;x++) {
+		vec[x] = archires.ObtenerObjeto(_archivoResidentes, res, x).getUnidad();
 	}
-
-	fclose(file);
 
 	ordenarburbujeo(vec, total);
 
 
-	for (int x = 0;x < total;x++) { 
+	for (int x = 0;x < total;x++) {
 
-		FILE* file;
-		file = fopen(_archivoResidentes.c_str(), "rb");
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return;
-		}
-		while (fread(&res, sizeof res, 1, file)) {
+		res = archires.ObtenerObjeto(_archivoResidentes, res, x);
+
+		for (int y = 0;y < total;y++) {
 
 			if (res.getUnidad() == vec[x]) {
 				res.mostrar();
 			}
-
 		}
 
-		fclose(file);
-
 	}
-	delete vec;
+	delete[]vec;
 
 }
 
 void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
-	FILE* file;
-
-	file = fopen(_archivoProveedores.c_str(), "rb");
 
 	Proveedor prov;
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
+	ArchivosTemplate archiprov;
 
-	}
-
-	int total = sizeof(file) / sizeof(prov);
+	int total = archiprov.contarRegistros(_archivoProveedores, prov);
 
 	vector <string> vec;
-	int con = 0;
 
-	while (fread(&prov, sizeof prov, 1, file)) {
-
-		vec[con] = prov.getEmpresa();
-
-		con++;
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiprov.ObtenerObjeto(_archivoProveedores, prov, x).getEmpresa();
 
 	}
-
-	fclose(file);
-
 
 	burbujeocaracter(vec, total);
 
-	file = fopen(_archivoProveedores.c_str(), "rb");
-
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-
-	}
 	for (int x = 0;x < total;x++) {
+		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
 
-
-		while (fread(&prov, sizeof prov, 1, file)) {
-
-			if (strcmp(vec[x].c_str(), prov.getEmpresa().c_str()) == 0) {
+		for (int y = 0;y < total;y++) {
+			if (compararcadenas(vec[x], prov.getEmpresa())) {
 				prov.mostrar();
 			}
 		}
 	}
-	fclose(file);
+	vec.clear();
 }
 
 void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
 	Empleado emp;
 
-	FILE* file;
+	ArchivosTemplate archiemp;
 
-	file = fopen(_archivoEmpleados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
+		int total = archiemp.contarRegistros(_archivoEmpleados, emp);
+
+
+	int* vec = new int[total];
+	for (int x = 0; x < total; x++)
+	{
+		emp = archiemp.ObtenerObjeto(_archivoEmpleados, emp, x);
+		vec[x] = emp.getDni();
 	}
-	int total = sizeof(file) / sizeof(emp); 
-
-	int* vec = new int[total]; 
-	int con = 0;
-	while (fread(&emp, sizeof emp, 1, file)) {
-
-		vec[con] = emp.getDni();
-		con++;
-	}
-
-	fclose(file);
 
 	ordenarburbujeo(vec, total);
 
+	for (int x = 0;x < total;x++) {
+		emp = archiemp.ObtenerObjeto(_archivoEmpleados, emp, x);
 
-	for (int x = 0;x < total;x++) { 
+		for (int y = 0;y < total;y++) {
 
-		FILE* file;
-		file = fopen(_archivoAutorizados.c_str(), "rb");
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return;
-		}
-		while (fread(&emp, sizeof emp, 1, file)) {
-
-			if (emp.getDni(), vec[x]) {
+			if (emp.getDni() == vec[x]) {
 				emp.mostrar();
 			}
 
 		}
 
-		fclose(file);
-
 	}
-	delete vec;
+	delete[] vec;
 }
 void Gestor_Listados::UnidadesporId() {
 
 	Unidad uni;
+	ArchivosTemplate archiuni;
 
-	FILE* file;
+	int total = archiuni.contarRegistros(_archivoUnidades, uni);
 
-	file = fopen(_archivoUnidades.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
+	int* vec = new int[total];
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiuni.ObtenerObjeto(_archivoUnidades, uni, x).getId();
+
 	}
-	int total = sizeof(file) / sizeof(uni); 
-
-	int* vec = new int[total]; 
-	int con = 0;
-	while (fread(&uni, sizeof uni, 1, file)) {
-
-		vec[con] = uni.getId();
-		con++;
-	}
-
-	fclose(file);
 
 	ordenarburbujeo(vec, total);
 
-	
+	for (int x = 0;x < total;x++) {
+		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
 
-	for (int x = 0;x < total;x++) { 
+		for (int y = 0;y < total;y++) {
 
-		FILE* file;
-		file = fopen(_archivoAutorizados.c_str(), "rb");
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return;
-		}
-		while (fread(&uni, sizeof uni, 1, file)) {
-
-			if (uni.getId() == vec[x]) {
+			if (vec[x] == uni.getId()) {
 				uni.mostrar();
 			}
-
 		}
 
-		fclose(file);
-
 	}
-	delete vec;
+
+	delete[]vec;
 }
 void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
-	FILE* file;
-	file = fopen(_archivoUnidades.c_str(), "rb");
 
 	Unidad uni;
+	ArchivosTemplate archiuni;
 
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-
-	}
-
-	int total = sizeof(file) / sizeof(uni);
+	int total = archiuni.contarRegistros(_archivoUnidades, uni);
 
 	vector <string> vec;
-	int con = 0;
 
-	while (fread(&uni, sizeof uni, 1, file)) {
-
-		vec[con] = uni.getApellidoFamilia();
-
-		con++;
-
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiuni.ObtenerObjeto(_archivoUnidades, uni, x).getApellidoFamilia();
 	}
-
-	fclose(file);
-
 
 	burbujeocaracter(vec, total);
 
-	file = fopen(_archivoUnidades.c_str(), "rb");
-
-	if (file == NULL) {
-		cout << "No se pudo abrir el archivo" << endl;
-		return;
-
-	}
 	for (int x = 0;x < total;x++) {
 
-
-		while (fread(&uni, sizeof uni, 1, file)) {
-
-			if (strcmp(vec[x].c_str(), uni.getApellidoFamilia().c_str()) == 0) {
+		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		for (int y = 0;y < total;y++) {
+			if (compararcadenas(vec[x], uni.getApellidoFamilia())) {
 				uni.mostrar();
 			}
 		}
 	}
-	fclose(file);
+	vec.clear();
 }
 void Gestor_Listados::Ejecutar() {
 

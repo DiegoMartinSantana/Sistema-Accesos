@@ -5,7 +5,9 @@
 
 using namespace std;
 
+Empleado::Empleado() {
 
+}
 
 void Empleado::setTipo(char tipo) {
 	if(tipo>0 &&tipo <3)

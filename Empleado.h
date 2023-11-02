@@ -5,6 +5,7 @@
 
 class Empleado :public Persona {
 public:
+    Empleado();
     void setTipo(char tipo);
     void setCategoria(char categoria);
     void setLegajo(int legajo);

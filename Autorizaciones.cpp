@@ -3,7 +3,6 @@
 #include "Autorizaciones.h"
 
 using namespace std;
-
 Autorizaciones::Autorizaciones(int dni, int idunidad) {
 
     _dniPersona = dni;
@@ -11,6 +10,12 @@ Autorizaciones::Autorizaciones(int dni, int idunidad) {
     
 }
 
+void Autorizaciones::setEstado(bool estado) {
+    _estado = estado;
+}
+bool Autorizaciones::getEstado() {
+    return _estado;
+}
 string Autorizaciones::getApellido() {
     return _apellido;
 }

@@ -1,5 +1,5 @@
 #include "Gestion_General.h"
-#include "Archivos_Templates.h"
+#include "ArchivosTemplate.h"
 
 #include "Movimientos.h"
 #include "Visita.h"

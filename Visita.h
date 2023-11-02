@@ -7,7 +7,7 @@
 class Visita : public Persona {
 
 public:
-
+	Visita();
 	void setUnidad(int unidad);
 	void setFamiliar(bool es);
 	int getUnidad()const;

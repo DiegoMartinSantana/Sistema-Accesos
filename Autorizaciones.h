@@ -1,10 +1,12 @@
 #pragma once
+#include <string>
+
 #include "Fecha.h"
 class Autorizaciones
 {
 public :
-	//recibe dni  y id unidad, sino no existe una autorizacion
-	Autorizaciones(int dni , int idunidad);
+	
+	Autorizaciones(int dni, int idunidad);
 
 	int getDniPersona();
 	int  getIdUnidad();
@@ -19,13 +21,15 @@ std::string getApellido();
 	void setApellido(std::string apellido);
 	void cargar();
 	void mostrar();
-
-private: 
+	void setEstado(bool estado);
+	bool getEstado();
+private:
 	int _dniPersona;
 	int _idUnidad;
 	bool _autorizado;
 	Fecha _hasta;
 	char _apellido[50];
+	bool _estado;
 	//horario¿? 
 
 };
