@@ -1,6 +1,6 @@
 #pragma once
 class Gestor_Listados
-{	public:
+{
 	void AutorizadosOrdenadosporApellido();
 	void AutorizadosOrdenadosporDni();
 
@@ -11,6 +11,8 @@ class Gestor_Listados
 	void EmpleadosOrdenadosporDni();
 	void UnidadesporId();
 	void UnidadesOrdenadasporApellidoFamilia();
+
+public:
 	void Ejecutar();
 private:
 	std::string _archivoEmpleados = "Empleados.dat";

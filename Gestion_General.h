@@ -19,6 +19,7 @@ private:
 	std::string _archivoEmpleados = "Empleados.dat";
 	std::string _archivoResidentes = "Residentes.dat";
 	std::string _archivoProveedores= "Proveedor.dat";
+	std::string _archivoAutorizados = "Autorizados.dat";
 
 
 };

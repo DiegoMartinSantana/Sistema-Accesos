@@ -3,6 +3,7 @@
 #include "Gestor_Altas.h"
 #include "Gestor_Consultas.h"
 #include "Gestor_Listados.h"
+#include "Gestor_Informes.h"
 using namespace std;
 
 Control_General::Control_General(int tipo) {
@@ -59,7 +60,8 @@ void Control_General::Acceder() {
 		}
 			  break;
 		case 3: {
-
+			Gestor_Informes informes;
+			informes.Ejecutar();
 		}
 			  break;
 		case 4: {

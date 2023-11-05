@@ -1,13 +1,22 @@
 #include <iostream>
 #include <string>
+#include "ArchivosTemplate.h"
+#include "Persona.h"
 #include "Autorizaciones.h"
 
-using namespace std;
-Autorizaciones::Autorizaciones(int dni, int idunidad) {
 
-    _dniPersona = dni;
-    _idUnidad = idunidad;
+using namespace std;
+Autorizaciones::Autorizaciones(int id) {
+
     
+    
+}
+Autorizaciones::Autorizaciones(int dni, int iduni, bool residente ,int mes, int anio) { // si es residente significa que no pase mes y anio
+    int dia = 1;
+    setDniPersona(dni);
+    setUnidad(iduni);
+    _hasta.cargar(dia,mes,anio); 
+    _residente = residente;
 }
 
 void Autorizaciones::setEstado(bool estado) {
@@ -16,12 +25,8 @@ void Autorizaciones::setEstado(bool estado) {
 bool Autorizaciones::getEstado() {
     return _estado;
 }
-string Autorizaciones::getApellido() {
-    return _apellido;
-}
-void Autorizaciones::setApellido(string apellido) {
-    strcpy(_apellido, apellido.c_str());
-}
+
+
 int Autorizaciones::getDniPersona()
 {
     return _dniPersona;
@@ -32,9 +37,9 @@ int Autorizaciones::getIdUnidad()
     return _idUnidad;
 }
 
-bool Autorizaciones::getAutorizado()
+bool Autorizaciones::getResidente()
 {
-    return _autorizado;
+    return _residente;
 }
 
 string Autorizaciones::getHasta()
@@ -53,62 +58,49 @@ void Autorizaciones::setUnidad(int id)
     _idUnidad = id;
 }
 
-void Autorizaciones::setAutorizado(bool aut)
+void Autorizaciones::setResidente(bool res)
 {
-    _autorizado = aut;
+    _residente =res ;
 }
 
-void Autorizaciones::setHasta(int dia, int mes ,int anio)
+void Autorizaciones::setHasta(int dia, int mes ,int anio )
 {
     _hasta.cargar(dia, mes, anio);
 
 }
 
 
+string nombreyapellido(int dni) {
 
+    ArchivosTemplate archipersona;
+    Persona p;
+    string nombrearchivo = "Personas.dat";
+    int tot = archipersona.contarRegistros(nombrearchivo, p);
 
-void Autorizaciones::cargar()
-{
+    for (int x = 0;x < tot;x++) {
 
-    int dia, mes, anio, dni, idunidad;
-    string apellido;
+        p = archipersona.ObtenerObjeto(nombrearchivo, p, x);
+        if (p.getDni() == dni) {
 
-    setAutorizado(true); // por defecto en true , no creo una autorizacion en false.
-
-    cin.ignore();
-    cout << "Ingrese Apellido  a autorizar " << endl;
-    getline(cin, apellido);
-    cout << "Ingrese Dni Persona  a autorizar " << endl;
-    cin >> dni;
-    cout << "Ingrese Id Unidad del autorizado" << endl;
-    cin >> idunidad;
-    //posible fecha de consola..
-    cout << "Ingrese Dia " << endl;
-    cin >> dia;
-    cout << "Ingrese Mes " << endl;
-    cin >> mes;
-    cout << "Ingrese Anio " << endl;
-    cin >> anio;
-
-    setHasta(dia, mes, anio);
-    setDniPersona(dni);
-    setUnidad(idunidad);
-    setApellido(apellido);
-
+            string nombreape = p.getApellidosyNombres();
+            return nombreape;
+        }
+    }
+    return "Invalido";
 }
-
 void Autorizaciones::mostrar()
 {
     cout << "Id Unidad : " << getIdUnidad() << endl;
     cout << "Dni : " << getDniPersona() << endl;
-    cout << "Apellido " << getApellido() << endl;
-    if (_autorizado) {
-        cout << "Autorizado hasta: " << getHasta() << endl;
+   
+    cout << nombreyapellido(getDniPersona()) << endl;
+
+    if (_residente) {
+        cout << "Autorizacion Permanente" << endl;
     }
     else {
-        cout << "No se encuentra autorizado " << endl;
+        cout << "Autorizado hasta  " << getHasta() << endl;
     }
-
 }
 
 

@@ -56,6 +56,23 @@ void burbujeocaracter(vector <string> vec, int total) {
 	}
 
 }
+string retornarapellido(int dni) {
+
+	ArchivosTemplate archipersona;
+	Persona p;
+	string nombrearchi = "Personas.dat";
+	int totp = archipersona.contarRegistros(nombrearchi, p);
+
+	for (int x = 0;x < totp;x++) {
+		p = archipersona.ObtenerObjeto(nombrearchi, p, x);
+		if (p.getDni() == dni) {
+
+			return p.getApellidos();
+		}
+
+	}
+	return "Invalido ";
+}
 void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 	Autorizaciones autorizado(0,0);
@@ -67,7 +84,8 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 	vector <string> vec;
 
 	for (int x = 0;x < total;x++) {
-		vec[x] = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getApellido();
+		
+		vec[x] = retornarapellido(archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getDniPersona());
 
 	}
 
@@ -83,8 +101,8 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 		for (int y = 0;y < total;y++) {
 
 			autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
-
-			if (compararcadenas(vec[x], autorizado.getApellido())) {
+			string ape = retornarapellido(autorizado.getDniPersona());
+			if (compararcadenas(vec[x],ape.c_str())) {
 				autorizado.mostrar();
 			}
 		}

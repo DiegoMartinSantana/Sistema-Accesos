@@ -12,7 +12,26 @@
 #include "Unidad.h"
 
 using namespace std;
+string retornarapellidoxdni(int dni) {
 
+	ArchivosTemplate archipersona;
+	Persona p;
+	string ret;
+	string nombrearchi = "Personas.dat";
+	int totp = archipersona.contarRegistros(nombrearchi, p);
+
+	for (int x = 0;x < totp;x++) {
+		p = archipersona.ObtenerObjeto(nombrearchi, p, x);
+		if (p.getDni() == dni) {
+
+		ret =p.getApellidos();
+		return ret;
+		}
+
+	}
+	 ret = "Invalido";
+	return ret;
+}
 bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle el con y listo..
 	for (int x = 0;x < vec.size();x++)
 	{
@@ -26,37 +45,31 @@ bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle 
 
 //muestra las razones sociales existentes para hacer la consulta
 int  mostrarrazonessociales(vector <string>& vec) {
-	FILE* fileempresa;
 	Empresa empre;
-	fileempresa = fopen("Empresas.dat", "rb");
-
-
-	if (fileempresa == NULL) {
-		cout << "No se pudo abrir el archivo Empresas" << endl;
-		return false;
-	}
-
+	ArchivosTemplate architem;
+	string archi = "Empresas.dat";
+	int totempresas = architem.contarRegistros(archi, empre);
 	//uso biblioteca vector.
 	bool a = true;
-	int con = 0;
-	while (fread(&empre, sizeof empre, 1, fileempresa)) {
+
+	for(int x=0;x<totempresas;x++){
+
 
 		if (a) {
-			vec[con] = (empre.getRazonSocial()); // push back añade.. pero asi llevo mejor control yo.
+			vec[x] = (empre.getRazonSocial()); // push back añade.. pero asi llevo mejor control yo.
 			a = false;
 		}
 		else {
 			//compara con todas aca.
 			if (comparar(empre.getRazonSocial(), vec)) {
-				vec[con] = (empre.getRazonSocial());
+				vec[x] = (empre.getRazonSocial());
 			}
 		}
-		con++;
 
 	}
 
-	fclose(fileempresa);
 	int razon;
+
 	cout << "Ingrese la Razon social a buscar " << endl;
 	cin >> razon;
 
@@ -78,7 +91,7 @@ void Gestor_Consultas::AutorizadosporDni() {
 	cout << "Ingrese Dni " << endl;
 	cin >> dni;
 
-	Autorizaciones autorizado(0,0);
+	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
 
 	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
@@ -88,28 +101,32 @@ void Gestor_Consultas::AutorizadosporDni() {
 		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
 		if (autorizado.getDniPersona() == dni) {
 			autorizado.mostrar();
-			
+
 			return;
 		}
 	}
-	
+
 	cout << "No se ha encontrado ninguna Persona Autorizada junto a ese Dni" << endl;
 
 }
+
 void Gestor_Consultas::AutorizadosporApellido() {
 	string apellido;
 	cin.ignore();
 	cout << "Ingrese Apellido " << endl;
 	getline(cin, apellido);
-	Autorizaciones autorizado(0, 0);
+	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
 
 	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
-
+	//sigo tenienod nombre y apellido pero en el registro personas .. no como propiedad
+	//entonces lo busco por coincidencia dentro del for!
+	
 	for (int x = 0;x < total;x++) {
 
 		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
-		int igual = strcmp(apellido.c_str(), autorizado.getApellido().c_str());
+		string autoapellido = retornarapellidoxdni(autorizado.getDniPersona());
+		int igual = strcmp(apellido.c_str(), autoapellido.c_str());
 		if (igual == 0) {
 			autorizado.mostrar();
 			
@@ -203,7 +220,6 @@ void Gestor_Consultas::ProveedoresporDni() {
 	Proveedor prov;
 
 	int total = archiprov.contarRegistros(_archivoProveedores, prov);
-	Proveedor prov;
 	for (int x = 0;x < total;x++) {
 		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
 		if (prov.getDni() == dni) {
@@ -215,26 +231,21 @@ void Gestor_Consultas::ProveedoresporDni() {
 	cout << "No se ha encontrado ningun proveedor con dicho Dni" << endl;
 }
 void Gestor_Consultas::EmpleadoporNroLegajo() {
+
 	int nrolegajo;
 	cout << "Ingrese Numero de Legajo " << endl;
 	cin >> nrolegajo;
-	FILE* file;
-	file = fopen(_archivoEmpleados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se abrio archivo Empleados" << endl;
-		return;
-	}
+	ArchivosTemplate archiemp;
 	Empleado emp;
-	while(fread(&emp,sizeof emp,1,file)){
-		if (emp.getLegajo()==nrolegajo) {
-			emp.mostrar();
-			fclose(file);
-			return;
+	int totemp = archiemp.contarRegistros(_archivoEmpleados, emp);
+	for (int x = 0;x < totemp;x++) {
 
+		if (emp.getLegajo() == nrolegajo) {
+			emp.mostrar();
+			return;
 		}
 	}
 	cout << "No existe ningun empleado con ese numero de legajo " << endl;
-	fclose(file);
 	return;
 	
 }
@@ -244,23 +255,19 @@ void Gestor_Consultas::EmpleadoporApellido() {
 	cin.ignore();
 	cout << "Ingrese Apellido " << endl;
 	getline(cin, apellido);
-
-	FILE* file;
-	file = fopen(_archivoEmpleados.c_str(), "rb");
-	if (file == NULL) {
-		cout << "No se abrio archivo Empleados" << endl;
-		return;
-	}
+	ArchivosTemplate archiemp;
 	Empleado emp;
-	while (fread(&emp, sizeof emp, 1, file)) {
-		
+	int totemp = archiemp.contarRegistros(_archivoEmpleados, emp);
+
+	for (int x = 0;x < totemp;x++) {
+
 		if (strcmp(apellido.c_str(),emp.getApellidos().c_str()) == 0) {
 			emp.mostrar();
+			//podria haber mas de un empelado x apellido
 		}
 	}
 	
 
-	fclose(file);
 	return;
 
 }

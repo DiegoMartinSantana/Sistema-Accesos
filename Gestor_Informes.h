@@ -3,15 +3,13 @@
 class Gestor_Informes
 {
 
-public:
-
 	void UnidadesMayor50movs();
 	void InformeProveedoresIngresados();
 	void UnidadMasMovsHistorico();
 	void UnidadMenorMovsHistorico();
 	void MovimientosMensuales();
 
-
+public:
 	void Ejecutar();
 
 private:

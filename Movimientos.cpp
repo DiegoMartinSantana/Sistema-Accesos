@@ -124,14 +124,14 @@ void Movimientos::cargar()
 
     cout << "Ingrese el tipo de autorizacion " << endl; 
     cout << "1- Permanente 2- Telefonica " << endl;
-    
-    cin >> tipo;
-    //minivalidacion
+    if (sentido == 1) {
+        cin >> tipo;
+        //minivalidacion
         if (tipo != 1 && tipo != 2) {
             cout << "Tipo no valido - Ingrese el tipo de autorizacion nuevamente. " << endl;
             cout << "1- Permanente 2- Telefonica " << endl;
         }
-
+    }
     cin.ignore();
     cout << "Observaciones" << endl;
     getline(cin, Observaciones);

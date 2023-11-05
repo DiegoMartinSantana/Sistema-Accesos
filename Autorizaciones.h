@@ -5,31 +5,28 @@ class Autorizaciones
 {
 public :
 	
-	Autorizaciones(int dni, int idunidad);
+	Autorizaciones(int id);
+	Autorizaciones(int dni=-1, int iduni=-1,bool residente = false, int mes=1, int anio=1);
 
 	int getDniPersona();
 	int  getIdUnidad();
-	bool getAutorizado();
+	bool getResidente();
 	std::string getHasta();
-std::string getApellido();
 
 	void  setDniPersona(int dni);
 	void   setUnidad(int idunidad);
-	void  setAutorizado(bool aut);
-    void  setHasta(int dia, int mes, int anio);
-	void setApellido(std::string apellido);
-	void cargar();
+	void  setResidente(bool res);
+    void  setHasta(int dia, int mes,int anio);
 	void mostrar();
 	void setEstado(bool estado);
 	bool getEstado();
 private:
 	int _dniPersona;
 	int _idUnidad;
-	bool _autorizado;
+	bool _residente;
+
 	Fecha _hasta;
-	char _apellido[50];
 	bool _estado;
-	//horario¿? 
 
 };
 

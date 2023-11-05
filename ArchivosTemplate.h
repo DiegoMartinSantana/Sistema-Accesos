@@ -71,12 +71,8 @@ public:
 	
 	bool cargarRegistro(string& nombre, tipo t) { //validado
 
-		bool existe = Idexistenteono(nombre, t, t.getId());
 
-			if (existe) {
-				cout << "Ya existe un registro con ese Id" << endl;
-				return false;
-			}
+			
 		
 		FILE* file;
 		file = fopen(nombre.c_str(), "ab");

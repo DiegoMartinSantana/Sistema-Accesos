@@ -1,8 +1,8 @@
 #pragma once
 class Gestor_Consultas
 {
-public:
-	void Ejecutar();
+
+
 	void AutorizadosporDni();
 	void AutorizadosporApellido();
 	void ResidentesporIdUnidad();
@@ -12,8 +12,9 @@ public:
 	void EmpleadoporNroLegajo();
 	void EmpleadoporApellido();
 	void UnidadesporId();
-	
-	
+
+public:
+	void Ejecutar();
 private:
 	std::string _archivoVisitas = "Visitas.dat";
 	std::string _archivoMovimientos = "Movimientos.dat";
@@ -23,6 +24,8 @@ private:
 	std::string _archivoAutorizados = "Autorizados.dat";
 	std::string _archivoEmpresas = "Empresas.dat";
 	std::string _archivoUnidades = "Unidades.dat";
+	std::string _archivoPersonas = "Personas.dat";
+
 
 
 };

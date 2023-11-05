@@ -1,12 +1,11 @@
 #include <iostream>
 #include <string>
-#include "ArchivosMovimientos.h"
-#include "ArchivosUnidades.h"
+#include "ArchivosTemplate.h"
 #include "Gestor_Informes.h"
 #include "Movimientos.h"
 #include "Proveedor.h"
 using namespace std;
-
+ 
 
 void Gestor_Informes::UnidadesMayor50movs() {
 	//mes y anio ingresado 
@@ -17,50 +16,40 @@ void Gestor_Informes::UnidadesMayor50movs() {
 	cin >> anio;
 
 	//abrir archivo movimientos
-	FILE* filemov;
+	ArchivosTemplate archimov;
 	Movimientos mov;
-	filemov = fopen(_archivoMovimientos.c_str(), "rb");
-	if (filemov == NULL) {
-		cout << "Error apertura archivo movimientos " << endl;
-		return;
-	}
-	int total = sizeof filemov/ sizeof mov;
+	int total = archimov.contarRegistros(_archivoMovimientos, mov);
+
 	int* vec = new int [total] {}; // inicializo todo en cero
+
 	int* vecidunidad = new int[total]; // en este paralelo guardo las posiciones relativas de idunidad!
 
 	//ubicar  en mes y anio
 
-	int con = 0;
-
-	while (fread(&mov, sizeof mov, 1, filemov)) {
-		// por cada unidad contar sus movimientos. osea extraigo el id de unidades. de cada mov y los acumulo, guardo las mayores a 50 en un vec dinamico
-
+	for (int x = 0;x < total;x++) {
+		// por cada unidad contar sus movimientos. osea extraigo el id de unidades. de cada mov y los acumulo, guardo todos
+		mov = archimov.ObtenerObjeto(_archivoMovimientos, mov, x);
 		if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio && mov.getFechayHoraMovimiento().getFecha().getMes() == mes) {
-			vec[con]++;
-			vecidunidad[con] = mov.getUnidad().getId();
-			con++;
+			vec[x]++;
+			vecidunidad[x] = mov.getUnidad().getId();
 		}
 	}
-	fclose(filemov);
 
-	FILE* fileunidad;
-	fileunidad = fopen(_archivoUnidades.c_str(), "rb");
 
-	if (fileunidad == NULL) {
-		cout << "No se abrio archivo de unidades" << endl;
-		return;
-	}
+
+
+	ArchivosTemplate archiunidades;
 	Unidad uni;
-
-
-	for (int x = 0;x < total;x++) {
+	int totaluni = archiunidades.contarRegistros(_archivoUnidades, uni);
+	
+	for (int x = 0;x < total;x++) { //rcorro movimientos
 
 		if (vec[x] > 49) {
 			// si es mayor busco el id!
-			while (fread(&uni, sizeof uni, 1, fileunidad)) {
+				for (int y = 0;y < totaluni;y++) {	//recorro unidades
 
-				if (uni.getId() == vecidunidad[x]) {
-					uni.mostrar();
+				if (uni.getId() == vecidunidad[x]) { 
+					uni.mostrar();	//si coinciden los id de unidades muestro!
 				}
 
 			}
@@ -68,10 +57,8 @@ void Gestor_Informes::UnidadesMayor50movs() {
 
 	}
 
-
 	delete []vec;
 	delete []vecidunidad;
-	fclose(fileunidad);
 }
 void Gestor_Informes::InformeProveedoresIngresados() {
 
@@ -92,25 +79,20 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
 
-	FILE* filemov;
-	Movimientos mov;
-	filemov = fopen(_archivoMovimientos.c_str(), "rb");
-	if (filemov == NULL) {
-		cout << "Error apertura archivo movimientos " << endl;
-		return;
-	}
-
-	FILE* fileprov;
-	fileprov = fopen(_archivoProveedores.c_str(), "rb");
-	if (fileprov == NULL) {
-		cout << " No se pudo abrir archivo Proveedores" << endl;
-		return;
-	}
+	ArchivosTemplate archimov;
+	ArchivosTemplate archiprov;
+	Movimientos mov; 
 	Proveedor prov;
-	while (fread(&prov, sizeof prov, 1, fileprov)) {
+	
+	int totalmovs = archimov.contarRegistros(_archivoMovimientos, mov);
+	int totalprovs = archiprov.contarRegistros(_archivoProveedores, prov);
+	
+	for(int x=0;x<totalprovs;x++){
 		// en mi archivo movimientos tengo un dni en la unidad 0 correspondiente a empleados y proveedores!
+		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		for(int y=0;y<totalmovs;y++){
 
-		while (fread(&mov, sizeof mov, 1, filemov)) {
+			mov = archimov.ObtenerObjeto(_archivoMovimientos, mov, y);
 
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
 
@@ -125,22 +107,18 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 
 
 	}
-	fclose(fileprov);
-	fclose(filemov);
 }
 void Gestor_Informes::UnidadMasMovsHistorico() {
 
 	//buscar en archivo movimientos el id de unidad con mas movimientos comtemplando TODO EL ARCHIVO    
 
-	ArchivosMovimientos archimovs;
-	ArchivosUnidades archiuni;
+	ArchivosTemplate archimovs;
+	ArchivosTemplate archiuni;
 
-	int totalmovs = archimovs.contarRegistros();
-	int totaluni = archiuni.contarRegistros();
-
-	Movimientos auxmovs;
-	Unidad auxuni;
-
+	Movimientos movs;
+	Unidad uni;
+	int totalmovs = archimovs.contarRegistros(_archivoMovimientos,movs);
+	int totaluni = archiuni.contarRegistros(_archivoUnidades,uni);
 
 	bool a = true;
 	int cantidad;
@@ -149,14 +127,14 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 	int posmayor=0;
 	for (int x = 0;x < totaluni;x++) {
 
-		auxuni = archiuni.obtenerRegistro(x);
+		uni = archiuni.ObtenerObjeto(_archivoUnidades,uni,x);
 		cantidad = 0;
 		for (int y = 0;y < totalmovs;y++) {
 
-			auxmovs = archimovs.obtenerRegistro(y);
+			movs = archimovs.ObtenerObjeto(_archivoMovimientos,movs, y);
 
 
-			if (auxmovs.getUnidad().getId() == auxuni.getId()) {
+			if (movs.getUnidad().getId() == uni.getId()) {
 				cantidad++;
 			}
 
@@ -164,14 +142,14 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 
 		//aca comparo mayores
 		if (a) {
-			idmayor = auxuni.getId();
+			idmayor = uni.getId();
 			cantidadmayor = cantidad;
 			posmayor = x;
 			a = false;
 		}
 		else {
 			if (cantidad > cantidadmayor) {
-				idmayor = auxuni.getId();
+				idmayor = uni.getId();
 				cantidadmayor = cantidad;
 				posmayor = x;
 
@@ -180,19 +158,115 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 	}
 
 	cout << " La unidad con mas Movimientos historicamente es " << endl;
-	archiuni.obtenerRegistro(posmayor).mostrar();
-
+	archiuni.ObtenerObjeto(_archivoUnidades,uni, posmayor).mostrar(); // le paso la posicion mayor y muestro el object
 
 }
-
-
 
 void Gestor_Informes::UnidadMenorMovsHistorico() {
+	ArchivosTemplate archimovs;
+	ArchivosTemplate archiuni;
+
+	Movimientos movs;
+	Unidad uni;
+	int totalmovs = archimovs.contarRegistros(_archivoMovimientos, movs);
+	int totaluni = archiuni.contarRegistros(_archivoUnidades, uni);
+
+	bool a = true;
+	int cantidad;
+	int cantidadmenor = 0;
+	int idmenor;
+	int posmenor = 0;
+	for (int x = 0;x < totaluni;x++) {
+
+		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		cantidad = 0;
+		for (int y = 0;y < totalmovs;y++) {
+
+			movs = archimovs.ObtenerObjeto(_archivoMovimientos, movs, y);
+
+
+			if (movs.getUnidad().getId() == uni.getId()) {
+				cantidad++;
+			}
+
+		}
+
+		//aca comparo menores
+		if (a) {
+			idmenor = uni.getId();
+			cantidadmenor = cantidad;
+			posmenor = x;
+			a = false;
+		}
+		else {
+			if (cantidad < cantidadmenor) {
+				idmenor = uni.getId();
+				cantidadmenor = cantidad;
+				posmenor = x;
+
+			}
+		}
+	}
+
+	cout << " La unidad con mas Movimientos historicamente es " << endl;
+	archiuni.ObtenerObjeto(_archivoUnidades, uni, posmenor).mostrar(); 
 
 }
+
 void Gestor_Informes::MovimientosMensuales() {
 	//entre dos Fechas 
 	//distincion entrada y salida
+	int mes1, mes2, anio;
+	cout << "Ingrese Primer mes " << endl;
+	cin >> mes1; //menor
+	cout << "Ingrese Segundo mes " << endl;
+	cin >> mes2; // mayor
+	if (mes1 > mes2) {
+		int aux = mes1;
+		mes1 = mes2;
+		mes2 = aux;
+	}
+
+	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
+	cin >> anio;
+
+	//ENTRADAS (   1- Entrada )
+	Movimientos mov;
+	ArchivosTemplate archimovs;
+	int total = archimovs.contarRegistros(_archivoMovimientos, mov);
+
+	for (int x = 0;x < total;x++) {
+		cout << "Entradas  : " << endl;
+		cout << endl;
+		mov = archimovs.ObtenerObjeto(_archivoMovimientos, mov, x);
+		if (mov.getSentido() == 1) { // si es una entrada 
+			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
+
+				if (mov.getFechayHoraMovimiento().getFecha().getMes() >= mes1 && mov.getFechayHoraMovimiento().getFecha().getMes() <= mes2) { //  y es menor al segundo mes y mayor al primero ( estoy entre esos )
+					mov.mostrar();
+				}
+			}
+
+		}
+
+	}
+
+	cout << endl;
+	for (int x = 0;x < total;x++) {
+		cout << "Salidas  : " << endl;
+		cout << endl;
+		mov = archimovs.ObtenerObjeto(_archivoMovimientos, mov, x);
+		if (mov.getSentido() == 2) { // si es una salida
+			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
+
+				if (mov.getFechayHoraMovimiento().getFecha().getMes() >= mes1 && mov.getFechayHoraMovimiento().getFecha().getMes() <= mes2) { //  y es menor al segundo mes y mayor al primero ( estoy entre esos )
+					mov.mostrar();
+				}
+			}
+
+		}
+
+	}
 }
 
 
@@ -202,7 +276,7 @@ void Gestor_Informes::Ejecutar() {
 	bool a = true;
 
 	while (a) {
-
+		
 		cout << "Ingrese Informe a ejecutar " << endl;
 
 		cout << "1. Unidades con mas de 50 Movimientos Registrados (Mes y Anio)." << endl;
@@ -210,25 +284,29 @@ void Gestor_Informes::Ejecutar() {
 		cout << "3. Unidad con Mayor Cantidad de Movimientos, Historico." << endl;
 		cout << "4. Unidad con Menor Cantidad de Movimientos, Historico." << endl;
 		cout << "5. Movimientos Mensuales entre dos fechas a eleccion." << endl;
+		cout << endl;
+		cout << "0. Salir " << endl;
 		cin >> opcion;
 
 		switch (opcion) {
 		case 1:
-
+			UnidadesMayor50movs();
 			break;
 		case 2:
-
+			InformeProveedoresIngresados();
 			break;
 
 		case 3:
+			UnidadMasMovsHistorico();
 			break;
 		case 4:
-
+			UnidadMenorMovsHistorico();
 			break;
 		case 5:
-
+			MovimientosMensuales();
 			break;
 		case 0:
+
 			return;
 		default:
 
