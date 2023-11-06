@@ -148,6 +148,7 @@
     <ClCompile Include="Fecha_Hora.cpp" />
     <ClCompile Include="Gestion_General.cpp" />
     <ClCompile Include="Gestor_Altas.cpp" />
+    <ClCompile Include="Gestor_Configuraciones.cpp" />
     <ClCompile Include="Gestor_Consultas.cpp" />
     <ClCompile Include="Gestor_Informes.cpp" />
     <ClCompile Include="Gestor_Listados.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Proveedor.cpp" />
     <ClCompile Include="Ingreso.cpp" />
     <ClCompile Include="Residente.cpp" />
+    <ClCompile Include="SubMenus_Config.cpp" />
     <ClCompile Include="Unidad.cpp" />
     <ClCompile Include="Vehiculo.cpp" />
     <ClCompile Include="Visita.cpp" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Fecha_Hora.h" />
     <ClInclude Include="Gestion_General.h" />
     <ClInclude Include="Gestor_Altas.h" />
+    <ClInclude Include="Gestor_Configuraciones.h" />
     <ClInclude Include="Gestor_Consultas.h" />
     <ClInclude Include="Gestor_Informes.h" />
     <ClInclude Include="Gestor_Listados.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="Proveedor.h" />
     <ClInclude Include="Residente.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SubMenus_Config.h" />
     <ClInclude Include="Unidad.h" />
     <ClInclude Include="Vehiculo.h" />
     <ClInclude Include="Visita.h" />

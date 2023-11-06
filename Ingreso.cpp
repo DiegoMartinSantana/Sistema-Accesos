@@ -20,8 +20,6 @@ int main() {
 		if (opingreso == 1) {
 			Control_General control(1);
 			control.Acceder();
-
-
 		}
 		else if (opingreso == 2) {
 			int  clave = 0;

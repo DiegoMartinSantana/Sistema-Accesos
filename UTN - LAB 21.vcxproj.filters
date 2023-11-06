@@ -64,6 +64,12 @@
     <Filter Include="Header Files\Sistema\Gestion %283%29">
       <UniqueIdentifier>{fdf78701-da35-45bc-bfa7-e512f78e6642}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Sistema\Submenus Config">
+      <UniqueIdentifier>{2051b7ce-d33a-4380-bb75-cc235378ec64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Sistema\SubMenus config">
+      <UniqueIdentifier>{988d007f-03d0-4217-8f54-186f0ea7792e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Persona.cpp">
@@ -125,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="Gestor_Informes.cpp">
       <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Configuraciones.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
+    </ClCompile>
+    <ClCompile Include="SubMenus_Config.cpp">
+      <Filter>Source Files\Sistema\Submenus Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="Gestor_Informes.h">
       <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Configuraciones.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="SubMenus_Config.h">
+      <Filter>Header Files\Sistema\SubMenus config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

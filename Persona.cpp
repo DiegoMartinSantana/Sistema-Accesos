@@ -3,7 +3,17 @@
 #include <string>
 #include<iostream>
 using namespace std;
+Persona::Persona() {
 
+}
+Persona::Persona(int id, int dni, Fecha f, bool estado, std::string apellido, std::string nombre) {
+	setApellidos(apellido);
+	setNombres(nombre);
+	setDni(dni);
+	setId(id);
+	setNacimiento(f.getDia(), f.getMes(), f.getAnio());
+	setEstado(estado);
+}
 string Persona::getApellidos() {
 	return _apellidos;
 }
@@ -43,6 +53,9 @@ int  Persona::getDni() {
 
 int  Persona::getId() {
 	return _id;
+}
+Fecha Persona::getObjectNacimiento() {
+	return _nacimiento;
 }
 string  Persona::getNacimiento() {
 	return _nacimiento.toString();

@@ -4,12 +4,12 @@
 #include "Gestor_Consultas.h"
 #include "Gestor_Listados.h"
 #include "Gestor_Informes.h"
+#include "Gestor_Configuraciones.h"
 using namespace std;
 
 Control_General::Control_General(int tipo) {
 	_tipo = tipo;
 }
-
 
 void Control_General::Acceder() {
 	bool a = true;
@@ -39,10 +39,7 @@ void Control_General::Acceder() {
 
 			//muestro configuraciones
 			cout << "5 - Configuraciones " << endl;
-
-
 		}
-
 		cout << "0 - Salir " << endl;
 
 		cin >> opcion;
@@ -72,6 +69,8 @@ void Control_General::Acceder() {
 		case 5: {
 			if (_tipo == 2) {
 				//llamado configuraciones 
+				Gestor_Configuraciones config;
+				config.Ejecutar();
 			}
 
 		}
@@ -80,11 +79,7 @@ void Control_General::Acceder() {
 			return;
 			break;
 
+			}
 		}
-
-		}
-
-
 	}
-
 }

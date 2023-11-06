@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 class Unidad
-{
+{	//LA UNIDAD 0 CORRESPONDE A EMPLEADOS Y A PROVEEDORES
 public:
 	
 	std::string getApellidoFamilia();
@@ -27,7 +27,6 @@ private:
 
 	int _id;
 	char _apellidoFamilia[50];
-	// numero = id..
 	char _observaciones[300];
 	int _telefonoFamilia;
 	int _tipo;

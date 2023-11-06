@@ -3,7 +3,8 @@
 #include "Fecha.h"
 class Persona {
 public:
-
+	Persona();
+	Persona(int id, int dni, Fecha f, bool estado, std::string apellido, std::string nombre);
 	std::string getApellidos();
 	std::string getNombres();
 	std::string getApellidosyNombres();
@@ -18,6 +19,7 @@ public:
 	int getId();
 	std::string  getNacimiento();
 	bool getEstado();
+	Fecha getObjectNacimiento();
 
 	void cargarPersona();
 	std::string mostrarPersonastring();

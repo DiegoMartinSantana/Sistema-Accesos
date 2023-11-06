@@ -272,9 +272,6 @@ void Gestor_Consultas::EmpleadoporApellido() {
 
 }
 
-
-
-
 void Gestor_Consultas::UnidadesporId() {
 	Unidad uni;
 	int id;
