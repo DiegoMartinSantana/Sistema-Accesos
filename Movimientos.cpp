@@ -10,7 +10,6 @@ Movimientos::Movimientos( int idunidad, int dni,int sentido, std::string observa
     _fechayhora = Fecha_Hora(); // la del sistema
     setSentido(sentido);
     setObservaciones(observacion);
-    setEstado(true);
     setTipoAutorizacion(tipoautorizacion);
 
 }
@@ -56,10 +55,7 @@ string  Movimientos::getTipoAutorizacion()
     return tipo;
 }
 
-bool Movimientos::getEstado()
-{
-    return _estado;
-}
+
 
 void Movimientos::setDni(int dni)
 {
@@ -95,10 +91,7 @@ void Movimientos::setTipoAutorizacion(int tipo)
     
     }
 
-void Movimientos::setEstado(bool estado)
-{
-    _estado = estado;
-}
+
 void  Movimientos::setSentido(bool sentido)
 {
     _sentido = sentido;
@@ -109,7 +102,6 @@ void Movimientos::cargar()
     //fecha y hora del sistema :D
 
     bool sentido;
-    setEstado(true);
     string Observaciones;
     int tipo, dni;
 

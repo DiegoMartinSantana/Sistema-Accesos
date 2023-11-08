@@ -13,15 +13,14 @@ using namespace std;
 //TODO REGISTRA UN MOVIMIENTO TODO ES UN MOVIMIENTO ALTAS BAJAS TODO
 
 
-ArchivosTemplate archi;
-ArchivosTemplate archiauto;
+  ArchivosTemplate archi;
+
 int mes, anio;
 void insertarPersona(int id, int dni,Fecha f, bool estado ,string apellido , string nombre ) {
 
 	Persona p(id, dni, f, estado, apellido, nombre);
-	ArchivosTemplate archipersona;
 	string nombrearchi = "Personas.dat";
-	archipersona.cargarRegistro(nombrearchi,p);
+	archi.cargarRegistro(nombrearchi,p);
 
 }
 void pedirhasta(int& dia, int& mes) {
@@ -60,9 +59,8 @@ void Gestion_General::altaVisita() {
 	pedirhasta(mes, anio);
 
 	//GENERA AUTORIZACION
-	ArchivosTemplate archiauto;
 	Autorizaciones autorizado(visi.getDni(), visi.getUnidad(),mes,anio); // carga la autorizacion correspondiente
-	archiauto.cargarRegistro(_archivoAutorizados, autorizado);
+	archi.cargarRegistro(_archivoAutorizados, autorizado);
 
 }
 void Gestion_General::altaEmpleado() {
@@ -77,9 +75,8 @@ void Gestion_General::altaEmpleado() {
 	archi.cargarRegistrodeMovimiento(movi);
 	//GENERA AUTORIZACION
 	pedirhasta(mes,anio);
-	ArchivosTemplate archiauto;
 	Autorizaciones autorizado(emp.getDni(),0,mes,anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
-	archiauto.cargarRegistro(_archivoAutorizados, autorizado);
+	archi.cargarRegistro(_archivoAutorizados, autorizado);
 
 }
 void Gestion_General::altaResidente_inquilino() {
@@ -93,18 +90,16 @@ void Gestion_General::altaResidente_inquilino() {
 		Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Residente ", 1); //permanente
 		archi.cargarRegistrodeMovimiento(movi);
 
-		ArchivosTemplate archiauto;
 		Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), true); // no paso mes y anio x ser residente.
-		archiauto.cargarRegistro(_archivoAutorizados, autorizado);
+		archi.cargarRegistro(_archivoAutorizados, autorizado);
 	}
 	else  {
 		Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Inquilino ", 1); //permanente con hasta
 		pedirhasta(mes, anio);
 
 		archi.cargarRegistrodeMovimiento(movi);
-		ArchivosTemplate archiauto;
 		Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), mes, anio);
-		archiauto.cargarRegistro(_archivoAutorizados, autorizado);
+		archi.cargarRegistro(_archivoAutorizados, autorizado);
 	}
 	//GENERA AUTORIZACION
 
@@ -120,7 +115,6 @@ void Gestion_General::altaProveedor() {
 	archi.cargarRegistrodeMovimiento(movi);
 
 	//GENERA AUTORIZACION
-	ArchivosTemplate archiauto;
 	Autorizaciones autorizado(prov.getDni(), 0, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
-	archiauto.cargarRegistro(_archivoAutorizados, autorizado);
+	archi.cargarRegistro(_archivoAutorizados, autorizado);
 }

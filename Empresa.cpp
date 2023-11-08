@@ -5,7 +5,14 @@
 
 using namespace std;
 
+void Empresa::setEstado(bool estado)
+{
+	_estado = estado;
 
+}
+bool Empresa::getEstado() {
+	return _estado;
+}
 void Empresa::setId(int id) {
 	_id = id;
 }

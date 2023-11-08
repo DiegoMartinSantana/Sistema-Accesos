@@ -28,7 +28,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 
 	for (int x = 0;x < total;x++) {
 		// por cada unidad contar sus movimientos. osea extraigo el id de unidades. de cada mov y los acumulo, guardo todos
-		mov = archimov.ObtenerObjeto(_archivoMovimientos, mov, x);
+		mov = archimov.ObtenerMovimiento(_archivoMovimientos, mov, x);
 		if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio && mov.getFechayHoraMovimiento().getFecha().getMes() == mes) {
 			vec[x]++;
 			vecidunidad[x] = mov.getUnidad().getId();
@@ -92,7 +92,7 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
 		for(int y=0;y<totalmovs;y++){
 
-			mov = archimov.ObtenerObjeto(_archivoMovimientos, mov, y);
+			mov = archimov.ObtenerMovimiento(_archivoMovimientos, mov, y);
 
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
 
@@ -131,7 +131,7 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 		cantidad = 0;
 		for (int y = 0;y < totalmovs;y++) {
 
-			movs = archimovs.ObtenerObjeto(_archivoMovimientos,movs, y);
+			movs = archimovs.ObtenerMovimiento(_archivoMovimientos,movs, y);
 
 
 			if (movs.getUnidad().getId() == uni.getId()) {
@@ -182,7 +182,7 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 		cantidad = 0;
 		for (int y = 0;y < totalmovs;y++) {
 
-			movs = archimovs.ObtenerObjeto(_archivoMovimientos, movs, y);
+			movs = archimovs.ObtenerMovimiento(_archivoMovimientos, movs, y);
 
 
 			if (movs.getUnidad().getId() == uni.getId()) {
@@ -238,7 +238,7 @@ void Gestor_Informes::MovimientosMensuales() {
 	for (int x = 0;x < total;x++) {
 		cout << "Entradas  : " << endl;
 		cout << endl;
-		mov = archimovs.ObtenerObjeto(_archivoMovimientos, mov, x);
+		mov = archimovs.ObtenerMovimiento(_archivoMovimientos, mov, x);
 		if (mov.getSentido() == 1) { // si es una entrada 
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
 
@@ -255,7 +255,7 @@ void Gestor_Informes::MovimientosMensuales() {
 	for (int x = 0;x < total;x++) {
 		cout << "Salidas  : " << endl;
 		cout << endl;
-		mov = archimovs.ObtenerObjeto(_archivoMovimientos, mov, x);
+		mov = archimovs.ObtenerMovimiento(_archivoMovimientos, mov, x);
 		if (mov.getSentido() == 2) { // si es una salida
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
 

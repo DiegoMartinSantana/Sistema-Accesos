@@ -20,14 +20,12 @@ class Movimientos
 		int getSentido();
 		std::string getObservaciones();
 		std::string getTipoAutorizacion();
-		bool getEstado();
 		void setDni(int dni);
 		void setUnidad(Unidad unidad);
 		void setFechayHoraMovimiento(Fecha_Hora fechahora);
 		void setSentido(bool sentido); //true entra , false sale.
 		void setObservaciones(std::string observaciones);
 		void setTipoAutorizacion(int  tipoautorizacion);
-		void setEstado(bool estado);
 		void cargar();
 		void mostrar();
 	private:
@@ -37,7 +35,7 @@ class Movimientos
 		int _sentido;
 		char _observaciones[300];
 		int _tipoAutorizacion; // permamente o telefonica
-		bool _estado;
+	
 	
 
 

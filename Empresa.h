@@ -13,7 +13,10 @@ public:
 	void setId(int id);
 	int getId();
 	void cargar();
-	std::string mostrarempresastring();
+	bool getEstado();
+	void setEstado(bool estado);
+	
+		std::string mostrarempresastring();
 	void mostrar();
 	bool validarrazonsocial(std::string razon);
 
