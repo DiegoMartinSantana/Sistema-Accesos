@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "ArchivosTemplate.h"
-
+#include "Gestion_General.h"
 #include "SubMenus_Config.h"
 #include "Persona.h"
 #include "Visita.h"
@@ -15,105 +15,7 @@ using namespace std;
 
 ArchivosTemplate archivo;
 
-void SubMenus_Config::bajaResidente() {
-	int dni;
-	cout << "Ingrese Dni del Residente a dar de baja " << endl;
-	cin >> dni;
-
-	Residente r;
-
-	r = archivo.obtenerObjetoxDni(_archivoResidentes, r, dni);
-	bool baja = archivo.Bajalogica(_archivoResidentes, r, r.getId());
-
-	Autorizaciones a;
-	bool baja2 = archivo.BajalogicaxDni(_archivoAutorizados, a, dni);
-
-
-	if (baja && baja2) {
-		Movimientos mov(0, r.getDni(), 2, " Dada de baja de Residente", 2);
-		archivo.cargarRegistro(_archivoMovimientos, mov);
-		cout << "Se ha dado el Residente con Dni " << dni << endl;
-	}
-	else {
-		cout << "No se ha hecho la baja" << endl;
-	}
-}
-
-void SubMenus_Config::bajaProveedor() {
-	int dni;
-	cout << "Ingrese Dni del Proveedor a dar de baja " << endl;
-	cin >> dni;
-
-	Proveedor p;
-
-	p = archivo.obtenerObjetoxDni(_archivoProveedores, p, dni);
-	bool baja = archivo.Bajalogica(_archivoProveedores, p, p.getId());
-
-	Autorizaciones a;
-	bool baja2 = archivo.BajalogicaxDni(_archivoAutorizados, a, dni);
-
-
-	if (baja && baja2) {
-		Movimientos mov(0, p.getDni(), 2, " Dada de baja de Proveedor", 2);
-		archivo.cargarRegistro(_archivoMovimientos, mov);
-		cout << "Se ha dado de baja el Proveedor con Dni " << dni << endl;
-	}
-	else {
-		cout << "No se ha hecho la baja" << endl;
-	}
-}
-void SubMenus_Config::bajaEmpleado() {
-
-	int dni;
-	cout << "Ingrese Dni del Empleado a dar de baja " << endl;
-	cin >> dni;
-
-	Empleado e;
-
-	e = archivo.obtenerObjetoxDni(_archivoEmpleados, e, dni);
-	bool baja = archivo.Bajalogica(_archivoEmpleados, e, e.getId());
-	
-	Autorizaciones a;
-	bool baja2 = archivo.BajalogicaxDni(_archivoAutorizados, a, dni);
-
-
-	if (baja && baja2) {
-		Movimientos mov(0, e.getDni(), 2, " Dada de baja de Empleado", 2);
-		archivo.cargarRegistro(_archivoMovimientos, mov);
-		cout << "Se ha dado de baja el empleado con Dni " << dni << endl;
-	}
-	else {
-		cout << "No se ha hecho la baja" << endl;
-	}
-}
-
-void SubMenus_Config::bajaVisitas() {
-	int dni;
-	cout << "Ingrese Dni de la visita a dar de baja " << endl;
-	cin >> dni;
-
-	Visita v;
-	//baja en archivo visitas
-	v = archivo.obtenerObjetoxDni(_archivoVisitas, v, dni);
-	bool baja = archivo.Bajalogica(_archivoVisitas, v, v.getId());
-	//baja de su autorizacion
-	Autorizaciones a;
-	bool baja2 = archivo.BajalogicaxDni(_archivoAutorizados, a, dni);
-
-
-	if (baja && baja2) {
-		//genera movimiento de tipo salida, si se cumple la baja
-		Movimientos mov(v.getUnidad(), v.getDni(), 2, " Dada de baja de Visita", 2);
-		archivo.cargarRegistro(_archivoMovimientos, mov);
-		cout << "Se ha dado de baja la Visita con Dni " << dni << endl;
-
-	}
-	else {
-		cout << "No se ha hecho la baja" << endl;
-
-	}
-
-}
+Gestion_General general;
 
 void  SubMenus_Config::subMenuBajas() {
 	int opc;
@@ -134,19 +36,19 @@ void  SubMenus_Config::subMenuBajas() {
 		switch (opc)
 		{
 		case 1: {
-			bajaVisitas();
+			general.bajaVisitas();
 			break;
 		}
 		case 2: {
-			bajaEmpleado();
+			general.bajaEmpleado();
 			break;
 		}
 		case 3: {
-			bajaResidente();
+			general.bajaResidente();
 			break;
 		}
 		case 4: {
-			bajaProveedor();
+			general.bajaProveedor();
 			break;
 		}
 		case 0: {

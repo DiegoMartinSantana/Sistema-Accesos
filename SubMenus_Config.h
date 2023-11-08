@@ -32,11 +32,7 @@ private:
 	std::string _bakArchivoEmpresas = "Empresas.bak";
 	std::string _bakArchivoUnidades = "Unidades.bak";
 	std::string _bakArchivoPersonas = "Personas.bak";
-	//bajas
-	void bajaVisitas();
-	void bajaEmpleado();
-	void bajaResidente();
-	void bajaProveedor();
+	
 	//copias seg
 
 	bool copiaSegPersonas();

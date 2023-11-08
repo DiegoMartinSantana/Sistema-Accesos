@@ -118,3 +118,103 @@ void Gestion_General::altaProveedor() {
 	Autorizaciones autorizado(prov.getDni(), 0, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
 	archi.cargarRegistro(_archivoAutorizados, autorizado);
 }
+
+void Gestion_General::bajaResidente() {
+	int dni;
+	cout << "Ingrese Dni del Residente a dar de baja " << endl;
+	cin >> dni;
+
+	Residente r;
+
+	r = archi.obtenerObjetoxDni(_archivoResidentes, r, dni);
+	bool baja = archi.Bajalogica(_archivoResidentes, r, r.getId());
+
+	Autorizaciones a;
+	bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+
+
+	if (baja && baja2) {
+		Movimientos mov(0, r.getDni(), 2, " Dada de baja de Residente", 2);
+		archi.cargarRegistro(_archivoMovimientos, mov);
+		cout << "Se ha dado el Residente con Dni " << dni << endl;
+	}
+	else {
+		cout << "No se ha hecho la baja" << endl;
+	}
+}
+
+void Gestion_General::bajaProveedor() {
+	int dni;
+	cout << "Ingrese Dni del Proveedor a dar de baja " << endl;
+	cin >> dni;
+
+	Proveedor p;
+
+	p = archi.obtenerObjetoxDni(_archivoProveedores, p, dni);
+	bool baja = archi.Bajalogica(_archivoProveedores, p, p.getId());
+
+	Autorizaciones a;
+	bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+
+
+	if (baja && baja2) {
+		Movimientos mov(0, p.getDni(), 2, " Dada de baja de Proveedor", 2);
+		archi.cargarRegistro(_archivoMovimientos, mov);
+		cout << "Se ha dado de baja el Proveedor con Dni " << dni << endl;
+	}
+	else {
+		cout << "No se ha hecho la baja" << endl;
+	}
+}
+void Gestion_General::bajaEmpleado() {
+
+	int dni;
+	cout << "Ingrese Dni del Empleado a dar de baja " << endl;
+	cin >> dni;
+
+	Empleado e;
+
+	e = archi.obtenerObjetoxDni(_archivoEmpleados, e, dni);
+	bool baja = archi.Bajalogica(_archivoEmpleados, e, e.getId());
+
+	Autorizaciones a;
+	bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+
+
+	if (baja && baja2) {
+		Movimientos mov(0, e.getDni(), 2, " Dada de baja de Empleado", 2);
+		archi.cargarRegistro(_archivoMovimientos, mov);
+		cout << "Se ha dado de baja el empleado con Dni " << dni << endl;
+	}
+	else {
+		cout << "No se ha hecho la baja" << endl;
+	}
+}
+
+void Gestion_General::bajaVisitas() {
+	int dni;
+	cout << "Ingrese Dni de la visita a dar de baja " << endl;
+	cin >> dni;
+
+	Visita v;
+	//baja en archivo visitas
+	v = archi.obtenerObjetoxDni(_archivoVisitas, v, dni);
+	bool baja = archi.Bajalogica(_archivoVisitas, v, v.getId());
+	//baja de su autorizacion
+	Autorizaciones a;
+	bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+
+
+	if (baja && baja2) {
+		//genera movimiento de tipo salida, si se cumple la baja
+		Movimientos mov(v.getUnidad(), v.getDni(), 2, " Dada de baja de Visita", 2);
+		archi.cargarRegistro(_archivoMovimientos, mov);
+		cout << "Se ha dado de baja la Visita con Dni " << dni << endl;
+
+	}
+	else {
+		cout << "No se ha hecho la baja" << endl;
+
+	}
+
+}
