@@ -160,6 +160,7 @@
     <ClCompile Include="Residente.cpp" />
     <ClCompile Include="SubMenus_Config.cpp" />
     <ClCompile Include="Unidad.cpp" />
+    <ClCompile Include="Utilidades.cpp" />
     <ClCompile Include="Vehiculo.cpp" />
     <ClCompile Include="Visita.cpp" />
   </ItemGroup>
@@ -185,6 +186,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SubMenus_Config.h" />
     <ClInclude Include="Unidad.h" />
+    <ClInclude Include="Utilidades.h" />
     <ClInclude Include="Vehiculo.h" />
     <ClInclude Include="Visita.h" />
   </ItemGroup>

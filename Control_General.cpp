@@ -13,11 +13,11 @@ Control_General::Control_General(int tipo) {
 
 void Control_General::Acceder() {
 	bool a = true;
-	int opcion;
+	char opcion;
 
 	while (a) {
 		system("cls");
-		if (_tipo == 2) {
+		if (_tipo ==2) {
 			cout << endl;
 			cout << "Bienvenido Admin " << endl;
 			cout << endl;
@@ -44,29 +44,28 @@ void Control_General::Acceder() {
 
 		cin >> opcion;
 
-
 		switch (opcion) {
-		case 1: {
+		case '1': {
 			Gestor_Altas alta;
 			alta.Imprimiraltas();
 		}
 			  break;
-		case 2: {
+		case '2': {
 			Gestor_Consultas consu;
 			consu.Ejecutar();
 		}
 			  break;
-		case 3: {
+		case '3': {
 			Gestor_Informes informes;
 			informes.Ejecutar();
 		}
 			  break;
-		case 4: {
+		case '4': {
 			Gestor_Listados list;
 			list.Ejecutar();
 		}
 			  break;
-		case 5: {
+		case '5': {
 			if (_tipo == 2) {
 				//llamado configuraciones 
 				Gestor_Configuraciones config;
@@ -75,10 +74,12 @@ void Control_General::Acceder() {
 
 		}
 			  break;
-		case 0: {
+		case '0': {
+			a = false;
 			return;
 			break;
-
+		default:
+			break;
 			}
 		}
 	}

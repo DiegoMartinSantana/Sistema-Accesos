@@ -45,7 +45,14 @@ private:
 	bool copiaSegTodosArchivos();
 
 	//restauracion
-
+	bool resCopiaSegPersonas();
+	bool resCopiaSegAutorizaciones();
+	bool resCopiaSegMovimientos();
+	bool resCopiaSegResidentes();
+	bool resCopiaSegVisitas();
+	bool resCopiaSegEmpleados();
+	bool resCopiaSegProveedores();
+	bool resCopiaSegTodosArchivos();
 
 
 };

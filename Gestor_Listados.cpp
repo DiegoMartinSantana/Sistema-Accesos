@@ -5,6 +5,7 @@
 #include "Residente.h"
 #include "Persona.h"
 #include "Autorizaciones.h"
+#include "Movimientos.h"
 #include "Proveedor.h"
 #include "Empleado.h"
 #include "Unidad.h"
@@ -73,9 +74,11 @@ string retornarapellido(int dni) {
 	}
 	return "Invalido ";
 }
+
+
 void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
-	Autorizaciones autorizado(0,0);
+	Autorizaciones autorizado(0, 0);
 	ArchivosTemplate archiauto;
 
 
@@ -84,7 +87,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 	vector <string> vec;
 
 	for (int x = 0;x < total;x++) {
-		
+
 		vec[x] = retornarapellido(archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getDniPersona());
 
 	}
@@ -102,7 +105,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 			autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
 			string ape = retornarapellido(autorizado.getDniPersona());
-			if (compararcadenas(vec[x],ape.c_str())) {
+			if (compararcadenas(vec[x], ape.c_str())) {
 				autorizado.mostrar();
 			}
 		}
@@ -112,7 +115,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 void Gestor_Listados::AutorizadosOrdenadosporDni() {
 	//capturar todo 
-	Autorizaciones autorizado(0,0);
+	Autorizaciones autorizado(0, 0);
 
 	ArchivosTemplate archiauto;
 	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
@@ -132,11 +135,9 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 
 		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
 		for (int y = 0;y < total;y++) {
-
 			if (autorizado.getDniPersona() == vec[x]) {
 				autorizado.mostrar();
 			}
-
 		}
 
 
@@ -166,7 +167,6 @@ void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
 		res = archires.ObtenerObjeto(_archivoResidentes, res, x);
 
 		for (int y = 0;y < total;y++) {
-
 			if (res.getUnidad() == vec[x]) {
 				res.mostrar();
 			}
@@ -197,8 +197,10 @@ void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
 		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
 
 		for (int y = 0;y < total;y++) {
-			if (compararcadenas(vec[x], prov.getEmpresa())) {
-				prov.mostrar();
+			if (prov.getEstado()) {
+				if (compararcadenas(vec[x], prov.getEmpresa())) {
+					prov.mostrar();
+				}
 			}
 		}
 	}
@@ -211,7 +213,7 @@ void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
 	ArchivosTemplate archiemp;
 
-		int total = archiemp.contarRegistros(_archivoEmpleados, emp);
+	int total = archiemp.contarRegistros(_archivoEmpleados, emp);
 
 
 	int* vec = new int[total];
@@ -292,9 +294,38 @@ void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 	}
 	vec.clear();
 }
+void Gestor_Listados::MovimientosDiaHoy() {
+
+	//comparo vs la fecha del sistema!
+
+	Fecha fSistema;
+	Movimientos mov;
+	ArchivosTemplate archi;
+	int totalmov = archi.contarRegistros(_archivoMovimientos, mov);
+
+	for (int x = 0;x < totalmov;x++) {
+		mov = archi.ObtenerMovimiento(_archivoMovimientos, mov, x);
+
+		if (mov.getFechayHoraMovimiento().getFecha().getAnio() == fSistema.getAnio()) {
+
+			if (mov.getFechayHoraMovimiento().getFecha().getMes() == fSistema.getMes()) {
+				
+				if (mov.getFechayHoraMovimiento().getFecha().getDia() == fSistema.getDia()) {
+					mov.mostrar();
+				}
+
+			}
+		}
+
+	}
+
+
+
+
+}
 void Gestor_Listados::Ejecutar() {
 
-	int opcion;
+	char opcion;
 	bool a = true;
 	while (a) {
 		system("cls");
@@ -306,36 +337,41 @@ void Gestor_Listados::Ejecutar() {
 		cout << "5. Empleados Ordenados por DNI " << endl;
 		cout << "6. Unidades Ordenadas por Id ( menor a mayor ) " << endl;
 		cout << "7. Unidades Ordenadas por Apellido de la Familia - ALFABETICAMENTE  " << endl;
+		cout << "8. Listado de Todos los Movimientos Registrados el Dia de hoy" << endl;
 
-		cout << "0. Salir" << endl;
+		cout << "0. Volver" << endl;
+		cout << endl;
 		cout << "Seleccione una opción:  ";
 		cin >> opcion;
 
 		switch (opcion) {
-		case 1:
+		case '1':
 			AutorizadosOrdenadosporApellido();
 			break;
-		case 2:
+		case '2':
 			AutorizadosOrdenadosporDni();
 			break;
-		case 3:
+		case '3':
 			ResidentesOrdenadosporIdUnidad();
 			break;
-		case 4:
+		case '4':
 			ProveedoreOrdenadosporRazonSocial();
 			break;
-		case 5:
+		case '5':
 			EmpleadosOrdenadosporDni();
 			break;
-		case 6:
+		case '6':
 			UnidadesporId();
 			break;
-		case 7:
+		case '7':
 			UnidadesOrdenadasporApellidoFamilia();
 			break;
-		case 0:
-			cout << "Saliendo del programa." << endl;
+		case '8':
+			MovimientosDiaHoy();
+			break;
+		case '0':
 			a = false;
+			return;
 		default:
 			cout << "Opción no válida. Intente de nuevo." << endl;
 			break;

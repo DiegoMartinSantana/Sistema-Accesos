@@ -7,6 +7,7 @@ class Gestor_Listados
 	void ResidentesOrdenadosporIdUnidad();
 
 	void ProveedoreOrdenadosporRazonSocial();
+	void MovimientosDiaHoy();
 
 	void EmpleadosOrdenadosporDni();
 	void UnidadesporId();
@@ -20,6 +21,7 @@ private:
 	std::string _archivoProveedores = "Proveedor.dat";
 	std::string _archivoUnidades = "Unidades.dat";
 	std::string _archivoAutorizados = "Autorizados.dat";
+	std::string _archivoMovimientos = "Movimientos.dat";
 
 };
 

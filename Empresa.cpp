@@ -1,10 +1,9 @@
 #include <iostream>
-#include "Empresa.h"
 #include <cstring>
 #include <string>
-
+#include "Empresa.h"
+#include "Utilidades.h"
 using namespace std;
-
 void Empresa::setEstado(bool estado)
 {
 	_estado = estado;
@@ -71,8 +70,10 @@ bool Empresa::validarrazonsocial(string razon) {
 void Empresa::cargar() {
 	string razon, descripcion;
 	int cuit;
+	Utilidades util;
 	cout << "Ingrese Nro de cuit de la Empresa " << endl;
 	cin >> cuit;
+	util.validarInt(cuit);
 	setCuit(cuit);
 	cin.ignore();
 

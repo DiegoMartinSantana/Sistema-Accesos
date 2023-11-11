@@ -1,8 +1,8 @@
+#include<iostream>
 #include <cstring>
 #include "Persona.h"
 #include "Empleado.h"
-#include<iostream>
-
+#include "Utilidades.h"
 using namespace std;
 
 Empleado::Empleado() {
@@ -10,8 +10,8 @@ Empleado::Empleado() {
 }
 
 void Empleado::setTipo(char tipo) {
-	if(tipo>0 &&tipo <3)
-	_tipo = tipo;
+	if (tipo > 0 && tipo < 3)
+		_tipo = tipo;
 }
 
 void Empleado::setCategoria(char categoria) {
@@ -27,13 +27,44 @@ void Empleado::setDescripcion(const string descripcion) {
 
 }
 
+string  Empleado::getTipo() const {
+	string retornar;
+	if (_tipo == 1) {
+		retornar = " Propio ";
+		return retornar;
 
-char Empleado::getTipo() const {
-	return _tipo;
+	}
+	else {
+		retornar = " Ajeno ";
+		return retornar;
+	}
 }
 
-char Empleado::getCategoria() const {
-	return _categoria;
+string Empleado::getCategoria() const {
+	//A - Limpieza  , B - Seguridad , C - Administrativo D - CONTRATADO X EMPRESA EXTERNA .
+	string retornar;
+	switch (toupper(_categoria)) {
+	case  'L':
+		retornar = "Limpieza";
+		return retornar;
+		break;
+	case  'S':
+		retornar = "Seguridad";
+		return retornar;
+
+		break;
+	case  'A':
+		retornar = "Administrativo";
+		return retornar;
+
+		break;
+	case  'C':
+		retornar = "CONTRATADO POR EMPRESA EXTERNA ";
+		return retornar;
+
+		break;
+
+	}
 }
 
 int Empleado::getLegajo() const {
@@ -48,27 +79,50 @@ string Empleado::getDescripcion() const {
 }
 
 void Empleado::CargarEmpleado() {
-
+	Utilidades util;
 	int legajo;
-	char tipo;
+	int tipo;
 	char categoria;
 	string descripcion;
 
 
-	cargarPersona(); 
+	cargarPersona();
 
 
 	cout << "Ingrese el legajo: ";
 	cin >> legajo;
+	util.validarInt(legajo);
 	setLegajo(legajo);
+
 	cout << "Ingrese el tipo: 1- Propio 2- Ajeno ";
 	cin >> tipo;
+	util.validarInt(tipo);
+	while (tipo < 0 || tipo >2) {
+		cout << "Tipo inexistente " << endl;
+		cin >> tipo;
+		util.validarInt(tipo);
+	}
+
 	setTipo(tipo);
+	if (tipo == 1) {
+		cout << "Ingrese la categoría: ";
+		cout << "  L - Limpieza  , S - Seguridad , A - Administrativo ." << endl;;
+		cin >> categoria;
+		util.validarChar(categoria);
+		while (categoria != 'A' || categoria != 'a' || categoria != 'S' || categoria != 's'
+			|| categoria != 'L' || categoria != 'l') { // mientras no sea una valida
 
-	cout << "Ingrese la categoría: ";
-	cin >> categoria;
-	setCategoria(categoria);
+			cout << "Categoria Inexistente ,ingrese nuevamente " << endl;
+			cin >> categoria;
+			util.validarChar(categoria);
 
+		}
+		setCategoria(toupper(categoria));
+	}
+	else {
+		categoria = 'C'; // ajeno
+		setCategoria(categoria);
+	}
 
 
 	cin.ignore();
@@ -80,25 +134,15 @@ void Empleado::CargarEmpleado() {
 	}
 
 }
-string Empleado::MostrarEmpleadostring() {
-	string retornar = mostrarPersonastring();
-	retornar += " Legajo empleado : " + to_string(getLegajo()) + "\n" +
-		"Tipo  : " + getTipo() + "\n" +
-		"Categoria : " + getCategoria() + "\n" +
-		"Descripcion : " + getDescripcion() + "\n";
 
-	return retornar;
-
-
-}
 void Empleado::mostrar() {
 
 	mostrarPersona();
-	cout << " Legajo empleado : " << to_string(getLegajo()) << endl;
+	cout << " Legajo empleado : " << getLegajo() << endl;
 	cout << "Tipo  : " << getTipo() << endl;
 	cout << "Categoria : " << getCategoria() << endl;
 	cout << "Descripcion : " << getDescripcion() << endl;
-	if (getTipo() == 2) {
+	if (_tipo == 2) {
 		_perteneciente.mostrar();
 	}
 

@@ -1,13 +1,16 @@
 #include <iostream>
 
 #include "Gestor_Configuraciones.h"
+
+#include "SubMenus_Config.h"
 using namespace std;
 void Gestor_Configuraciones::Ejecutar() {
 
+	char opc;
 
 	bool a=true;
+	SubMenus_Config config;
 	while (a) {
-		int opc;
 		cout << " CONFIGURACION " << endl;
 		cout << endl;
 		cout << " 1. Realizar una baja  " << endl;
@@ -19,20 +22,20 @@ void Gestor_Configuraciones::Ejecutar() {
 		cin >> opc;
 		switch (opc)
 		{
-		case 1: {
-			
+		case '1': {
+			config.subMenuBajas();
 			break;
 		}
-		case 2: {
-
+		case '2': {
+			config.subMenuCopiaSeg();
 		}
 			break;
-		case 3: {
-
+		case '3': {
+			config.subMenuRestaurarCopiaSeg();
 		}
 			break;
 
-		case 0:
+		case '0':
 			a = false;
 			return;
 				break;

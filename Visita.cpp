@@ -1,9 +1,8 @@
 #include<iostream>
-
+#include <cstring>
 #include "Persona.h"
 #include "Visita.h"
-#include <cstring>
-
+#include "Utilidades.h"
 
 
 using namespace std;
@@ -51,17 +50,35 @@ void Visita::mostrar() {
 	cout << "Documento: " << getDni() << endl;
 }
 void Visita::cargarvisita() {
-
+	Utilidades util;
 	cargarPersona();
 	int unidad;
-	bool familiar;
-	cout << "Ingrese el numero de unidad que visita " << endl;
+	int familiar;
+	cout << "Ingrese el numero de unidad que visita (1-200)" << endl;
 	cin >> unidad;
+	util.validarInt(unidad);
+	while (unidad < 1 && unidad>200) {
+		cout << "Unidad invalida, ingrese nuevamente " << endl;
+		cin >> unidad;
+		util.validarInt(unidad);
 
+	}
 	setUnidad(unidad);
+
 	cout << "Ingrese 1 si es familiar. 0 Si no lo es." << endl;
 	cin >> familiar;
-	setFamiliar(familiar);
+	util.validarInt(familiar);
+	while (familiar < 0 && familiar >1) {
+		cout << "Dato incorrecto , ingrese nuevamente " << endl;
+		cin >> familiar;
+		util.validarInt(familiar);
+	}
 
+	if (familiar == 1) {
+		setFamiliar(true);
+	}
+	else {
+		setFamiliar(false);
+	}
 }
 

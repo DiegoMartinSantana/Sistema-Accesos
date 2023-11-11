@@ -17,7 +17,7 @@ class Movimientos
 		int  getDni();
 		Unidad getUnidad();
 		Fecha_Hora getFechayHoraMovimiento();
-		int getSentido();
+		bool getSentido();
 		std::string getObservaciones();
 		std::string getTipoAutorizacion();
 		void setDni(int dni);
@@ -32,7 +32,7 @@ class Movimientos
 		Unidad _unidad;
 		int _dnipersona;
 		Fecha_Hora _fechayhora;
-		int _sentido;
+		bool _sentido;
 		char _observaciones[300];
 		int _tipoAutorizacion; // permamente o telefonica
 	

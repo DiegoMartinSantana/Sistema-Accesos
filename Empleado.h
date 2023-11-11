@@ -10,15 +10,14 @@ public:
     void setCategoria(char categoria);
     void setLegajo(int legajo);
     void setDescripcion(const std::string descripcion);
-    char getTipo() const;
-    char getCategoria() const;
+    std::string getTipo() const ;
+    std::string getCategoria()const;
     int getLegajo() const;
     std::string getDescripcion() const;
     void CargarEmpleado();
-    std::string MostrarEmpleadostring();
     void mostrar();
 private:
-    char _tipo; //1 - del complejo - 2 - externo
+    int _tipo; //1 - del complejo - 2 - externo
     char _categoria; //a-b-c-d
     int _legajo;
     char _descripcion[100];

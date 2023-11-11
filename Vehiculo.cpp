@@ -65,7 +65,7 @@ void Vehiculo::cargar()
 	cin >> anio;
 
 	cout << "Ingrese el Tipo de vehiculo: 1- Auto 2- Moto 3- Camioneta " << endl;
-	cin >> tipo;;
+	cin >> tipo;
 
 
 

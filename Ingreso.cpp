@@ -14,21 +14,25 @@ int main() {
 		//mostrar horario de la consola.
 		// opcion cerrar todo.
 
-		int opingreso;
+		char opingreso;
 		cin >> opingreso;
-
-		if (opingreso == 1) {
+		
+		if (opingreso =='1') {
 			Control_General control(1);
 			control.Acceder();
 		}
-		else if (opingreso == 2) {
-			int  clave = 0;
+		else if (opingreso == '2') {
+			string clave;
+			
 			int con = 0;
-			while (clave != 1111) {
+			
+			
+			while (clave != "1111" ) {
 				con++;
-				cout << "Ingrese clave " << endl;
+				cout << "Ingrese clave Numerica" << endl;
+
 				cin >> clave;
-				if (clave == 1111) {
+				if (clave == "1111") {
 					//ingreso a modo admin
 					Control_General control(2);
 					control.Acceder();
@@ -40,6 +44,9 @@ int main() {
 				}
 			}
 			
+		}
+		else { 
+			cout << "Opcion Invalida " << endl;
 		}
 	}
 	return 0;

@@ -138,6 +138,9 @@
     <ClCompile Include="SubMenus_Config.cpp">
       <Filter>Source Files\Sistema\Submenus Config</Filter>
     </ClCompile>
+    <ClCompile Include="Utilidades.cpp">
+      <Filter>Source Files\Utilidades</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Persona.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="SubMenus_Config.h">
       <Filter>Header Files\Sistema\SubMenus config</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilidades.h">
+      <Filter>Header Files\Utilidad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

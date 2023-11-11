@@ -11,7 +11,7 @@ void Gestor_Altas::Imprimiraltas() {
 	while (a) {
         system("cls");
 
-		int opcion;
+		char opcion;
 		cout << "Que desea dar de Alta" << endl;
 		cout << endl;
 		cout << "1- Entrada /  Salida  " << endl;
@@ -27,26 +27,26 @@ void Gestor_Altas::Imprimiraltas() {
         Gestion_General altas;
 
         switch (opcion) {
-        case 1 : { 
+        case '1': {
             altas.altaEntrada_Salida();
 
             break;
 
         }
-        case 2:
+        case '2':
             altas.altaVisita();
             break;
         
-        case 3:
+        case '3':
             altas.altaEmpleado();
             break;
-        case 4:
+        case '4':
             altas.altaResidente_inquilino();
             break;
-        case 5:
+        case '5':
             altas.altaProveedor();
             break;
-        case 0:
+        case '0':
             return;
             break;
 

@@ -8,13 +8,13 @@ public:
 	std::string getObservaciones();
 
 	int getId();
-	int getTipo();
+	std::string getBase();
 	int getNroTelefono();
 	bool getEstado();
 
 	void setId(int id);
 	void setNroTelefono(int telefono);
-	void setTipo(int tipo);
+	void setBase(bool base); // true es base SOLO LA 0
 	void setApellidoFamilia(std::string apellido);
 	void setEstado(bool estado);
 	void setObservaciones(std::string observaciones);
@@ -29,7 +29,7 @@ private:
 	char _apellidoFamilia[50];
 	char _observaciones[300];
 	int _telefonoFamilia;
-	int _tipo;
+	bool _unidadBase;
 	bool _estado;
 
 };
