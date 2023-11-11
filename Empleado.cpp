@@ -65,6 +65,7 @@ string Empleado::getCategoria() const {
 		break;
 
 	}
+	return retornar;
 }
 
 int Empleado::getLegajo() const {

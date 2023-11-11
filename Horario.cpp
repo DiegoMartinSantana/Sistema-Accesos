@@ -1,5 +1,6 @@
 #include "Horario.h"
 #include <ctime>
+using namespace std;
 Horario::Horario() {
     time_t t = time(NULL);
     struct tm* f = localtime(&t);
@@ -31,9 +32,9 @@ void Horario::setHora(int hora) {
     _hora = hora;
 }
 
-std::string Horario::toString() {
-    std::string valorADevolver;
-    valorADevolver = std::to_string(_hora) + ":" + std::to_string(_minuto) + ":" + std::to_string(_segundo);
+string Horario::toString() {
+    string valorADevolver;
+    valorADevolver = to_string(_hora) + ":" + to_string(_minuto);
     return valorADevolver;
 }
 void Horario::cargar(int seg, int minuto, int hora) {

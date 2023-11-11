@@ -10,29 +10,39 @@
 #include "Proveedor.h"
 #include "Autorizaciones.h"
 #include "Movimientos.h"
+#include "Fecha_Hora.h"
+#include "Utilidades.h"
 using namespace std;
 
 
 ArchivosTemplate archivo;
-
+Utilidades uti;
 Gestion_General general;
 
 void  SubMenus_Config::subMenuBajas() {
 	char opc;
+	Fecha_Hora f;
 	bool a = true;
 	while (a) {
-		cout << " CONFIGURACION - BAJAS " << endl;
-		cout << " ¿Que desea dar de baja? " << endl;
+		system("cls");
+		cout << "--------------------------------------------------------------------------------------------------------------" << endl;
+		cout << endl;
+		cout << " CONFIGURACION - BAJAS				" << f.toString() << endl;
+		cout << endl;
 		cout << " Al dar de baja se producira una desautorizacion y dicha Persona no podra volver al Recinto " << endl;
-		cout << " sin antes ser dada de Alta" << endl;
+		cout << " sin antes ser dada de Alta." << endl;
+		cout << " Que desea dar de baja? " << endl;
+		cout << endl;
+		cout << " 1. Visita.  " << endl;
+		cout << " 2. Empleado. " << endl;
+		cout << " 3. Residente / Inquilino.  " << endl;
+		cout << " 4. Proveedor.  " << endl;
+		cout << endl;
+		cout << " 0. Volver. " << endl;
+		cout << endl;
 
-		cout << endl;
-		cout << " 1. Visita  " << endl;
-		cout << " 2. Empleado " << endl;
-		cout << " 3. Residente / Inquilino  " << endl;
-		cout << " 4. Proveedor  " << endl;
-		cout << endl;
-		cout << " 0. Volver " << endl;
+		cout << "--------------------------------------------------------------------------------------------------------------" << endl;
+
 		cin >> opc;
 		switch (opc)
 		{
@@ -66,7 +76,7 @@ void  SubMenus_Config::subMenuBajas() {
 
 bool SubMenus_Config::copiaSegPersonas() {
 	Persona p;
-	bool cp = archivo.copiaSeguridad(_archivoPersonas, _bakArchivoPersonas, p);
+	bool cp = archivo.copiaSeguridad(uti._archivoPersonas, _bakArchivoPersonas, p);
 	if (cp) {
 		return true;
 	}
@@ -76,7 +86,7 @@ bool SubMenus_Config::copiaSegPersonas() {
 }
 bool SubMenus_Config::copiaSegAutorizaciones() {
 	Autorizaciones a;
-	bool cp = archivo.copiaSeguridad(_archivoAutorizados, _bakArchivoAutorizados, a);
+	bool cp = archivo.copiaSeguridad(uti._archivoAutorizados, _bakArchivoAutorizados, a);
 	if (cp) {
 		return true;
 	}
@@ -86,7 +96,7 @@ bool SubMenus_Config::copiaSegAutorizaciones() {
 }
 bool SubMenus_Config::copiaSegMovimientos() {
 	Movimientos m;
-	bool cp = archivo.copiaSeguridadMovimiento(_archivoMovimientos, _bakArchivoMovimientos, m);
+	bool cp = archivo.copiaSeguridadMovimiento(uti._archivoMovimientos, _bakArchivoMovimientos, m);
 	if (cp) {
 		return true;
 	}
@@ -96,7 +106,7 @@ bool SubMenus_Config::copiaSegMovimientos() {
 }
 bool SubMenus_Config::copiaSegResidentes() {
 	Residente r;
-	bool cp = archivo.copiaSeguridad(_archivoResidentes, _bakArchivoResidentes, r);
+	bool cp = archivo.copiaSeguridad(uti._archivoResidentes, _bakArchivoResidentes, r);
 	if (cp) {
 		return true;
 	}
@@ -106,7 +116,7 @@ bool SubMenus_Config::copiaSegResidentes() {
 }
 bool SubMenus_Config::copiaSegVisitas() {
 	Visita v;
-	bool cp = archivo.copiaSeguridad(_archivoVisitas, _bakArchivoVisitas, v);
+	bool cp = archivo.copiaSeguridad(uti._archivoVisitas, _bakArchivoVisitas, v);
 	if (cp) {
 		return true;
 	}
@@ -116,7 +126,7 @@ bool SubMenus_Config::copiaSegVisitas() {
 }
 bool SubMenus_Config::copiaSegEmpleados() {
 	Empleado e;
-	bool cp = archivo.copiaSeguridad(_archivoEmpleados, _bakArchivoEmpleados, e);
+	bool cp = archivo.copiaSeguridad(uti._archivoEmpleados, _bakArchivoEmpleados, e);
 	if (cp) {
 		return true;
 	}
@@ -127,7 +137,7 @@ bool SubMenus_Config::copiaSegEmpleados() {
 }
 bool SubMenus_Config::copiaSegProveedores() {
 	Proveedor p;
-	bool cp = archivo.copiaSeguridad(_archivoProveedores, _bakArchivoProveedores, p);
+	bool cp = archivo.copiaSeguridad(uti._archivoProveedores, _bakArchivoProveedores, p);
 	if (cp) {
 		return true;
 	}
@@ -158,9 +168,11 @@ void SubMenus_Config::subMenuCopiaSeg() {
 	bool a = true;
 	system("cls");
 	int clave;
-	cin >> clave;
+	Fecha_Hora f;
+	cout << "----------------------------------------------------------------------------------------" << endl;
 	cout << " PARA ACCEDER A LOS REGISTROS DE RESTAURACION ES NECESARIO REINGRESAR SU CLAVE ADMIN. " << endl;
 	cout << " USTED POSEERA TRES INTENTOS :  " << endl;
+
 	bool ok = false;
 	for (int x = 0;x < 3;x++) {
 		cin >> clave;
@@ -172,19 +184,25 @@ void SubMenus_Config::subMenuCopiaSeg() {
 	system("cls");
 	if (ok) {
 		while (a) {
-			cout << " CONFIGURACION - COPIAS DE SEGURIDAD " << endl;
+
+			system("cls");
+			cout << "----------------------------------------------------------------------------------------" << endl;
+
+			cout << " CONFIGURACION - COPIAS DE SEGURIDAD                                  " << f.toString() << endl;
 			cout << " Realizar copia de seguridad de :  " << endl;
 			cout << endl;
-			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente " << endl;
-			cout << " 2. Movimientos " << endl;
-			cout << " 3. Autorizaciones  " << endl;
-			cout << " 4. Residentes  " << endl;
-			cout << " 5. Proveedores " << endl;
-			cout << " 6. Empleados " << endl;
-			cout << " 7. Visitas" << endl;
+			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
+			cout << " 2. Movimientos. " << endl;
+			cout << " 3. Autorizaciones.  " << endl;
+			cout << " 4. Residentes. " << endl;
+			cout << " 5. Proveedores. " << endl;
+			cout << " 6. Empleados. " << endl;
+			cout << " 7. Visitas." << endl;
 			cout << " 8. Todas. " << endl;
+			cout << endl;
+			cout << " 0. Volver." << endl;
+			cout << "----------------------------------------------------------------------------------------" << endl;
 
-			cout << " 0. Volver " << endl;
 			cin >> opc;
 			switch (opc)
 			{
@@ -274,7 +292,7 @@ void SubMenus_Config::subMenuCopiaSeg() {
 
 bool SubMenus_Config::resCopiaSegPersonas() {
 	Persona p;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoPersonas, _archivoPersonas, p)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoPersonas, uti._archivoPersonas, p)) {
 		return true;
 	}
 	else {
@@ -283,7 +301,7 @@ bool SubMenus_Config::resCopiaSegPersonas() {
 }
 bool SubMenus_Config::resCopiaSegAutorizaciones() {
 	Autorizaciones a;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoAutorizados, _archivoAutorizados, a)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoAutorizados, uti._archivoAutorizados, a)) {
 		return true;
 	}
 	else {
@@ -292,7 +310,7 @@ bool SubMenus_Config::resCopiaSegAutorizaciones() {
 }
 bool SubMenus_Config::resCopiaSegMovimientos() {
 	Movimientos mov;
-	if (archivo.restaurarCopiaSeguridadMovimiento(_bakArchivoMovimientos, _archivoMovimientos, mov)) {
+	if (archivo.restaurarCopiaSeguridadMovimiento(_bakArchivoMovimientos, uti._archivoMovimientos, mov)) {
 		return true;
 	}
 	else {
@@ -301,7 +319,7 @@ bool SubMenus_Config::resCopiaSegMovimientos() {
 }
 bool SubMenus_Config::resCopiaSegResidentes() {
 	Residente r;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoResidentes, _archivoResidentes, r)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoResidentes, uti._archivoResidentes, r)) {
 		return true;
 	}
 	else {
@@ -310,7 +328,7 @@ bool SubMenus_Config::resCopiaSegResidentes() {
 }
 bool SubMenus_Config::resCopiaSegVisitas() {
 	Visita v;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoVisitas, _archivoVisitas, v)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoVisitas, uti._archivoVisitas, v)) {
 		return true;
 	}
 	else {
@@ -319,7 +337,7 @@ bool SubMenus_Config::resCopiaSegVisitas() {
 }
 bool SubMenus_Config::resCopiaSegEmpleados() {
 	Empleado emp;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoEmpleados, _archivoEmpleados, emp)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoEmpleados, uti._archivoEmpleados, emp)) {
 		return true;
 	}
 	else {
@@ -328,7 +346,7 @@ bool SubMenus_Config::resCopiaSegEmpleados() {
 }
 bool SubMenus_Config::resCopiaSegProveedores() {
 	Proveedor p;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoProveedores, _archivoProveedores, p)) {
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoProveedores, uti._archivoProveedores, p)) {
 		return true;
 	}
 	else {
@@ -359,7 +377,7 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 	bool a = true;
 	system("cls");
 	int clave;
-	cin >> clave;
+	cout << "----------------------------------------------------------------------------------------" << endl;
 	cout << " PARA ACCEDER A LOS REGISTROS DE RESTAURACION ES NECESARIO REINGRESAR SU CLAVE ADMIN. " << endl;
 	cout << " USTED POSEERA TRES INTENTOS :  " << endl;
 	bool ok = false;
@@ -369,23 +387,28 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 			ok = true;
 		}
 	}
+	Fecha_Hora f;
 	system("cls");
 	if (ok) {
 		while (a) {
-			cout << " CONFIGURACION - RESTAURACION DE COPIAS DE SEGURIDAD " << endl;
+			cout << "----------------------------------------------------------------------------------------" << endl;
 
+			cout << " CONFIGURACION - RESTAURACION DE COPIAS DE SEGURIDAD                     " << f.toString() << endl;
+			cout << endl;
 			cout << " Restaurar copia de seguridad de :  " << endl;
 			cout << endl;
-			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente " << endl;
-			cout << " 2. Movimientos " << endl;
-			cout << " 3. Autorizaciones  " << endl;
-			cout << " 4. Residentes  " << endl;
-			cout << " 5. Proveedores " << endl;
-			cout << " 6. Empleados " << endl;
-			cout << " 7. Visitas" << endl;
+			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
+			cout << " 2. Movimientos. " << endl;
+			cout << " 3. Autorizaciones.  " << endl;
+			cout << " 4. Residentes.  " << endl;
+			cout << " 5. Proveedores. " << endl;
+			cout << " 6. Empleados. " << endl;
+			cout << " 7. Visitas." << endl;
 			cout << " 8. Todas. " << endl;
+			cout << endl;
+			cout << " 0. Volver. " << endl;
+			cout << "----------------------------------------------------------------------------------------" << endl;
 
-			cout << " 0. Volver " << endl;
 			cin >> opc;
 			switch (opc)
 			{

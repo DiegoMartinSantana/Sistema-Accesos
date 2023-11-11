@@ -11,8 +11,8 @@
 #include "Empresa.h" 
 #include "Unidad.h"
 #include "Utilidades.h"
+#include "Fecha_Hora.h"
 using namespace std;
-
 Utilidades utilidad;
 void pasarMayus(string& nombre) {
 	for (int x = 0;x < nombre.length();x++) {
@@ -108,11 +108,11 @@ void Gestor_Consultas::AutorizadosporDni() {
 	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
 
-	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
+	int total = archiauto.contarRegistros(utilidad._archivoAutorizados, autorizado);
 
 	for (int x = 0;x < total;x++) {
 
-		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+		autorizado = archiauto.ObtenerObjeto(utilidad._archivoAutorizados, autorizado, x);
 		if (autorizado.getDniPersona() == dni) {
 			autorizado.mostrar();
 
@@ -134,13 +134,13 @@ void Gestor_Consultas::AutorizadosporApellido() {
 	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
 
-	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
+	int total = archiauto.contarRegistros(utilidad._archivoAutorizados, autorizado);
 	//sigo tenienod nombre y apellido pero en el registro personas .. no como propiedad
 	//entonces lo busco por coincidencia dentro del for!
 
 	for (int x = 0;x < total;x++) {
 
-		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+		autorizado = archiauto.ObtenerObjeto(utilidad._archivoAutorizados, autorizado, x);
 		string autoapellido = retornarapellidoxdni(autorizado.getDniPersona());
 		pasarMayus(autoapellido);
 		pasarMayus(apellido);
@@ -173,11 +173,11 @@ void Gestor_Consultas::ResidentesporIdUnidad() {
 	Residente res;
 	ArchivosTemplate archires;
 
-	int total = archires.contarRegistros(_archivoResidentes, res);
+	int total = archires.contarRegistros(utilidad._archivoResidentes, res);
 
 	bool a = false;
 	for (int x = 0;x < total;x++) {
-		res = archires.ObtenerObjeto(_archivoResidentes, res, 0);
+		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, 0);
 		if (res.getUnidad() == id) {
 			a = true;
 			res.mostrar();
@@ -199,11 +199,11 @@ void Gestor_Consultas::ResidentesporApellido() {
 	Residente res;
 	ArchivosTemplate archires;
 
-	int total = archires.contarRegistros(_archivoResidentes, res);
+	int total = archires.contarRegistros(utilidad._archivoResidentes, res);
 
 	bool a = false;
 	for (int x = 0;x < total;x++) {
-		res = archires.ObtenerObjeto(_archivoResidentes, res, 0);
+		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, 0);
 		string aperes = res.getApellidos();
 
 		pasarMayus(aperes);
@@ -234,10 +234,10 @@ void Gestor_Consultas::ProveedoresporRazonSocial() {
 	Proveedor prov;
 
 	bool a = true;
-	int total = archiprov.contarRegistros(_archivoProveedores, prov);
+	int total = archiprov.contarRegistros(utilidad._archivoProveedores, prov);
 	for (int x = 0;x < total;x++) {
 
-		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		prov = archiprov.ObtenerObjeto(utilidad._archivoProveedores, prov, x);
 		if (strcmp(vec[opc].c_str(), prov.getEmpresa().c_str()) == 0) {
 			prov.mostrar();
 			a = false;
@@ -263,9 +263,9 @@ void Gestor_Consultas::ProveedoresporDni() {
 	ArchivosTemplate archiprov;
 	Proveedor prov;
 
-	int total = archiprov.contarRegistros(_archivoProveedores, prov);
+	int total = archiprov.contarRegistros(utilidad._archivoProveedores, prov);
 	for (int x = 0;x < total;x++) {
-		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		prov = archiprov.ObtenerObjeto(utilidad._archivoProveedores, prov, x);
 		if (prov.getDni() == dni) {
 			prov.mostrar();
 			return;
@@ -284,7 +284,7 @@ void Gestor_Consultas::EmpleadoporNroLegajo() {
 
 	ArchivosTemplate archiemp;
 	Empleado emp;
-	int totemp = archiemp.contarRegistros(_archivoEmpleados, emp);
+	int totemp = archiemp.contarRegistros(utilidad._archivoEmpleados, emp);
 	for (int x = 0;x < totemp;x++) {
 
 		if (emp.getLegajo() == nrolegajo) {
@@ -305,7 +305,7 @@ void Gestor_Consultas::EmpleadoporApellido() {
 	getline(cin, apellido);
 	ArchivosTemplate archiemp;
 	Empleado emp;
-	int totemp = archiemp.contarRegistros(_archivoEmpleados, emp);
+	int totemp = archiemp.contarRegistros(utilidad._archivoEmpleados, emp);
 
 	for (int x = 0;x < totemp;x++) {
 		string apeemp = emp.getApellidos();
@@ -336,7 +336,7 @@ void Gestor_Consultas::UnidadesporId() {
 	}
 
 	FILE* file;
-	file = fopen(_archivoUnidades.c_str(), "rb");
+	file = fopen(utilidad._archivoUnidades.c_str(), "rb");
 	if (file == NULL) {
 		cout << "No se abrio archivo Empleados" << endl;
 		return;
@@ -360,12 +360,14 @@ void Gestor_Consultas::UnidadesporId() {
 void Gestor_Consultas::Ejecutar() {
 
 	system("cls");
+	Fecha_Hora f;
 
 	bool a = true;
 	while (a) {
 		char opcion;
+		cout << "----------------------------------------------------------------------" << endl;
 
-		cout << " Seleccione su Consulta " << endl;
+		cout << " Seleccione su Consulta " << "                   " << f.toString()<< endl;
 		cout << endl;
 		cout << "1- Autorizados por Dni " << endl;
 		cout << "2- Autorizados por Apellido " << endl;
@@ -382,6 +384,7 @@ void Gestor_Consultas::Ejecutar() {
 		cout << "9- Unidades por Id" << endl;
 		cout << endl;
 		cout << "0- Volver" << endl;
+		cout << "----------------------------------------------------------------------" << endl;
 
 		cin >> opcion;
 

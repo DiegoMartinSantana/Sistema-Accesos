@@ -9,8 +9,10 @@
 #include "Proveedor.h"
 #include "Empleado.h"
 #include "Unidad.h"
-
+#include "Fecha_Hora.h"
+#include "Utilidades.h"
 using namespace std;
+Utilidades ut;
 bool compararcadenas(string a, string b) {
 
 	if (strcmp(a.c_str(), b.c_str()) == 0) {
@@ -82,13 +84,13 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 	ArchivosTemplate archiauto;
 
 
-	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
+	int total = archiauto.contarRegistros(ut._archivoAutorizados, autorizado);
 
 	vector <string> vec;
 
 	for (int x = 0;x < total;x++) {
 
-		vec[x] = retornarapellido(archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getDniPersona());
+		vec[x] = retornarapellido(archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x).getDniPersona());
 
 	}
 
@@ -103,7 +105,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 		for (int y = 0;y < total;y++) {
 
-			autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+			autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x);
 			string ape = retornarapellido(autorizado.getDniPersona());
 			if (compararcadenas(vec[x], ape.c_str())) {
 				autorizado.mostrar();
@@ -118,12 +120,12 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 	Autorizaciones autorizado(0, 0);
 
 	ArchivosTemplate archiauto;
-	int total = archiauto.contarRegistros(_archivoAutorizados, autorizado);
+	int total = archiauto.contarRegistros(ut._archivoAutorizados, autorizado);
 
 
 	int* vec = new int[total]; //guardo todo aca
 	for (int x = 0;x < total;x++) {
-		vec[x] = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x).getDniPersona();
+		vec[x] = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x).getDniPersona();
 	}
 
 	//ordenar vec .. por burbujeo
@@ -133,7 +135,7 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 
 	for (int x = 0;x < total;x++) { //recorro todo y a medida que encuentra muestra
 
-		autorizado = archiauto.ObtenerObjeto(_archivoAutorizados, autorizado, x);
+		autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x);
 		for (int y = 0;y < total;y++) {
 			if (autorizado.getDniPersona() == vec[x]) {
 				autorizado.mostrar();
@@ -151,12 +153,12 @@ void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
 
 	ArchivosTemplate archires;
 
-	int total = archires.contarRegistros(_archivoResidentes, res);
+	int total = archires.contarRegistros(ut._archivoResidentes, res);
 
 	int* vec = new int[total];
 	int con = 0;
 	for (int x = 0;x < total;x++) {
-		vec[x] = archires.ObtenerObjeto(_archivoResidentes, res, x).getUnidad();
+		vec[x] = archires.ObtenerObjeto(ut._archivoResidentes, res, x).getUnidad();
 	}
 
 	ordenarburbujeo(vec, total);
@@ -164,7 +166,7 @@ void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
 
 	for (int x = 0;x < total;x++) {
 
-		res = archires.ObtenerObjeto(_archivoResidentes, res, x);
+		res = archires.ObtenerObjeto(ut._archivoResidentes, res, x);
 
 		for (int y = 0;y < total;y++) {
 			if (res.getUnidad() == vec[x]) {
@@ -182,19 +184,19 @@ void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
 	Proveedor prov;
 	ArchivosTemplate archiprov;
 
-	int total = archiprov.contarRegistros(_archivoProveedores, prov);
+	int total = archiprov.contarRegistros(ut._archivoProveedores, prov);
 
 	vector <string> vec;
 
 	for (int x = 0;x < total;x++) {
-		vec[x] = archiprov.ObtenerObjeto(_archivoProveedores, prov, x).getEmpresa();
+		vec[x] = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, x).getEmpresa();
 
 	}
 
 	burbujeocaracter(vec, total);
 
 	for (int x = 0;x < total;x++) {
-		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		prov = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, x);
 
 		for (int y = 0;y < total;y++) {
 			if (prov.getEstado()) {
@@ -213,20 +215,20 @@ void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
 	ArchivosTemplate archiemp;
 
-	int total = archiemp.contarRegistros(_archivoEmpleados, emp);
+	int total = archiemp.contarRegistros(ut._archivoEmpleados, emp);
 
 
 	int* vec = new int[total];
 	for (int x = 0; x < total; x++)
 	{
-		emp = archiemp.ObtenerObjeto(_archivoEmpleados, emp, x);
+		emp = archiemp.ObtenerObjeto(ut._archivoEmpleados, emp, x);
 		vec[x] = emp.getDni();
 	}
 
 	ordenarburbujeo(vec, total);
 
 	for (int x = 0;x < total;x++) {
-		emp = archiemp.ObtenerObjeto(_archivoEmpleados, emp, x);
+		emp = archiemp.ObtenerObjeto(ut._archivoEmpleados, emp, x);
 
 		for (int y = 0;y < total;y++) {
 
@@ -244,18 +246,18 @@ void Gestor_Listados::UnidadesporId() {
 	Unidad uni;
 	ArchivosTemplate archiuni;
 
-	int total = archiuni.contarRegistros(_archivoUnidades, uni);
+	int total = archiuni.contarRegistros(ut._archivoUnidades, uni);
 
 	int* vec = new int[total];
 	for (int x = 0;x < total;x++) {
-		vec[x] = archiuni.ObtenerObjeto(_archivoUnidades, uni, x).getId();
+		vec[x] = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x).getId();
 
 	}
 
 	ordenarburbujeo(vec, total);
 
 	for (int x = 0;x < total;x++) {
-		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x);
 
 		for (int y = 0;y < total;y++) {
 
@@ -273,19 +275,19 @@ void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 	Unidad uni;
 	ArchivosTemplate archiuni;
 
-	int total = archiuni.contarRegistros(_archivoUnidades, uni);
+	int total = archiuni.contarRegistros(ut._archivoUnidades, uni);
 
 	vector <string> vec;
 
 	for (int x = 0;x < total;x++) {
-		vec[x] = archiuni.ObtenerObjeto(_archivoUnidades, uni, x).getApellidoFamilia();
+		vec[x] = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x).getApellidoFamilia();
 	}
 
 	burbujeocaracter(vec, total);
 
 	for (int x = 0;x < total;x++) {
 
-		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x);
 		for (int y = 0;y < total;y++) {
 			if (compararcadenas(vec[x], uni.getApellidoFamilia())) {
 				uni.mostrar();
@@ -301,10 +303,10 @@ void Gestor_Listados::MovimientosDiaHoy() {
 	Fecha fSistema;
 	Movimientos mov;
 	ArchivosTemplate archi;
-	int totalmov = archi.contarRegistros(_archivoMovimientos, mov);
+	int totalmov = archi.contarRegistros(ut._archivoMovimientos, mov);
 
 	for (int x = 0;x < totalmov;x++) {
-		mov = archi.ObtenerMovimiento(_archivoMovimientos, mov, x);
+		mov = archi.ObtenerMovimiento(ut._archivoMovimientos, mov, x);
 
 		if (mov.getFechayHoraMovimiento().getFecha().getAnio() == fSistema.getAnio()) {
 
@@ -324,24 +326,30 @@ void Gestor_Listados::MovimientosDiaHoy() {
 
 }
 void Gestor_Listados::Ejecutar() {
+	Fecha_Hora f;
 
 	char opcion;
 	bool a = true;
 	while (a) {
 		system("cls");
-		cout << "Opciones para Listar :" << endl;
-		cout << "1. Autorizados Ordenados por Apellido - ALFABETICAMENTE" << endl;
-		cout << "2. Autorizados Ordenados por DNI" << endl;
-		cout << "3. Residentes Ordenados por Id Unidad " << endl;
-		cout << "4. Proveedor Ordenados por Razon Social " << endl;
-		cout << "5. Empleados Ordenados por DNI " << endl;
-		cout << "6. Unidades Ordenadas por Id ( menor a mayor ) " << endl;
-		cout << "7. Unidades Ordenadas por Apellido de la Familia - ALFABETICAMENTE  " << endl;
-		cout << "8. Listado de Todos los Movimientos Registrados el Dia de hoy" << endl;
+		cout << "----------------------------------------------------------------------------------------" << endl;
 
-		cout << "0. Volver" << endl;
+		cout << "Opciones para Listar :                                               " << f.toString() <<  endl;
 		cout << endl;
-		cout << "Seleccione una opción:  ";
+		cout << "1. Autorizados Ordenados por Apellido - ALFABETICAMENTE." << endl;
+		cout << "2. Autorizados Ordenados por DNI." << endl;
+		cout << "3. Residentes Ordenados por Id Unidad. " << endl;
+		cout << "4. Proveedor Ordenados por Razon Social. " << endl;
+		cout << "5. Empleados Ordenados por DNI. " << endl;
+		cout << "6. Unidades Ordenadas por Id ( menor a mayor ). " << endl;
+		cout << "7. Unidades Ordenadas por Apellido de la Familia - ALFABETICAMENTE.  " << endl;
+		cout << "8. Listado de Todos los Movimientos Registrados el Dia de hoy." << endl;
+		cout << endl;
+		cout << "0. Volver." << endl;
+		cout << endl;
+		cout << "Seleccione una opción:  " << endl;
+		cout << "----------------------------------------------------------------------------------------" << endl;
+
 		cin >> opcion;
 
 		switch (opcion) {

@@ -39,7 +39,7 @@ std::string Fecha_Hora::toString() {
 
     fecha = _fecha.toString();
     horario = _horario.toString();
-    devolver = "LA FECHA ES " + fecha + "  Y LA HORA ES : " + horario;
+    devolver =   horario + " " + fecha ;
     return devolver;
 
 }

@@ -2,13 +2,20 @@
 #include <cstring>
 #include <string>
 #include "Control_General.h"
+#include "Fecha_Hora.h"
 using namespace std;
 
 int main() {
+
 	bool a = true;
+	Fecha_Hora f;
 	while (a) {
-		cout << "Bienvenido al Sistema . " << endl;
-		cout << "Elija su metodo de ingreso . " << endl;
+		cout << "------------------------------------------------------------------------------------" << endl;
+		cout << "Bienvenido al Sistema .                                      " <<f.toString() << endl;
+		cout << endl;
+		cout << "Elija su metodo de ingreso : " << endl;
+		cout << endl;
+		cout << endl;
 		cout << " 1 - Control Simple  2 - Control Administrador" << endl;
 		//posible pedido de nombre  y pasaje en consola..
 		//mostrar horario de la consola.
@@ -29,7 +36,7 @@ int main() {
 			
 			while (clave != "1111" ) {
 				con++;
-				cout << "Ingrese clave Numerica" << endl;
+				cout << "Ingrese clave Numerica: " << endl;
 
 				cin >> clave;
 				if (clave == "1111") {
@@ -39,15 +46,16 @@ int main() {
 					a = false;
 				}
 				if (con == 5) {
-					cout << "Demasiados intentos, Se cerrara el sistema " << endl;
+					cout << "Demasiados intentos, Se cerrara el sistema. " << endl;
 					a = false;
 				}
 			}
 			
 		}
 		else { 
-			cout << "Opcion Invalida " << endl;
+			cout << "Opcion Invalida. " << endl;
 		}
 	}
+
 	return 0;
 }

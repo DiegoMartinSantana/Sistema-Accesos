@@ -4,8 +4,10 @@
 #include "Gestor_Informes.h"
 #include "Movimientos.h"
 #include "Proveedor.h"
+#include "Utilidades.h"
+#include "Fecha_Hora.h"
 using namespace std;
-
+Utilidades utili;
 bool movimientoValido(Movimientos& mov) {
 	string s = "Dar Baja";
 
@@ -19,13 +21,25 @@ void Gestor_Informes::UnidadesMayor50movs() {
 	int mes, anio;
 	cout << "Ingrese Mes " << endl;
 	cin >> mes;
+	utili.validarInt(mes);
+	while (utili.contarDigitosInt(mes) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
+		cout << "No existen dias de mas de dos digitos.  " << endl;
+		cin >> mes;
+		utili.validarInt(mes);
+	}
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
+	utili.validarInt(anio);
+	while (utili.contarDigitosInt(anio) > 4) {
+		cout << "No existen anios de mas de cuatro digitos. " << endl;
+		cin >> anio;
+		utili.validarInt(anio);
+	}
 
 	//abrir archivo movimientos
 	ArchivosTemplate archimov;
 	Movimientos mov;
-	int total = archimov.contarRegistros(_archivoMovimientos, mov);
+	int total = archimov.contarRegistros(utili._archivoMovimientos, mov);
 
 	int* vec = new int [total] {}; // inicializo todo en cero
 
@@ -33,7 +47,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 
 	for (int x = 0;x < total;x++) {
 		// por cada unidad contar sus movimientos. osea extraigo el id de unidades. de cada mov y los acumulo, guardo todos
-		mov = archimov.ObtenerMovimiento(_archivoMovimientos, mov, x);
+		mov = archimov.ObtenerMovimiento(utili._archivoMovimientos, mov, x);
 		if (movimientoValido(mov)) {
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio && mov.getFechayHoraMovimiento().getFecha().getMes() == mes) {
 				vec[x]++;
@@ -45,7 +59,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 
 	ArchivosTemplate archiunidades;
 	Unidad uni;
-	int totaluni = archiunidades.contarRegistros(_archivoUnidades, uni);
+	int totaluni = archiunidades.contarRegistros(utili._archivoUnidades, uni);
 
 	for (int x = 0;x < total;x++) { //rcorro movimientos
 
@@ -71,8 +85,21 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 	int mes1, mes2, anio;
 	cout << "Ingrese Primer mes " << endl;
 	cin >> mes1; //menor
+	utili.validarInt(mes1);
+	while (utili.contarDigitosInt(mes1) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
+		cout << "No existen dias de mas de dos digitos.  " << endl;
+		cin >> mes1;
+		utili.validarInt(mes1);
+	}
+
 	cout << "Ingrese Segundo mes " << endl;
 	cin >> mes2; // mayor
+	utili.validarInt(mes2);
+	while (utili.contarDigitosInt(mes2) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
+		cout << "No existen dias de mas de dos digitos.  " << endl;
+		cin >> mes2;
+		utili.validarInt(mes2);
+	}
 
 	//intercambio para que uno qude como mayor y otro menor si hay mal ingreso
 	if (mes1 > mes2) {
@@ -83,21 +110,27 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
+	utili.validarInt(anio);
+	while (utili.contarDigitosInt(anio) > 4) {
+		cout << "No existen anios de mas de cuatro digitos. " << endl;
+		cin >> anio;
+		utili.validarInt(anio);
+	}
 
 	ArchivosTemplate archimov;
 	ArchivosTemplate archiprov;
 	Movimientos mov;
 	Proveedor prov;
 
-	int totalmovs = archimov.contarRegistros(_archivoMovimientos, mov);
-	int totalprovs = archiprov.contarRegistros(_archivoProveedores, prov);
+	int totalmovs = archimov.contarRegistros(utili._archivoMovimientos, mov);
+	int totalprovs = archiprov.contarRegistros(utili._archivoProveedores, prov);
 
 	for (int x = 0;x < totalprovs;x++) {
 		// en mi archivo movimientos tengo un dni en la unidad 0 correspondiente a empleados y proveedores!
-		prov = archiprov.ObtenerObjeto(_archivoProveedores, prov, x);
+		prov = archiprov.ObtenerObjeto(utili._archivoProveedores, prov, x);
 		for (int y = 0;y < totalmovs;y++) {
 
-			mov = archimov.ObtenerMovimiento(_archivoMovimientos, mov, y);
+			mov = archimov.ObtenerMovimiento(utili._archivoMovimientos, mov, y);
 			if (movimientoValido(mov)) {
 
 				if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
@@ -124,8 +157,8 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 
 	Movimientos movs;
 	Unidad uni;
-	int totalmovs = archimovs.contarRegistros(_archivoMovimientos, movs);
-	int totaluni = archiuni.contarRegistros(_archivoUnidades, uni);
+	int totalmovs = archimovs.contarRegistros(utili._archivoMovimientos, movs);
+	int totaluni = archiuni.contarRegistros(utili._archivoUnidades, uni);
 
 	bool a = true;
 	int cantidad;
@@ -134,11 +167,11 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 	int posmayor = 0;
 	for (int x = 0;x < totaluni;x++) {
 
-		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		uni = archiuni.ObtenerObjeto(utili._archivoUnidades, uni, x);
 		cantidad = 0;
 		for (int y = 0;y < totalmovs;y++) {
 
-			movs = archimovs.ObtenerMovimiento(_archivoMovimientos, movs, y);
+			movs = archimovs.ObtenerMovimiento(utili._archivoMovimientos, movs, y);
 
 			if (movimientoValido(movs)) {
 
@@ -167,7 +200,7 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 	}
 
 	cout << " La unidad con mas Movimientos historicamente es " << endl;
-	archiuni.ObtenerObjeto(_archivoUnidades, uni, posmayor).mostrar(); // le paso la posicion mayor y muestro el object
+	archiuni.ObtenerObjeto(utili._archivoUnidades, uni, posmayor).mostrar(); // le paso la posicion mayor y muestro el object
 
 }
 
@@ -177,8 +210,8 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 
 	Movimientos movs;
 	Unidad uni;
-	int totalmovs = archimovs.contarRegistros(_archivoMovimientos, movs);
-	int totaluni = archiuni.contarRegistros(_archivoUnidades, uni);
+	int totalmovs = archimovs.contarRegistros(utili._archivoMovimientos, movs);
+	int totaluni = archiuni.contarRegistros(utili._archivoUnidades, uni);
 
 	bool a = true;
 	int cantidad;
@@ -187,11 +220,11 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 	int posmenor = 0;
 	for (int x = 0;x < totaluni;x++) {
 
-		uni = archiuni.ObtenerObjeto(_archivoUnidades, uni, x);
+		uni = archiuni.ObtenerObjeto(utili._archivoUnidades, uni, x);
 		cantidad = 0;
 		for (int y = 0;y < totalmovs;y++) {
 
-			movs = archimovs.ObtenerMovimiento(_archivoMovimientos, movs, y);
+			movs = archimovs.ObtenerMovimiento(utili._archivoMovimientos, movs, y);
 
 			if (movimientoValido(movs)) {
 
@@ -219,7 +252,7 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 	}
 
 	cout << " La unidad con mas Movimientos historicamente es " << endl;
-	archiuni.ObtenerObjeto(_archivoUnidades, uni, posmenor).mostrar();
+	archiuni.ObtenerObjeto(utili._archivoUnidades, uni, posmenor).mostrar();
 
 }
 
@@ -229,8 +262,21 @@ void Gestor_Informes::MovimientosMensuales() {
 	int mes1, mes2, anio;
 	cout << "Ingrese Primer mes " << endl;
 	cin >> mes1; //menor
+	utili.validarInt(mes1);
+	while (utili.contarDigitosInt(mes1) > 2) { 
+		cout << "No existen dias de mas de dos digitos.  " << endl;
+		cin >> mes1;
+		utili.validarInt(mes1);
+	}
 	cout << "Ingrese Segundo mes " << endl;
 	cin >> mes2; // mayor
+	utili.validarInt(mes2);
+	while (utili.contarDigitosInt(mes2) > 2) { 
+		cout << "No existen dias de mas de dos digitos.  " << endl;
+		cin >> mes2;
+		utili.validarInt(mes2);
+	}
+
 	if (mes1 > mes2) {
 		int aux = mes1;
 		mes1 = mes2;
@@ -239,16 +285,21 @@ void Gestor_Informes::MovimientosMensuales() {
 
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
-
+	utili.validarInt(anio);
+	while (utili.contarDigitosInt(anio) > 4) {
+		cout << "No existen anios de mas de cuatro digitos. " << endl;
+		cin >> anio;
+		utili.validarInt(anio);
+	}
 	//ENTRADAS (   1- Entrada )
 	Movimientos mov;
 	ArchivosTemplate archimovs;
-	int total = archimovs.contarRegistros(_archivoMovimientos, mov);
+	int total = archimovs.contarRegistros(utili._archivoMovimientos, mov);
 
 	for (int x = 0;x < total;x++) {
 		cout << "Entradas  : " << endl;
 		cout << endl;
-		mov = archimovs.ObtenerMovimiento(_archivoMovimientos, mov, x);
+		mov = archimovs.ObtenerMovimiento(utili._archivoMovimientos, mov, x);
 		if (movimientoValido(mov)) {
 
 			if (mov.getSentido() == 1) { // si es una entrada 
@@ -266,7 +317,7 @@ void Gestor_Informes::MovimientosMensuales() {
 	for (int x = 0;x < total;x++) {
 		cout << "Salidas  : " << endl;
 		cout << endl;
-		mov = archimovs.ObtenerMovimiento(_archivoMovimientos, mov, x);
+		mov = archimovs.ObtenerMovimiento(utili._archivoMovimientos, mov, x);
 		if (movimientoValido(mov)) {
 
 			if (mov.getSentido() == false
@@ -287,18 +338,24 @@ void Gestor_Informes::MovimientosMensuales() {
 void Gestor_Informes::Ejecutar() {
 	char opcion;
 	bool a = true;
+	Fecha_Hora f;
 
 	while (a) {
+		system("cls");
 
-		cout << "Ingrese Informe a ejecutar " << endl;
+		cout << "-------------------------------------------------------------------------------------" << endl;
 
+		cout << "Ingrese Informe a ejecutar :                                    " <<  f.toString()<<  endl;
+		cout << endl;
 		cout << "1. Unidades con mas de 50 Movimientos Registrados (Mes y Anio)." << endl;
 		cout << "2. Informe de Proveedores Ingresados entre dos fechas a eleccion." << endl;
 		cout << "3. Unidad con Mayor Cantidad de Movimientos, Historico." << endl;
 		cout << "4. Unidad con Menor Cantidad de Movimientos, Historico." << endl;
 		cout << "5. Movimientos Mensuales entre dos fechas a eleccion." << endl;
 		cout << endl;
-		cout << "0. Volver " << endl;
+		cout << "0. Volver. " << endl;
+		cout << "-------------------------------------------------------------------------------------" << endl;
+
 		cin >> opcion;
 
 		switch (opcion) {
@@ -325,9 +382,5 @@ void Gestor_Informes::Ejecutar() {
 
 			break;
 		}
-
-
-
 	}
-
 }

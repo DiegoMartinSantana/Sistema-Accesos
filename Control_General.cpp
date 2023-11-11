@@ -5,6 +5,8 @@
 #include "Gestor_Listados.h"
 #include "Gestor_Informes.h"
 #include "Gestor_Configuraciones.h"
+#include "Gestor_Ayuda.h"
+#include "Fecha_Hora.h"
 using namespace std;
 
 Control_General::Control_General(int tipo) {
@@ -14,33 +16,38 @@ Control_General::Control_General(int tipo) {
 void Control_General::Acceder() {
 	bool a = true;
 	char opcion;
-
+	Fecha_Hora f;
 	while (a) {
+
 		system("cls");
+		cout << "------------------------------------------------------------" << endl;
+
 		if (_tipo ==2) {
+			cout << "Bienvenido Admin " <<   "             "  << f.toString()  << endl;
 			cout << endl;
-			cout << "Bienvenido Admin " << endl;
-			cout << endl;
-		}
+		}  
 		else {
-			cout << endl;
-			cout << "Bienvenido " << endl;
+			cout << "Bienvenido "<<   "                   " << f.toString() << endl;
 			cout << endl;
 		}
 
-		cout << "¿Que desea hacer? " << endl;
+		cout << "Que desea hacer? " << endl;
 		cout << endl;
-		cout << "1 - Dar de Alta " << endl;
-		cout << "2 - Consultas " << endl;
-		cout << "3 - Informes " << endl;
-		cout << "4 - Listados " << endl;
+		cout << "1 - Dar de Alta. " << endl;
+		cout << "2 - Consultas. " << endl;
+		cout << "3 - Informes. " << endl;
+		cout << "4 - Listados. " << endl;
 
+		
+		cout << "5 - Ayuda. " << endl;
 		if (_tipo == 2) {
 
 			//muestro configuraciones
-			cout << "5 - Configuraciones " << endl;
+			cout << "6 - Configuraciones. " << endl;
 		}
-		cout << "0 - Salir " << endl;
+		cout << endl;
+		cout << "0 - Salir. " << endl;
+		cout << "------------------------------------------------------------" << endl;
 
 		cin >> opcion;
 
@@ -65,9 +72,14 @@ void Control_General::Acceder() {
 			list.Ejecutar();
 		}
 			  break;
+		
 		case '5': {
+			Gestor_Ayuda ayuda;
+			ayuda.Ejecutar();
+		}
+		case '6': {
 			if (_tipo == 2) {
-				//llamado configuraciones 
+				//llamado configuraciones si el tipo es el 2
 				Gestor_Configuraciones config;
 				config.Ejecutar();
 			}

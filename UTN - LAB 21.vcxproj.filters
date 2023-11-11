@@ -105,9 +105,6 @@
     <ClCompile Include="Autorizaciones.cpp">
       <Filter>Source Files\Clases\Manejo</Filter>
     </ClCompile>
-    <ClCompile Include="Vehiculo.cpp">
-      <Filter>Source Files\Clases\Manejo</Filter>
-    </ClCompile>
     <ClCompile Include="Fecha_Hora.cpp">
       <Filter>Source Files\Utilidades</Filter>
     </ClCompile>
@@ -140,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="Utilidades.cpp">
       <Filter>Source Files\Utilidades</Filter>
+    </ClCompile>
+    <ClCompile Include="Gestor_Ayuda.cpp">
+      <Filter>Source Files\Sistema\Gestion %283%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +182,6 @@
     <ClInclude Include="Unidad.h">
       <Filter>Header Files\Clases\Manejo</Filter>
     </ClInclude>
-    <ClInclude Include="Vehiculo.h">
-      <Filter>Header Files\Clases\Manejo</Filter>
-    </ClInclude>
     <ClInclude Include="Fecha_Hora.h">
       <Filter>Header Files\Utilidad</Filter>
     </ClInclude>
@@ -214,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="Utilidades.h">
       <Filter>Header Files\Utilidad</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestor_Ayuda.h">
+      <Filter>Header Files\Sistema\Gestion %283%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

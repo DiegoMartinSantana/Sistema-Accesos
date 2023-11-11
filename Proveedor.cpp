@@ -28,7 +28,7 @@ string Proveedor::getTipo() const {
 		break;
 	}
 
-
+	return retornar;
 }
 
 string Proveedor::getArt() {

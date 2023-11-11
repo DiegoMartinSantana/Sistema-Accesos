@@ -10,8 +10,7 @@
 #include "Utilidades.h"
 using namespace std;
 
-//TODO REGISTRA UN MOVIMIENTO TODO ES UN MOVIMIENTO ALTAS BAJAS TODO
-
+Utilidades u;
 ArchivosTemplate archi;
 bool validarInt(int a) {
 
@@ -19,29 +18,29 @@ bool validarInt(int a) {
 	return false;
 }
 int mes, anio;
-void insertarPersona(int id, int dni, Fecha f, bool estado, string apellido, string nombre) {
+bool insertarPersona(int id, int dni, Fecha f, bool estado, string apellido, string nombre) {
 
 	Persona p(id, dni, f, estado, apellido, nombre);
 	string nombrearchi = "Personas.dat";
-	archi.cargarRegistro(nombrearchi, p);
-
+	bool a = archi.cargarRegistro(nombrearchi, p);
+	return a;
 }
 void pedirhasta(int& dia, int& mes) {
 	Utilidades util;
 	cout << "Ingrese hasta que mes esta autorizado (1-12) " << endl;
-		cin >> mes; 
-		util.validarInt(mes);
-		while ( mes < 1 || mes > 12) { 
+	cin >> mes;
+	util.validarInt(mes);
+	while (mes < 1 || mes > 12) {
 
-			cout << "Mes invalido , ingrese nuevamente" << endl;
-			cin >> mes; 
-			util.validarInt(mes);
-		}
-	
+		cout << "Mes invalido , ingrese nuevamente" << endl;
+		cin >> mes;
+		util.validarInt(mes);
+	}
+
 	cout << "Ingrese hasta que Anio esta autorizado (A partir de 2023)  " << endl;
 	cin >> anio;
 	util.validarInt(anio);
-	while(  anio <= 2022 || anio > 2300) {
+	while (anio <= 2022 || anio > 2300) {
 		cout << "Anio invalido , ingrese nuevamente" << endl;
 		cin >> anio;
 		util.validarInt(anio);
@@ -54,8 +53,14 @@ void Gestion_General::altaEntrada_Salida() {
 	system("cls");
 	Movimientos movi;
 	movi.cargar();
-	archi.cargarRegistrodeMovimiento(movi);
+	bool a = archi.cargarRegistrodeMovimiento(movi);
+	if (a) {
+		cout << " Se ha registrado el Movimiento " << endl;
+	}
+	else {
+		cout << " Ha ocurrido un fallo al  registrar el Movimiento " << endl;
 
+	}
 }
 void Gestion_General::altaVisita() {
 	system("cls");
@@ -64,17 +69,29 @@ void Gestion_General::altaVisita() {
 	visi.cargarvisita();
 
 
-	bool carga = archi.cargarRegistro(_archivoVisitas, visi); // valido en el template que exista
+	bool carga = archi.cargarRegistro(u._archivoVisitas, visi); // valido en el template que exista
 	if (carga) {
 		//genera carga persona
-		insertarPersona(visi.getId(), visi.getDni(), visi.getObjectNacimiento(), visi.getEstado(), visi.getApellidos(), visi.getNombres());
+		bool a = insertarPersona(visi.getId(), visi.getDni(), visi.getObjectNacimiento(), visi.getEstado(), visi.getApellidos(), visi.getNombres());
 		Movimientos movi(visi.getUnidad(), visi.getDni(), 1, "Entrada Visitante al Recinto", 2); // telefonica
-		archi.cargarRegistrodeMovimiento(movi);
+		bool b = archi.cargarRegistrodeMovimiento(movi);
 		pedirhasta(mes, anio);
 
 		//GENERA AUTORIZACION
 		Autorizaciones autorizado(visi.getDni(), visi.getUnidad(), mes, anio); // carga la autorizacion correspondiente
-		archi.cargarRegistrodeAutorizacion(autorizado);
+		bool c = archi.cargarRegistrodeAutorizacion(autorizado);
+		if (a && b && c) {
+			cout << "Se ha registrado la visita correctamente " << endl;
+		}
+		if (!a) {
+			cout << "Fallo al Registrar Persona " << endl;
+		}
+		if (!b) {
+			cout << "Fallo al registrar Movimiento  " << endl;
+		}
+		if (!c) {
+			cout << "Fallo al registrar Autorizacion  de la visita   " << endl;
+		}
 	}
 	else {
 		char op;
@@ -90,16 +107,28 @@ void Gestion_General::altaEmpleado() {
 	Empleado emp;
 	emp.CargarEmpleado();
 
-	bool carga = archi.cargarRegistro(_archivoEmpleados, emp);
+	bool carga = archi.cargarRegistro(u._archivoEmpleados, emp);
 	if (carga) {
-		insertarPersona(emp.getId(), emp.getDni(), emp.getObjectNacimiento(), emp.getEstado(), emp.getApellidos(), emp.getNombres());
+		bool a =insertarPersona(emp.getId(), emp.getDni(), emp.getObjectNacimiento(), emp.getEstado(), emp.getApellidos(), emp.getNombres());
 
-		Movimientos movi(0, emp.getDni(), 1, "Se ha registrado un nuevo Empleado", 1); //permanente
-		archi.cargarRegistrodeMovimiento(movi);
+		 Movimientos movi(0, emp.getDni(), 1, "Se ha registrado un nuevo Empleado", 1); //permanente
+		bool b=archi.cargarRegistrodeMovimiento(movi);
 		//GENERA AUTORIZACION
 		pedirhasta(mes, anio);
 		Autorizaciones autorizado(emp.getDni(), 0, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
-		archi.cargarRegistrodeAutorizacion(autorizado);
+		bool c = archi.cargarRegistrodeAutorizacion(autorizado);
+		if (a && b && c) {
+			cout << "Se ha registrado correctamente el Empleado " << endl;
+		}
+		if (!a) {
+			cout << "Fallo al Registrar Persona " << endl;
+		}
+		if (!b) {
+			cout << "Fallo al registrar Movimiento  " << endl;
+		}
+		if (!c) {
+			cout << "Fallo al registrar Autorizacion  del Empleado  " << endl;
+		}
 	}
 	else {
 		int op;
@@ -115,25 +144,35 @@ void Gestion_General::altaResidente_inquilino() {
 	Residente resi;
 	resi.cargarResidente();
 
-	bool carga = archi.cargarRegistro(_archivoResidentes, resi);
+	bool carga = archi.cargarRegistro(u._archivoResidentes, resi);
 	if (carga) {
-		insertarPersona(resi.getId(), resi.getDni(), resi.getObjectNacimiento(), resi.getEstado(), resi.getApellidos(), resi.getNombres());
-
+		bool a= insertarPersona(resi.getId(), resi.getDni(), resi.getObjectNacimiento(), resi.getEstado(), resi.getApellidos(), resi.getNombres());
+		bool b, c;
 		if (resi.getPropietario_Inquilino()) {
-			Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Residente ", 1); //permanente
-			archi.cargarRegistrodeMovimiento(movi);
+			 Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Residente ", 1); //permanente
+			b= archi.cargarRegistrodeMovimiento(movi);
 
 			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), true); // no paso mes y anio x ser residente.
-			archi.cargarRegistrodeAutorizacion(autorizado);
+			c= archi.cargarRegistrodeAutorizacion(autorizado);
 		}
+
 		else {
 			Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Inquilino ", 1); //permanente con hasta
 			pedirhasta(mes, anio);
-
-			archi.cargarRegistrodeMovimiento(movi);
+			b=archi.cargarRegistrodeMovimiento(movi);
 			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), mes, anio);
-			archi.cargarRegistrodeAutorizacion(autorizado);
+			c = archi.cargarRegistrodeAutorizacion(autorizado);
 		}
+		if (!a) {
+			cout << "Fallo al Registrar Persona " << endl;
+		}
+		if (!b) {
+			cout << "Fallo al registrar Movimiento  " << endl;
+		}
+		if (!c) {
+			cout << "Fallo al registrar Autorizacion    " << endl;
+		}
+
 	}
 	else {
 		char op;
@@ -149,15 +188,25 @@ void Gestion_General::altaProveedor() {
 
 	Proveedor prov;
 	prov.cargarProveedor();
-	bool carga = archi.cargarRegistro(_archivoProveedores, prov);
+	bool carga = archi.cargarRegistro(u._archivoProveedores, prov);
 	if (carga) {
-		insertarPersona(prov.getId(), prov.getDni(), prov.getObjectNacimiento(), prov.getEstado(), prov.getApellidos(), prov.getNombres());
-		Movimientos movi(0, prov.getDni(), 1, "Se ha registrado un nuevo Proveedor ", 1); //permanente
-		archi.cargarRegistrodeMovimiento(movi);
+		bool a=insertarPersona(prov.getId(), prov.getDni(), prov.getObjectNacimiento(), prov.getEstado(), prov.getApellidos(), prov.getNombres());
+		 Movimientos movi(0, prov.getDni(), 1, "Se ha registrado un nuevo Proveedor ", 1); //permanente
+		bool b =archi.cargarRegistrodeMovimiento(movi);
 
 		//GENERA AUTORIZACION
 		Autorizaciones autorizado(prov.getDni(), 0, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
-		archi.cargarRegistrodeAutorizacion(autorizado);
+		bool c =archi.cargarRegistrodeAutorizacion(autorizado);
+
+		if (!a) {
+			cout << "Fallo al Registrar Persona " << endl;
+		}
+		if (!b) {
+			cout << "Fallo al registrar Movimiento  " << endl;
+		}
+		if (!c) {
+			cout << "Fallo al registrar Autorizacion del Proveedor  " << endl;
+		}
 	}
 	else {
 		char op;
@@ -185,19 +234,25 @@ void Gestion_General::bajaResidente() {
 	}
 	Residente r;
 
-	r = archi.obtenerObjetoxDni(_archivoResidentes, r, dni); // esto me dvuelve estado false si existe ese dni
+	r = archi.obtenerObjetoxDni(u._archivoResidentes, r, dni); // esto me dvuelve estado false si existe ese dni
 	if (r.getEstado()) {
-		bool baja = archi.Bajalogica(_archivoResidentes, r, r.getId());
+		bool baja = archi.Bajalogica(u._archivoResidentes, r, r.getId());
 
 		Autorizaciones a;
-		bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+		bool baja2 = archi.BajalogicaxDni(u._archivoAutorizados, a, dni);
 
 
 		if (baja && baja2) {
 			Movimientos mov(0, r.getDni(), 2, " Dada de baja de Residente", 2);
-			archi.cargarRegistrodeMovimiento(mov);
-			cout << "Se ha dado de baja el Residente con Dni " << dni << endl;
-		}
+			
+			bool a = archi.cargarRegistrodeMovimiento(mov);
+			if (a) {
+				cout << "Se ha dado de baja el Residente con Dni " << dni << endl;
+			}
+			else {
+				cout << "Error al generar el Movimiento de la Baja " <<  endl;
+			}
+			}
 		else {
 			cout << "No se ha hecho la baja" << endl;
 		}
@@ -226,19 +281,24 @@ void Gestion_General::bajaProveedor() {
 	}
 	Proveedor p;
 
-	p = archi.obtenerObjetoxDni(_archivoProveedores, p, dni);
+	p = archi.obtenerObjetoxDni(u._archivoProveedores, p, dni);
 	if (p.getEstado()) {
-		bool baja = archi.Bajalogica(_archivoProveedores, p, p.getId());
+		bool baja = archi.Bajalogica(u._archivoProveedores, p, p.getId());
 
 		Autorizaciones a;
-		bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+		bool baja2 = archi.BajalogicaxDni(u._archivoAutorizados, a, dni);
 
 
 		if (baja && baja2) {
 			Movimientos mov(0, p.getDni(), 2, " Dada de baja de Proveedor", 2);
-			archi.cargarRegistrodeMovimiento(mov);
+		bool a = archi.cargarRegistrodeMovimiento(mov);
+		if (a) {
 			cout << "Se ha dado de baja el Proveedor con Dni " << dni << endl;
 		}
+		else {
+			cout << "Error al generar el Movimiento de la Baja " << endl;
+		}
+			}
 		else {
 			cout << "No se ha hecho la baja" << endl;
 		}
@@ -266,18 +326,23 @@ void Gestion_General::bajaEmpleado() {
 
 	Empleado e;
 
-	e = archi.obtenerObjetoxDni(_archivoEmpleados, e, dni);
+	e = archi.obtenerObjetoxDni(u._archivoEmpleados, e, dni);
 	if (e.getEstado()) {
-		bool baja = archi.Bajalogica(_archivoEmpleados, e, e.getId());
+		bool baja = archi.Bajalogica(u._archivoEmpleados, e, e.getId());
 
 		Autorizaciones a;
-		bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+		bool baja2 = archi.BajalogicaxDni(u._archivoAutorizados, a, dni);
 
 		if (baja && baja2) {
 			Movimientos mov(0, e.getDni(), 2, " Dada de baja de Empleado", 2);
-			archi.cargarRegistrodeMovimiento(mov);
+		bool a=	archi.cargarRegistrodeMovimiento(mov);
+		if (a) {
 			cout << "Se ha dado de baja el empleado con Dni " << dni << endl;
 		}
+		else {
+			cout << "Error al generar el Movimiento de la Baja " << endl;
+		}
+			}
 		else {
 			cout << "No se ha hecho la baja" << endl;
 		}
@@ -307,20 +372,25 @@ void Gestion_General::bajaVisitas() {
 	Visita v;
 
 	//baja en archivo visitas
-	v = archi.obtenerObjetoxDni(_archivoVisitas, v, dni);
+	v = archi.obtenerObjetoxDni(u._archivoVisitas, v, dni);
 	if (v.getEstado()) {
-		bool baja = archi.Bajalogica(_archivoVisitas, v, v.getId());
+		bool baja = archi.Bajalogica(u._archivoVisitas, v, v.getId());
 		//baja de su autorizacion
 		Autorizaciones a;
-		bool baja2 = archi.BajalogicaxDni(_archivoAutorizados, a, dni);
+		bool baja2 = archi.BajalogicaxDni(u._archivoAutorizados, a, dni);
 
 
 		if (baja && baja2) {
 			//genera movimiento de tipo salida, si se cumple la baja
 			Movimientos mov(v.getUnidad(), v.getDni(), 2, " Dada de baja de Visita", 2);
-			archi.cargarRegistrodeMovimiento(mov);
-			cout << "Se ha dado de baja la Visita con Dni " << dni << endl;
+			bool a = archi.cargarRegistrodeMovimiento(mov);
+			if (a) {
+				cout << "Se ha dado de baja la Visita con Dni " << dni << endl;
+			}
+			else {
+				cout << " Fallo al registrar el mobimiento de la baja " << dni << endl;
 
+			}
 		}
 		else {
 			cout << "No se ha hecho la baja" << endl;
@@ -333,4 +403,4 @@ void Gestion_General::bajaVisitas() {
 		cin >> op;
 		return;
 	}
-	}
+}

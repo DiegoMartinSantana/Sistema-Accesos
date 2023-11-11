@@ -154,7 +154,7 @@ void Movimientos::cargar()
 		setSentido(false);
 	}
 	setObservaciones(Observaciones);
-	if (sentido == true) {
+	if (sentido == 1) {
 		setTipoAutorizacion(tipo);
 	}
 	else {
