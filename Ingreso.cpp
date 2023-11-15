@@ -1,12 +1,14 @@
 #include <iostream>
 #include <cstring>
 #include <string>
-#include "Control_General.h"
-#include "Fecha_Hora.h"
 using namespace std;
 
-int main() {
+#include "Control_General.h"
+#include "Fecha_Hora.h"
 
+
+int main() {
+	
 	bool a = true;
 	Fecha_Hora f;
 	while (a) {
@@ -17,10 +19,7 @@ int main() {
 		cout << endl;
 		cout << endl;
 		cout << " 1 - Control Simple  2 - Control Administrador" << endl;
-		//posible pedido de nombre  y pasaje en consola..
-		//mostrar horario de la consola.
-		// opcion cerrar todo.
-
+		
 		char opingreso;
 		cin >> opingreso;
 		
@@ -48,6 +47,7 @@ int main() {
 				if (con == 5) {
 					cout << "Demasiados intentos, Se cerrara el sistema. " << endl;
 					a = false;
+					return 0 ;
 				}
 			}
 			

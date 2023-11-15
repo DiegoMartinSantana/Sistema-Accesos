@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include "Persona.h"
-#include "Unidad.h"
 #include "Fecha_Hora.h"
 class Movimientos
 {
@@ -15,13 +14,13 @@ class Movimientos
 		Movimientos();
 		
 		int  getDni();
-		Unidad getUnidad();
+		int getUnidad();
 		Fecha_Hora getFechayHoraMovimiento();
 		bool getSentido();
 		std::string getObservaciones();
 		std::string getTipoAutorizacion();
 		void setDni(int dni);
-		void setUnidad(Unidad unidad);
+		void setUnidad(int unidad);
 		void setFechayHoraMovimiento(Fecha_Hora fechahora);
 		void setSentido(bool sentido); //true entra , false sale.
 		void setObservaciones(std::string observaciones);
@@ -29,7 +28,7 @@ class Movimientos
 		void cargar();
 		void mostrar();
 	private:
-		Unidad _unidad;
+		int  _idunidad;
 		int _dnipersona;
 		Fecha_Hora _fechayhora;
 		bool _sentido;

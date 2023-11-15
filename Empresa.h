@@ -3,6 +3,7 @@
 class Empresa
 {
 public:
+	Empresa();
 	int getCuit() const;
 	std::string  getRazonSocial();
 	std::string getDescripcion();

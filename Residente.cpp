@@ -42,11 +42,11 @@ void Residente::cargarResidente() {
 	int dia, mes, anio;
 	int propie;
 
-	cout << "Ingrese Unidad correspondiente 1-200 : " << endl;
+	cout << "Ingrese Unidad correspondiente a asignar 1-200 : " << endl;
 	cin >> unidad;
 	//unidad 0 solo emp y prov
 	util.validarInt(unidad);
-	while (unidad < 1 && unidad >200) {
+	while (unidad < 1 || unidad >200) {
 
 		cout << "Unidad invalida . Recuerde que la Unidad 0 corresponde a Empleados y Proveedores." << endl;
 		cin >> unidad;
@@ -59,25 +59,17 @@ void Residente::cargarResidente() {
 	cout << "Ingrese dia de Ingreso : " << endl;
 	cin >> dia;
 	util.validarInt(dia);
-	while (util.contarDigitosInt(dia) > 2) {
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> dia;
-		util.validarInt(dia);
-	}
+	util.validarDia(dia);
 
 	cout << "Ingrese mes de Ingreso : " << endl;
 	cin >> mes;
 	util.validarInt(mes);
-	while (util.contarDigitosInt(mes) > 2) {
-		cout << "No existen meses de mas de dos digitos. " << endl;
-		cin >> mes;
-		util.validarInt(mes);
-	}
-	cout << "Ingrese anio de Ingreso  : " << endl;
+	util.validarMes(mes);
+	cout << "Ingrese anio de Ingreso  2021- 2030 : " << endl;
 	cin >> anio;
 	util.validarInt(anio);
-	while (util.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
+	while ( anio < 2021 || anio > 2030) {
+		cout << "Anio Invalido " << endl;
 		cin >> anio;
 		util.validarInt(anio);
 	}
@@ -124,11 +116,11 @@ void Residente::mostrar() {
 	mostrarPersona();
 
 	if (getPropietario_Inquilino()) {
-		cout << "Unidad del Residente : " << to_string(getUnidad()) << endl;
+		cout << "Unidad del Residente : " << getUnidad()<< endl;
 		cout << " Fecha de Ingreso del Residente : " << getIngreso() << endl;
 	}
 	else {
-		cout << "Unidad del Inquilino : " << to_string(getUnidad()) << endl;
+		cout << "Unidad del Inquilino : " << getUnidad() << endl;
 		cout << "Fecha de Ingreso del Inquilino : " << getIngreso() << endl;
 	}
 

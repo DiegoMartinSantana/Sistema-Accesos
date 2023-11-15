@@ -6,13 +6,13 @@
 using namespace std;
 
 Movimientos::Movimientos(int idunidad, int dni, int sentido, std::string observacion, int tipoautorizacion) {
-	_unidad.setId(idunidad);
+	setUnidad(idunidad);
 	setDni(dni);
 	_fechayhora = Fecha_Hora(); // la del sistema
 	setSentido(sentido);
 	setObservaciones(observacion);
 	setTipoAutorizacion(tipoautorizacion);
-
+	
 }
 Movimientos::Movimientos() {
 
@@ -24,9 +24,9 @@ int Movimientos::getDni()
 	return _dnipersona;
 }
 
-Unidad Movimientos::getUnidad()
+int  Movimientos::getUnidad()
 {
-	return _unidad;
+	return _idunidad;
 }
 
 Fecha_Hora Movimientos::getFechayHoraMovimiento()
@@ -63,9 +63,9 @@ void Movimientos::setDni(int dni)
 	_dnipersona = dni;
 }
 
-void Movimientos::setUnidad(Unidad unidad)
+void Movimientos::setUnidad(int unidad)
 {
-	_unidad = unidad;
+	_idunidad = unidad;
 }
 
 void Movimientos::setFechayHoraMovimiento(Fecha_Hora fechahora)
@@ -105,12 +105,13 @@ void Movimientos::cargar()
 
 	int sentido;
 	string Observaciones;
-	int tipo, dni;
+	int tipo, dni, id;
 
 	cout << "Ingrese Dni a registrar : " << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	_unidad.cargar();
+	cout << "Ingrese el Id de unidad a la que va o de la que sale " << endl;
+	cin >> id;
 
 	cout << "Ingrese el sentido 1- Entrada 2-Salida" << endl;
 
@@ -118,7 +119,7 @@ void Movimientos::cargar()
 
 	util.validarInt(sentido);
 
-	while (sentido != 1 && sentido != 2) {
+	while (sentido <1 || sentido > 2) {
 		cout << "Sentido no Valido.  " << endl;
 		cout << "Ingrese el sentido 1- Entrada 2-Salida" << endl;
 
@@ -134,7 +135,7 @@ void Movimientos::cargar()
 		cin >> tipo;
 		util.validarInt(tipo);
 
-		while (tipo != 1 && tipo != 2) {
+		while (tipo <1 || tipo >2) {
 			cout << "Tipo no valido - Ingrese el tipo de autorizacion nuevamente. " << endl;
 			cout << "1- Permanente 2- Telefonica " << endl;
 			cin >> tipo;
@@ -146,23 +147,24 @@ void Movimientos::cargar()
 	cout << "Observaciones" << endl;
 	getline(cin, Observaciones);
 
-	setDni(dni);
-	if (sentido) {
+	if (sentido==1) {
 		setSentido(true);
 	}
 	else {
 		setSentido(false);
 	}
-	setObservaciones(Observaciones);
 	if (sentido == 1) {
 		setTipoAutorizacion(tipo);
 	}
 	else {
 		setTipoAutorizacion(2);
 	}
+	
 	Fecha_Hora actual; 
-
+	setObservaciones(Observaciones);
 	setFechayHoraMovimiento(actual);
+	setDni(dni);
+	setUnidad(id);
 }
 
 void Movimientos::mostrar()
@@ -170,9 +172,8 @@ void Movimientos::mostrar()
 	cout << endl;
 
 	cout << " Dni : " << getDni() << endl;
-	cout << "Id de Unidad : " << _unidad.getId() << endl;
-	cout << "Apellido de la Familia perteneciente a la Unidad :  " << _unidad.getApellidoFamilia() << endl;
-	_fechayhora.toString();
+	cout << "Id de Unidad : " << getUnidad() << endl;
+	
 	if(getSentido()){
 		cout << "Sentido :  Entrada." << endl;
 	}
@@ -180,6 +181,7 @@ void Movimientos::mostrar()
 		cout << "Sentido :  Salida. " << endl;
 
 	}
+	cout << "Fecha  y hora : " << getFechayHoraMovimiento().toString() << endl;
 	cout << "Tipo Autorizacion : " <<  getTipoAutorizacion() << endl;
 	cout << "Observaciones : " << getObservaciones() << endl;
 

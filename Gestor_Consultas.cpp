@@ -278,10 +278,15 @@ void Gestor_Consultas::EmpleadoporNroLegajo() {
 	system("cls");
 
 	int nrolegajo;
-	cout << "Ingrese Numero de Legajo " << endl;
+	cout << "Ingrese Numero de Legajo 1-100" << endl;
 	cin >> nrolegajo;
 	utilidad.validarInt(nrolegajo);
 
+	while (nrolegajo< 1|| nrolegajo> 100) { // nacimiento hasta actual 
+		cout << "Legajo Invalido " << endl;
+		cin >> nrolegajo;
+		utilidad.validarInt(nrolegajo);
+	}
 	ArchivosTemplate archiemp;
 	Empleado emp;
 	int totemp = archiemp.contarRegistros(utilidad._archivoEmpleados, emp);

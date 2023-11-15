@@ -57,7 +57,7 @@ void Visita::cargarvisita() {
 	cout << "Ingrese el numero de unidad que visita (1-200)" << endl;
 	cin >> unidad;
 	util.validarInt(unidad);
-	while (unidad < 1 && unidad>200) {
+	while (unidad < 1 || unidad>200) {
 		cout << "Unidad invalida, ingrese nuevamente " << endl;
 		cin >> unidad;
 		util.validarInt(unidad);
@@ -68,7 +68,7 @@ void Visita::cargarvisita() {
 	cout << "Ingrese 1 si es familiar. 0 Si no lo es." << endl;
 	cin >> familiar;
 	util.validarInt(familiar);
-	while (familiar < 0 && familiar >1) {
+	while (familiar < 0 || familiar >1) {
 		cout << "Dato incorrecto , ingrese nuevamente " << endl;
 		cin >> familiar;
 		util.validarInt(familiar);
@@ -80,5 +80,6 @@ void Visita::cargarvisita() {
 	else {
 		setFamiliar(false);
 	}
+	setEstado(true);
 }
 

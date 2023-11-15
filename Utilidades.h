@@ -6,7 +6,12 @@ public :
 	void validarInt(int &n);
 	int contarDigitosInt(int a);
 	void validarChar(char& a);
-	
+	void validarDia(int& dia);
+	void validarMes(int& mes);
+	void validarAnio(int& anio);
+
+	void validarAnioActual(int& anio,int actual);
+
 	std::string _archivoVisitas = "Visitas.dat";
 	std::string _archivoMovimientos = "Movimientos.dat";
 	std::string _archivoEmpleados = "Empleados.dat";

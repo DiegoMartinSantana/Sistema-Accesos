@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+using namespace std;
+
 #include "ArchivosTemplate.h"
 #include "Gestion_General.h"
 #include "SubMenus_Config.h"
@@ -12,8 +14,7 @@
 #include "Movimientos.h"
 #include "Fecha_Hora.h"
 #include "Utilidades.h"
-using namespace std;
-
+#include "Unidad.h"
 
 ArchivosTemplate archivo;
 Utilidades uti;
@@ -35,7 +36,7 @@ void  SubMenus_Config::subMenuBajas() {
 		cout << endl;
 		cout << " 1. Visita.  " << endl;
 		cout << " 2. Empleado. " << endl;
-		cout << " 3. Residente / Inquilino.  " << endl;
+		cout << " 3. Residente / Inquilino. Se dara de baja la Unidad Asociada" << endl;
 		cout << " 4. Proveedor.  " << endl;
 		cout << endl;
 		cout << " 0. Volver. " << endl;
@@ -74,92 +75,53 @@ void  SubMenus_Config::subMenuBajas() {
 	}
 }
 
-bool SubMenus_Config::copiaSegPersonas() {
+void  SubMenus_Config::copiaSegPersonas() {
 	Persona p;
-	bool cp = archivo.copiaSeguridad(uti._archivoPersonas, _bakArchivoPersonas, p);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	 archivo.copiaSeguridad(uti._archivoPersonas, _bakArchivoPersonas, p);
+	
 }
-bool SubMenus_Config::copiaSegAutorizaciones() {
+void  SubMenus_Config::copiaSegAutorizaciones() {
 	Autorizaciones a;
-	bool cp = archivo.copiaSeguridad(uti._archivoAutorizados, _bakArchivoAutorizados, a);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	 archivo.copiaSeguridad(uti._archivoAutorizados, _bakArchivoAutorizados, a);
+	
 }
-bool SubMenus_Config::copiaSegMovimientos() {
+void  SubMenus_Config::copiaSegMovimientos() {
 	Movimientos m;
-	bool cp = archivo.copiaSeguridadMovimiento(uti._archivoMovimientos, _bakArchivoMovimientos, m);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	 archivo.copiaSeguridadMovimiento(uti._archivoMovimientos, _bakArchivoMovimientos, m);
+	
 }
-bool SubMenus_Config::copiaSegResidentes() {
+void  SubMenus_Config::copiaSegResidentes() {
 	Residente r;
-	bool cp = archivo.copiaSeguridad(uti._archivoResidentes, _bakArchivoResidentes, r);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	Unidad uni;
+	archivo.copiaSeguridad(uti._archivoResidentes, _bakArchivoResidentes, r);
+	archivo.copiaSeguridad(uti._archivoUnidades, _bakArchivoUnidades, uni);
 }
-bool SubMenus_Config::copiaSegVisitas() {
+void  SubMenus_Config::copiaSegVisitas() {
 	Visita v;
-	bool cp = archivo.copiaSeguridad(uti._archivoVisitas, _bakArchivoVisitas, v);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	 archivo.copiaSeguridad(uti._archivoVisitas, _bakArchivoVisitas, v);
+	
 }
-bool SubMenus_Config::copiaSegEmpleados() {
+void SubMenus_Config::copiaSegEmpleados() {
 	Empleado e;
-	bool cp = archivo.copiaSeguridad(uti._archivoEmpleados, _bakArchivoEmpleados, e);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	 archivo.copiaSeguridad(uti._archivoEmpleados, _bakArchivoEmpleados, e);
+	
 
 }
-bool SubMenus_Config::copiaSegProveedores() {
+void  SubMenus_Config::copiaSegProveedores() {
 	Proveedor p;
-	bool cp = archivo.copiaSeguridad(uti._archivoProveedores, _bakArchivoProveedores, p);
-	if (cp) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	archivo.copiaSeguridad(uti._archivoProveedores, _bakArchivoProveedores, p);
+	
 }
-bool SubMenus_Config::copiaSegTodosArchivos() {
-	if (		// SI TODAS DEVUELVEN TRUE
-		copiaSegPersonas() &&
-		copiaSegAutorizaciones() &&
-		copiaSegMovimientos() &&
-		copiaSegResidentes() &&
-		copiaSegVisitas() &&
-		copiaSegEmpleados() &&
-		copiaSegProveedores()
-		) {
-		return true;
-	}
-	else {
-		return false;
-	}
+void SubMenus_Config::copiaSegTodosArchivos() {
+			// SI TODAS DEVUELVEN TRUE
+	copiaSegPersonas();
+		copiaSegAutorizaciones();
+		copiaSegMovimientos();
+		copiaSegResidentes();
+		copiaSegVisitas();
+		copiaSegEmpleados();
+		copiaSegProveedores();
+		
 
 }
 
@@ -169,7 +131,7 @@ void SubMenus_Config::subMenuCopiaSeg() {
 	system("cls");
 	int clave;
 	Fecha_Hora f;
-	cout << "----------------------------------------------------------------------------------------" << endl;
+	cout << "------------------------------------------------------------------------------------" << endl;
 	cout << " PARA ACCEDER A LOS REGISTROS DE RESTAURACION ES NECESARIO REINGRESAR SU CLAVE ADMIN. " << endl;
 	cout << " USTED POSEERA TRES INTENTOS :  " << endl;
 
@@ -178,6 +140,7 @@ void SubMenus_Config::subMenuCopiaSeg() {
 		cin >> clave;
 		if (clave == 1111) {
 			ok = true;
+			x = 4;
 		}
 	}
 
@@ -194,7 +157,7 @@ void SubMenus_Config::subMenuCopiaSeg() {
 			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
 			cout << " 2. Movimientos. " << endl;
 			cout << " 3. Autorizaciones.  " << endl;
-			cout << " 4. Residentes. " << endl;
+			cout << " 4. Residentes y sus Unidades. " << endl;
 			cout << " 5. Proveedores. " << endl;
 			cout << " 6. Empleados. " << endl;
 			cout << " 7. Visitas." << endl;
@@ -207,75 +170,39 @@ void SubMenus_Config::subMenuCopiaSeg() {
 			switch (opc)
 			{
 			case '1': {
-				if (copiaSegPersonas()) {
-					cout << "Se ha realizado la copia de seguridad de las Personas. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegPersonas();
+				
 				break;
 			}
 			case '2': {
-				if (copiaSegMovimientos()) {
-					cout << "Se ha realizado la copia de seguridad de los Movimientos. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegMovimientos();
+
+
 				break;
 			}
 			case '3': {
-				if (copiaSegAutorizaciones()) {
-					cout << "Se ha realizado la copia de seguridad de las Autorizaciones. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegAutorizaciones();
+
 				break;
 			}
 			case '4': {
-				if (copiaSegResidentes()) {
-					cout << "Se ha realizado la copia de seguridad de los Residentes existentes. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegResidentes();
 				break;
 			}
 			case '5': {
-				if (copiaSegProveedores()) {
-					cout << "Se ha realizado la copia de seguridad de los Proveedores. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegProveedores();
 				break;
 			}
 			case '6': {
-				if (copiaSegEmpleados()) {
-					cout << "Se ha realizado la copia de seguridad de los Empleados. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad. " << endl;
-				}
+				copiaSegEmpleados();
 				break;
 			}
 			case '7': {
-				if (copiaSegVisitas()) {
-					cout << "Se ha realizado la copia de seguridad de las Visitas. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegVisitas();
 				break;
 			}
 			case '8': {
-				if (copiaSegTodosArchivos()) {
-					cout << "Se ha realizado la copia de seguridad de Todos los Archivos Mencionados. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
+				copiaSegTodosArchivos();
 				break;
 			}
 			case '0': {
@@ -319,7 +246,9 @@ bool SubMenus_Config::resCopiaSegMovimientos() {
 }
 bool SubMenus_Config::resCopiaSegResidentes() {
 	Residente r;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoResidentes, uti._archivoResidentes, r)) {
+	Unidad uni;
+	if (archivo.restaurarCopiaSeguridad(_bakArchivoResidentes, uti._archivoResidentes, r) && archivo.restaurarCopiaSeguridad(_bakArchivoUnidades,uti._archivoUnidades,uni)) {
+		
 		return true;
 	}
 	else {
@@ -385,12 +314,15 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 		cin >> clave;
 		if (clave == 1111) {
 			ok = true;
+			x = 4;
 		}
 	}
 	Fecha_Hora f;
 	system("cls");
 	if (ok) {
 		while (a) {
+			system("cls");
+
 			cout << "----------------------------------------------------------------------------------------" << endl;
 
 			cout << " CONFIGURACION - RESTAURACION DE COPIAS DE SEGURIDAD                     " << f.toString() << endl;
@@ -400,7 +332,7 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
 			cout << " 2. Movimientos. " << endl;
 			cout << " 3. Autorizaciones.  " << endl;
-			cout << " 4. Residentes.  " << endl;
+			cout << " 4. Residentes y sus unidades. " << endl;
 			cout << " 5. Proveedores. " << endl;
 			cout << " 6. Empleados. " << endl;
 			cout << " 7. Visitas." << endl;

@@ -4,6 +4,10 @@
 #include "Empresa.h"
 #include "Utilidades.h"
 using namespace std;
+Empresa::Empresa() {
+
+
+}
 void Empresa::setEstado(bool estado)
 {
 	_estado = estado;

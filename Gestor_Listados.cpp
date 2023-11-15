@@ -13,21 +13,12 @@
 #include "Utilidades.h"
 using namespace std;
 Utilidades ut;
-bool compararcadenas(string a, string b) {
 
-	if (strcmp(a.c_str(), b.c_str()) == 0) {
-		return true;
-	}
-	else {
-		return false;
-	}
-
-}
 void ordenarburbujeo(int* vec, int& total) {
 	int aux;
 	for (int x = 0;x < total;x++) {
 
-		for (int y = 0;x < (total - 1);x++) {
+		for (int y = 0;y < (total - 1);y++) {
 
 			if (vec[y] > vec[y + 1]) {
 				aux = vec[y + 1];
@@ -39,25 +30,21 @@ void ordenarburbujeo(int* vec, int& total) {
 
 	}
 }
-void burbujeocaracter(vector <string> vec, int total) {
+
+void burbujeocaracter(vector <string>& vec, int total) {
 
 	string aux;
-
-
 	for (int x = 0;x < total;x++) {
 
-		for (int y = 0;x < (total - 1);x++) {
+		for (int y = 0;y < (total - 1);y++) {
 
-			if (toupper(vec[x][0]) > toupper(vec[y + 1][0])) { // si vec en la pos .. en su primer caracter > , compara nros ASCII en mayus para llevar orden ..
+			if (toupper(vec[y][0]) > toupper(vec[y + 1][0])) { // si vec en la pos .. en su primer caracter > , compara nros ASCII en mayus para llevar orden ..
 				aux = vec[y + 1];
 				vec[y + 1] = vec[y];
 				vec[y] = aux;
 			}
-
 		}
-
 	}
-
 }
 string retornarapellido(int dni) {
 
@@ -77,7 +64,38 @@ string retornarapellido(int dni) {
 	return "Invalido ";
 }
 
+void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 
+	Unidad uni;
+	ArchivosTemplate archiuni;
+
+	int total = archiuni.contarRegistros(ut._archivoUnidades, uni);
+
+	vector <string> vec;
+	vec.resize(total); // importante. sino me da error por querer acceder a lugar inexistente.
+
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x).getApellidoFamilia();
+	}
+
+	burbujeocaracter(vec, total);
+
+	for (int x = 0;x < total;x++) {
+
+		for (int y = 0;y < total;y++) {
+			uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, y);
+
+			if (vec[x] == uni.getApellidoFamilia()) {
+				cout << "Apellido :  " << uni.getApellidoFamilia() << endl;
+				cout << "Id uni : " << uni.getId() << endl;
+				cout << endl;
+			}
+		}
+	}
+	vec.clear();
+	cout << endl;
+	system("pause");
+}
 void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 	Autorizaciones autorizado(0, 0);
@@ -87,6 +105,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 	int total = archiauto.contarRegistros(ut._archivoAutorizados, autorizado);
 
 	vector <string> vec;
+	vec.resize(total); // le paso el tamaño! 
 
 	for (int x = 0;x < total;x++) {
 
@@ -105,14 +124,54 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 
 		for (int y = 0;y < total;y++) {
 
-			autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x);
+			autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, y);
 			string ape = retornarapellido(autorizado.getDniPersona());
-			if (compararcadenas(vec[x], ape.c_str())) {
-				autorizado.mostrar();
+			if (vec[x]== ape) {
+				cout << "Apellido : " << ape << endl;
+				cout << "Dni :" << autorizado.getDniPersona() << endl;
+				cout << endl;
 			}
 		}
 	}
+	cout << endl;
+	system("pause");
 	vec.clear(); //libero la memoria
+}
+void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
+
+	Proveedor prov;
+	ArchivosTemplate archiprov;
+
+	int total = archiprov.contarRegistros(ut._archivoProveedores, prov);
+
+	vector <string> vec;
+	vec.resize(total);
+
+	for (int x = 0;x < total;x++) {
+		vec[x] = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, x).getEmpresa();
+
+	}
+
+	burbujeocaracter(vec, total);
+
+	for (int x = 0;x < total;x++) {
+
+		for (int y = 0;y < total;y++) {
+			prov = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, y);
+			
+				if (vec[x] == prov.getEmpresa()) {
+					cout << "Empresa :  " << prov.getEmpresa() << endl;
+					cout << "Apellido proveedor :  " << prov.getApellidos() << endl;
+					cout << "Tipo : " << prov.getTipo() << endl;
+					cout << endl;
+
+				}
+			
+		}
+	}
+	cout << endl;
+	system("pause");
+	vec.clear();
 }
 
 void Gestor_Listados::AutorizadosOrdenadosporDni() {
@@ -135,15 +194,17 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 
 	for (int x = 0;x < total;x++) { //recorro todo y a medida que encuentra muestra
 
-		autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, x);
 		for (int y = 0;y < total;y++) {
+			autorizado = archiauto.ObtenerObjeto(ut._archivoAutorizados, autorizado, y); // guarda aca en y, porque compara contra TODOS VS LA POS DEL VEC EN FOR SUPERIOR
 			if (autorizado.getDniPersona() == vec[x]) {
-				autorizado.mostrar();
+				cout << "Dni del autorizado " << autorizado.getDniPersona() << endl;
+				cout << "Unidad perteneciente " << autorizado.getIdUnidad() << endl;
 			}
 		}
 
-
 	}
+	cout << endl;
+	system("pause");
 	delete[] vec;
 }
 
@@ -156,9 +217,9 @@ void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
 	int total = archires.contarRegistros(ut._archivoResidentes, res);
 
 	int* vec = new int[total];
-	int con = 0;
 	for (int x = 0;x < total;x++) {
-		vec[x] = archires.ObtenerObjeto(ut._archivoResidentes, res, x).getUnidad();
+		res = archires.ObtenerObjeto(ut._archivoResidentes, res, x);
+		vec[x] = res.getUnidad();
 	}
 
 	ordenarburbujeo(vec, total);
@@ -166,48 +227,23 @@ void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
 
 	for (int x = 0;x < total;x++) {
 
-		res = archires.ObtenerObjeto(ut._archivoResidentes, res, x);
 
 		for (int y = 0;y < total;y++) {
+			res = archires.ObtenerObjeto(ut._archivoResidentes, res, y);
+
 			if (res.getUnidad() == vec[x]) {
-				res.mostrar();
+				cout << " Id unidad : " << res.getUnidad() << endl;
+				cout << " Apellido Familia : " << res.getApellidos() << endl;
 			}
 		}
 
 	}
+	cout << endl;
+	system("pause");
 	delete[]vec;
 
 }
 
-void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
-
-	Proveedor prov;
-	ArchivosTemplate archiprov;
-
-	int total = archiprov.contarRegistros(ut._archivoProveedores, prov);
-
-	vector <string> vec;
-
-	for (int x = 0;x < total;x++) {
-		vec[x] = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, x).getEmpresa();
-
-	}
-
-	burbujeocaracter(vec, total);
-
-	for (int x = 0;x < total;x++) {
-		prov = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, x);
-
-		for (int y = 0;y < total;y++) {
-			if (prov.getEstado()) {
-				if (compararcadenas(vec[x], prov.getEmpresa())) {
-					prov.mostrar();
-				}
-			}
-		}
-	}
-	vec.clear();
-}
 
 void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
@@ -217,29 +253,35 @@ void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
 	int total = archiemp.contarRegistros(ut._archivoEmpleados, emp);
 
-
 	int* vec = new int[total];
 	for (int x = 0; x < total; x++)
 	{
 		emp = archiemp.ObtenerObjeto(ut._archivoEmpleados, emp, x);
 		vec[x] = emp.getDni();
 	}
-
+	
 	ordenarburbujeo(vec, total);
 
 	for (int x = 0;x < total;x++) {
-		emp = archiemp.ObtenerObjeto(ut._archivoEmpleados, emp, x);
 
 		for (int y = 0;y < total;y++) {
+			emp = archiemp.ObtenerObjeto(ut._archivoEmpleados, emp, y);
 
 			if (emp.getDni() == vec[x]) {
-				emp.mostrar();
+				cout << endl;
+				cout << "Dni : " << emp.getDni() << endl;
+				cout << "Nombre : " << emp.getApellidosyNombres() << endl;
+				cout << endl;
+
 			}
 
 		}
 
 	}
+	cout << endl;
+	system("pause");
 	delete[] vec;
+
 }
 void Gestor_Listados::UnidadesporId() {
 
@@ -257,45 +299,24 @@ void Gestor_Listados::UnidadesporId() {
 	ordenarburbujeo(vec, total);
 
 	for (int x = 0;x < total;x++) {
-		uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x);
 
 		for (int y = 0;y < total;y++) {
+			uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, y);
 
 			if (vec[x] == uni.getId()) {
-				uni.mostrar();
+				cout << " Id unidad : " << uni.getId() << endl;
+				cout << " Apellido Familia : " << uni.getApellidoFamilia() << endl;
+
 			}
 		}
 
 	}
-
+	cout << endl;
+	system("pause");
 	delete[]vec;
+	
 }
-void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 
-	Unidad uni;
-	ArchivosTemplate archiuni;
-
-	int total = archiuni.contarRegistros(ut._archivoUnidades, uni);
-
-	vector <string> vec;
-
-	for (int x = 0;x < total;x++) {
-		vec[x] = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x).getApellidoFamilia();
-	}
-
-	burbujeocaracter(vec, total);
-
-	for (int x = 0;x < total;x++) {
-
-		uni = archiuni.ObtenerObjeto(ut._archivoUnidades, uni, x);
-		for (int y = 0;y < total;y++) {
-			if (compararcadenas(vec[x], uni.getApellidoFamilia())) {
-				uni.mostrar();
-			}
-		}
-	}
-	vec.clear();
-}
 void Gestor_Listados::MovimientosDiaHoy() {
 
 	//comparo vs la fecha del sistema!
@@ -320,8 +341,8 @@ void Gestor_Listados::MovimientosDiaHoy() {
 		}
 
 	}
-
-
+	cout << endl;
+	system("pause");
 
 
 }

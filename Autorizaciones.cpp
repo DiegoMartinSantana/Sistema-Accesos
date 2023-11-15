@@ -12,10 +12,9 @@ Autorizaciones::Autorizaciones(int id) {
     
 }
 Autorizaciones::Autorizaciones(int dni, int iduni, bool residente ,int mes, int anio) { // si es residente significa que no pase mes y anio
-    int dia = 1;
     setDniPersona(dni);
     setUnidad(iduni);
-    _hasta.cargar(dia,mes,anio); 
+    _hasta.cargar(1, mes, anio);
     _residente = residente;
 }
 
@@ -63,10 +62,11 @@ void Autorizaciones::setResidente(bool res)
     _residente =res ;
 }
 
-void Autorizaciones::setHasta(int dia, int mes ,int anio )
+void Autorizaciones::setHasta( int mes ,int anio )
 {
-    _hasta.cargar(dia, mes, anio);
-
+    _hasta.setAnio(anio);
+    _hasta.setMes(mes);
+    _hasta.setDia(1);
 }
 
 
@@ -90,16 +90,17 @@ string nombreyapellido(int dni) {
 }
 void Autorizaciones::mostrar()
 {
+    cout << endl;
     cout << "Id Unidad : " << getIdUnidad() << endl;
     cout << "Dni : " << getDniPersona() << endl;
    
-    cout << nombreyapellido(getDniPersona()) << endl;
+    cout << "Nombre y Apellido : " << nombreyapellido(getDniPersona()) << endl;
 
     if (_residente) {
         cout << "Autorizacion Permanente" << endl;
     }
     else {
-        cout << "Autorizado hasta  " << getHasta() << endl;
+        cout << "Autorizado hasta  " << _hasta.toString() << endl;
     }
 }
 

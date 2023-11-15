@@ -1,9 +1,10 @@
 #include <cstring>
 #include <string>
 #include<iostream>
+using namespace std;
+
 #include "Persona.h"
 #include "Utilidades.h"
-using namespace std;
 Persona::Persona() {
 
 }
@@ -84,6 +85,7 @@ void  Persona::cargarPersona() {
 		util.validarInt(dni);
 
 	}
+	setDni(dni);
 	cin.ignore();
 	cout << "Ingrese nombre/s: " << endl;
 	getline(cin, nombres);
@@ -94,27 +96,19 @@ void  Persona::cargarPersona() {
 	cout << "Ingrese Dia de nacimiento : " << endl;
 	cin >> dia;
 	util.validarInt(dia);
-	while ( util.contarDigitosInt(dia) > 2 ) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> dia;
-		util.validarInt(dia);
-	}
+	util.validarDia(dia);
+
 	cout << "Ingrese Mes de nacimiento : " << endl;
 	cin >> mes;
 	util.validarInt(mes);
-	while (util.contarDigitosInt(mes) > 2) {
-		cout << "No existen meses de mas de dos digitos. " << endl;
-		cin >> mes;
-		util.validarInt(mes);
-	}
+	util.validarMes(mes);
+
+	Fecha actual;
 	cout << "Ingrese Anio de nacimiento : " << endl;
 	cin >> anio;
 	util.validarInt(anio);
-	while (util.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
-		cin >> anio;
-		util.validarInt(anio);
-	}
+	util.validarAnioActual(anio, actual.getAnio());
+
 	setNacimiento(dia, mes, anio);
 	setEstado(true);
 }

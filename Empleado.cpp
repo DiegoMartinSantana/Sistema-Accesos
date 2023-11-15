@@ -90,9 +90,14 @@ void Empleado::CargarEmpleado() {
 	cargarPersona();
 
 
-	cout << "Ingrese el legajo: ";
+	cout << "Ingrese el legajo 0 - 100 :  ";
 	cin >> legajo;
 	util.validarInt(legajo);
+	while (legajo < 1 || legajo > 100) {
+		cout << "Legajo invalido" << endl;
+		cin >> legajo;
+		util.validarInt(tipo);
+	}
 	setLegajo(legajo);
 
 	cout << "Ingrese el tipo: 1- Propio 2- Ajeno ";
@@ -110,8 +115,8 @@ void Empleado::CargarEmpleado() {
 		cout << "  L - Limpieza  , S - Seguridad , A - Administrativo ." << endl;;
 		cin >> categoria;
 		util.validarChar(categoria);
-		while (categoria != 'A' || categoria != 'a' || categoria != 'S' || categoria != 's'
-			|| categoria != 'L' || categoria != 'l') { // mientras no sea una valida
+		while (categoria != 'A' && categoria != 'a' && categoria != 'S' && categoria != 's'
+			&& categoria != 'L' && categoria != 'l') { // mientras no sea una valida
 
 			cout << "Categoria Inexistente ,ingrese nuevamente " << endl;
 			cin >> categoria;
@@ -127,10 +132,13 @@ void Empleado::CargarEmpleado() {
 
 
 	cin.ignore();
-	cout << "Ingrese descripción: ";
+	cout << "Ingrese descripcion del Empleado : ";
 	getline(cin, descripcion);
 	setDescripcion(descripcion);
 	if (tipo == 2) {
+		cout << endl;
+		cout << "Es empleado ajeno ,se precisa registrar la empresa perteneciente : " << endl;
+		cout << endl;
 		_perteneciente.cargar();
 	}
 

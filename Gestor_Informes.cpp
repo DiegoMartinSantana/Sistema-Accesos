@@ -5,6 +5,7 @@
 #include "Movimientos.h"
 #include "Proveedor.h"
 #include "Utilidades.h"
+#include "Unidad.h"
 #include "Fecha_Hora.h"
 using namespace std;
 Utilidades utili;
@@ -22,16 +23,13 @@ void Gestor_Informes::UnidadesMayor50movs() {
 	cout << "Ingrese Mes " << endl;
 	cin >> mes;
 	utili.validarInt(mes);
-	while (utili.contarDigitosInt(mes) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> mes;
-		utili.validarInt(mes);
-	}
-	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
+	utili.validarMes(mes);
+	cout << "Ingrese Anio -  2022 hasta el actual " << endl;
 	cin >> anio;
+	Fecha actual;
 	utili.validarInt(anio);
-	while (utili.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
+	while (anio<2022 || anio > actual.getAnio()) {
+		cout << "Todavia no hay registros para ese anio. " << endl;
 		cin >> anio;
 		utili.validarInt(anio);
 	}
@@ -51,7 +49,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 		if (movimientoValido(mov)) {
 			if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio && mov.getFechayHoraMovimiento().getFecha().getMes() == mes) {
 				vec[x]++;
-				vecidunidad[x] = mov.getUnidad().getId();
+				vecidunidad[x] = mov.getUnidad();
 			}
 		}
 
@@ -75,7 +73,8 @@ void Gestor_Informes::UnidadesMayor50movs() {
 		}
 
 	}
-
+	cout << endl;
+	system("pause");
 	delete[]vec;
 	delete[]vecidunidad;
 }
@@ -86,20 +85,12 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 	cout << "Ingrese Primer mes " << endl;
 	cin >> mes1; //menor
 	utili.validarInt(mes1);
-	while (utili.contarDigitosInt(mes1) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> mes1;
-		utili.validarInt(mes1);
-	}
+	utili.validarMes(mes1);
 
 	cout << "Ingrese Segundo mes " << endl;
 	cin >> mes2; // mayor
 	utili.validarInt(mes2);
-	while (utili.contarDigitosInt(mes2) > 2) { //mientras ingrese mas de dos digitos. puede ingresar uno si quiere. pero tres o mas no.
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> mes2;
-		utili.validarInt(mes2);
-	}
+	utili.validarMes(mes2);
 
 	//intercambio para que uno qude como mayor y otro menor si hay mal ingreso
 	if (mes1 > mes2) {
@@ -110,9 +101,10 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
+	Fecha actual;
 	utili.validarInt(anio);
-	while (utili.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
+	while (anio<2022 || anio > actual.getAnio()) {
+		cout << "Todavia no hay registros para ese anio. " << endl;
 		cin >> anio;
 		utili.validarInt(anio);
 	}
@@ -136,7 +128,7 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 				if (mov.getFechayHoraMovimiento().getFecha().getAnio() == anio) {
 
 					if (mov.getFechayHoraMovimiento().getFecha().getMes() >= mes1 && mov.getFechayHoraMovimiento().getFecha().getMes() <= mes2) { //  y es menor al segundo mes y mayor al primero ( estoy entre esos )
-						if (mov.getUnidad().getId() == 0 && mov.getDni() == prov.getDni()) { // si coinciden los dni y me paro en la unidad "Base"
+						if (mov.getUnidad() == 0 && mov.getDni() == prov.getDni()) { // si coinciden los dni y me paro en la unidad "Base"
 							//muestro prov 
 							prov.mostrar();
 						}
@@ -147,6 +139,8 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 
 
 	}
+	cout << endl;
+	system("pause");
 }
 void Gestor_Informes::UnidadMasMovsHistorico() {
 
@@ -175,7 +169,7 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 
 			if (movimientoValido(movs)) {
 
-				if (movs.getUnidad().getId() == uni.getId()) {
+				if (movs.getUnidad() == uni.getId()) {
 					cantidad++;
 				}
 
@@ -201,7 +195,8 @@ void Gestor_Informes::UnidadMasMovsHistorico() {
 
 	cout << " La unidad con mas Movimientos historicamente es " << endl;
 	archiuni.ObtenerObjeto(utili._archivoUnidades, uni, posmayor).mostrar(); // le paso la posicion mayor y muestro el object
-
+	cout << endl;
+	system("pause");
 }
 
 void Gestor_Informes::UnidadMenorMovsHistorico() {
@@ -228,7 +223,7 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 
 			if (movimientoValido(movs)) {
 
-				if (movs.getUnidad().getId() == uni.getId()) {
+				if (movs.getUnidad() == uni.getId()) {
 					cantidad++;
 				}
 			}
@@ -251,8 +246,10 @@ void Gestor_Informes::UnidadMenorMovsHistorico() {
 		}
 	}
 
-	cout << " La unidad con mas Movimientos historicamente es " << endl;
+	cout << " La unidad con menos Movimientos historicamente es " << endl;
 	archiuni.ObtenerObjeto(utili._archivoUnidades, uni, posmenor).mostrar();
+	cout << endl;
+	system("pause");
 
 }
 
@@ -263,19 +260,11 @@ void Gestor_Informes::MovimientosMensuales() {
 	cout << "Ingrese Primer mes " << endl;
 	cin >> mes1; //menor
 	utili.validarInt(mes1);
-	while (utili.contarDigitosInt(mes1) > 2) { 
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> mes1;
-		utili.validarInt(mes1);
-	}
+	utili.validarMes(mes1);
 	cout << "Ingrese Segundo mes " << endl;
 	cin >> mes2; // mayor
 	utili.validarInt(mes2);
-	while (utili.contarDigitosInt(mes2) > 2) { 
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> mes2;
-		utili.validarInt(mes2);
-	}
+	utili.validarMes(mes2);
 
 	if (mes1 > mes2) {
 		int aux = mes1;
@@ -286,18 +275,20 @@ void Gestor_Informes::MovimientosMensuales() {
 	cout << "Ingrese Anio -  2022 en Adelante. " << endl;
 	cin >> anio;
 	utili.validarInt(anio);
-	while (utili.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
+	Fecha actual;
+	while (anio<2022 || anio > actual.getAnio()) {
+		cout << "Todavia no hay registros para ese anio. " << endl;
 		cin >> anio;
 		utili.validarInt(anio);
 	}
+
 	//ENTRADAS (   1- Entrada )
 	Movimientos mov;
 	ArchivosTemplate archimovs;
 	int total = archimovs.contarRegistros(utili._archivoMovimientos, mov);
+	cout << "Entradas  : " << endl;
 
 	for (int x = 0;x < total;x++) {
-		cout << "Entradas  : " << endl;
 		cout << endl;
 		mov = archimovs.ObtenerMovimiento(utili._archivoMovimientos, mov, x);
 		if (movimientoValido(mov)) {
@@ -312,10 +303,10 @@ void Gestor_Informes::MovimientosMensuales() {
 			}
 		}
 	}
+	cout << "Salidas  : " << endl;
 
 	cout << endl;
 	for (int x = 0;x < total;x++) {
-		cout << "Salidas  : " << endl;
 		cout << endl;
 		mov = archimovs.ObtenerMovimiento(utili._archivoMovimientos, mov, x);
 		if (movimientoValido(mov)) {
@@ -331,6 +322,8 @@ void Gestor_Informes::MovimientosMensuales() {
 			}
 		}
 	}
+	cout << endl;
+	system("pause");
 }
 
 

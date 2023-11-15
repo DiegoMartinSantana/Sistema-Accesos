@@ -3,7 +3,7 @@
 class Unidad
 {	//LA UNIDAD 0 CORRESPONDE A EMPLEADOS Y A PROVEEDORES
 public:
-	
+	Unidad();
 	std::string getApellidoFamilia();
 	std::string getObservaciones();
 

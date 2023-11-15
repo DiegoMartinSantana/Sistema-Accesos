@@ -4,6 +4,15 @@
 #include "Utilidades.h"
 using namespace std;
 
+Unidad::Unidad() {
+	setApellidoFamilia("");
+	setBase(false);
+	setEstado(false);
+	setId(-1);
+	setNroTelefono(1);
+	setObservaciones("nada");
+	
+}
 void Unidad::setEstado(bool estado)
 {
 	_estado = estado;
@@ -16,12 +25,10 @@ void Unidad::setId(int id)
 }
 
 
-
 void Unidad::setNroTelefono(int telefono)
 {
 	_telefonoFamilia = telefono;
 }
-
 
 
 void Unidad::setObservaciones(string observaciones)
@@ -94,20 +101,11 @@ void Unidad::cargar()
 	setEstado(true);
 	Utilidades util;
 
-	int id, telefono;
-	string observaciones, apellido;
-	cout << "Ingrese los datos de la Unidad : " << endl;
-	cout << endl;
-	cout << "Id unidad : 0(Base) - 200" << endl;
-	cin >> id;
-	util.validarInt(id);
-	while (id < 0 || id > 200) {
-		cout << "Id invalido , Ingrese de nuevo " << endl;
-		cin >> id;
-		util.validarInt(id);
-
-	}
-	cout << " Numero de Telefono: (10 digitos) " << endl;
+	int telefono;
+	string observaciones;
+	
+	
+	cout << " Numero de Telefono de la familia : (10 digitos) " << endl;
 	cin >> telefono;
 	
 	util.validarInt(telefono);
@@ -118,23 +116,16 @@ void Unidad::cargar()
 	}
 
 	cin.ignore();
-	cout << "Apellido Familia : " << endl;
-	getline(cin, apellido);
+	
 	cout << "Observaciones: " << endl;
 	getline(cin, observaciones);
 
 
-	setId(id);
 	setEstado(true);
 	setNroTelefono(telefono);
-	setApellidoFamilia(apellido);
 	setObservaciones(observaciones);
-	if (id == 0) {
-		setBase(true);
-	}
-	else {
-		setBase(false);
-	}
+	setBase(false);
+
 }
 
 void Unidad::mostrar() {
@@ -144,7 +135,14 @@ void Unidad::mostrar() {
 	cout << "Familia: " << getApellidoFamilia() << endl; // validar
 	cout << "Telefono: " << getNroTelefono() << endl;
 	cout << "Observaciones: " << getObservaciones() << endl; //validar
-
+	string es;
+	if (_estado) {
+		es = "Activa";
+	}
+	else {
+		es = "Inactiva";
+	}
+	cout << "Estado : " << es << endl;
 }
 
 

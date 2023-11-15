@@ -40,9 +40,6 @@
     <Filter Include="Source Files\Utilidades">
       <UniqueIdentifier>{4e419c3b-4991-43e3-803b-d041359fe4bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Archivos">
-      <UniqueIdentifier>{2f1bbd04-4760-4a09-8afa-e0926fe39eee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Sistema">
       <UniqueIdentifier>{a45ecd30-3454-4a2c-a976-607f501684fa}</UniqueIdentifier>
     </Filter>

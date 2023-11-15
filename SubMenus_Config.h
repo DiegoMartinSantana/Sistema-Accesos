@@ -24,14 +24,14 @@ private:
 	
 	//copias seg
 
-	bool copiaSegPersonas();
-	bool copiaSegAutorizaciones();
-	bool copiaSegMovimientos();
-	bool copiaSegResidentes();
-	bool copiaSegVisitas();
-	bool copiaSegEmpleados();
-	bool copiaSegProveedores();
-	bool copiaSegTodosArchivos();
+	void  copiaSegPersonas();
+	void copiaSegAutorizaciones();
+	void copiaSegMovimientos();
+	void copiaSegResidentes();
+	void copiaSegVisitas();
+	void copiaSegEmpleados();
+	void copiaSegProveedores();
+	void copiaSegTodosArchivos();
 
 	//restauracion
 	bool resCopiaSegPersonas();

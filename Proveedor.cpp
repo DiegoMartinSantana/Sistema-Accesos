@@ -18,11 +18,23 @@ string Proveedor::getTipo() const {
 		retornar = "ALIMENTICIO ";
 		return retornar;
 		break;
+	case 'a':
+		retornar = "ALIMENTICIO ";
+		return retornar;
+		break;
 	case 'B':
 		retornar = " BEBIDAS ";
 		return retornar;
 		break;
+	case 'b':
+		retornar = " BEBIDAS ";
+		return retornar;
+		break;
 	case 'S':
+		retornar = "SERVICIOS GENERALES ";
+		return retornar;
+		break;
+	case 's':
 		retornar = "SERVICIOS GENERALES ";
 		return retornar;
 		break;
@@ -66,8 +78,8 @@ void Proveedor::cargarProveedor() {
 	cin >> tipo;
 
 	util.validarChar(tipo);
-	while (tipo != 'A' || tipo != 'a' || tipo != 'S' || tipo != 's'
-		|| tipo != 'b' || tipo != 'B') {
+	while (tipo != 'A' && tipo != 'a' && tipo != 'S' && tipo != 's'
+		&& tipo != 'b' && tipo != 'B') {
 
 		cout << "Tipo Inexistente ,ingrese nuevamente " << endl;
 		cin >> tipo;
@@ -76,8 +88,9 @@ void Proveedor::cargarProveedor() {
 	}
 	setTipo(tipo);
 
-	cin.ignore();
-	cout << "Ingrese Empresa perteneciente " << endl;
+
+	cout << "Ingrese datos de la Empresa proveedora :  " << endl;
+
 	_perteneciente.cargar();
 
 	cout << endl;
@@ -85,28 +98,17 @@ void Proveedor::cargarProveedor() {
 	cin >> dia;
 	util.validarInt(dia);
 
-	while (util.contarDigitosInt(dia) > 2) {
-		cout << "No existen dias de mas de dos digitos.  " << endl;
-		cin >> dia;
-		util.validarInt(dia);
-	}
+	util.validarDia(dia);
 
 	cout << "Ingrese mes de su Art " << endl;
 	cin >> mes;
 	util.validarInt(mes);
+	util.validarMes(mes);
 
-	while (util.contarDigitosInt(mes) > 2) {
-		cout << "No existen meses de mas de dos digitos.  " << endl;
-		cin >> mes;
-		util.validarInt(mes);
-	}
+	
 	cout << "Ingrese anio  de su Art" << endl;
 	cin >> anio;
-	while (util.contarDigitosInt(anio) > 4) {
-		cout << "No existen anios de mas de cuatro digitos. " << endl;
-		cin >> anio;
-		util.validarInt(anio);
-	}
+	util.validarAnio(anio);
 
 	setArt(dia, mes, anio);
 }

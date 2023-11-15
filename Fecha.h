@@ -12,6 +12,7 @@ public:
     void setAnio(int anio);
     void cargar(int dia, int mes, int  anio);
     Fecha();
+    
     Fecha(int dia, int mes, int anio);
     std::string toString();
 
