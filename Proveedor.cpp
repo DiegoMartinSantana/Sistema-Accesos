@@ -63,9 +63,6 @@ void Proveedor::setArt(int dia, int mes, int anio) {
 	_art.cargar(dia, mes, anio);
 }
 
-
-
-
 void Proveedor::cargarProveedor() {
 	Utilidades util;
 	cargarPersona();

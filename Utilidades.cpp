@@ -53,7 +53,7 @@ void Utilidades::validarMes(int& mes) {
 	}
 }
 void Utilidades::validarAnioActual(int& anio,int actual) {
-	while (anio < 1930 || anio > actual ){ // nacimiento hasta actual 
+	while (anio < 1920 || anio > actual ){ // nacimiento hasta actual 
 		cout << "Anio Invalido " << endl;
 		cin >> anio;
 		validarInt(anio);
@@ -61,7 +61,7 @@ void Utilidades::validarAnioActual(int& anio,int actual) {
 
 }
 void  Utilidades::validarAnio(int& anio) {
-	while (anio < 1930 || anio > 2030) { // nacimiento hasta actual 
+	while (anio < 1930 || anio > 2030) { 
 		cout << "Anio Invalido " << endl;
 		cin >> anio;
 		validarInt(anio);

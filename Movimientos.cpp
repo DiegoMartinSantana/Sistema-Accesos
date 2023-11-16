@@ -57,7 +57,6 @@ string  Movimientos::getTipoAutorizacion()
 }
 
 
-
 void Movimientos::setDni(int dni)
 {
 	_dnipersona = dni;

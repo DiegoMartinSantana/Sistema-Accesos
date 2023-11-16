@@ -5,7 +5,6 @@ using namespace std;
 
 class ArchivosTemplate {
 
-	//funciones genericas de archivos que no impliquen manipular sus propiedades a no ser que sean COMUNES A TODAS  van aca.
 		 //***cargar correctamente string de nombre, incluido su .dat , enviar un objeto STRING CON EL CONTENIDO //  ***
 
 public:

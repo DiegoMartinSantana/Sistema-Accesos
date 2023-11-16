@@ -113,8 +113,6 @@ void  Persona::cargarPersona() {
 	setEstado(true);
 }
 
-
-
 string  Persona::mostrarPersonastring() {
 	string  estadoString;
 	if (getEstado()) {

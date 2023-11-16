@@ -37,6 +37,7 @@ string retornarapellidoxdni(int dni) {
 
 	}
 	ret = "Invalido";
+
 	return ret;
 }
 bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle el con y listo..
@@ -51,46 +52,7 @@ bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle 
 }
 
 //muestra las razones sociales existentes para hacer la consulta
-int  mostrarrazonessociales(vector <string>& vec) {  
-	Empresa empre;
-	ArchivosTemplate architem;
-	string archi = "Empresas.dat";
-	int totempresas = architem.contarRegistros(archi, empre);
-	//uso biblioteca vector.
-	bool a = true;
 
-	for (int x = 0;x < totempresas;x++) {
-
-
-		if (a) {
-			vec[x] = (empre.getRazonSocial()); // push back añade.. pero asi llevo mejor control yo.
-			a = false;
-		}
-		else {
-			//compara con todas aca.
-			if (comparar(empre.getRazonSocial(), vec)) {
-				vec[x] = (empre.getRazonSocial());
-			}
-		}
-
-	}
-
-
-	cout << "Ingrese la Razon social a buscar " << endl;
-
-	int opcion;
-	for (int x = 0;x < vec.size();x++) {
-		int c = x + 1;
-		cout << c << " - " << vec[x] << endl;
-
-	}
-	cin >> opcion;
-	utilidad.validarInt(opcion);
-
-	opcion = opcion - 1;
-	return opcion - 1;
-	// segun lo que retorne sera a buscar.. pero es un int.. asique mejor que reciba el vector (equivale a su posicion el int retornado)
-}
 
 void Gestor_Consultas::AutorizadosporDni() {
 	system("cls");
@@ -115,6 +77,7 @@ void Gestor_Consultas::AutorizadosporDni() {
 		autorizado = archiauto.ObtenerObjeto(utilidad._archivoAutorizados, autorizado, x);
 		if (autorizado.getDniPersona() == dni) {
 			autorizado.mostrar();
+			system("pause");
 
 			return;
 		}
@@ -148,12 +111,14 @@ void Gestor_Consultas::AutorizadosporApellido() {
 		int igual = strcmp(apellido.c_str(), autoapellido.c_str());
 		if (igual == 0) {
 			autorizado.mostrar();
+			system("pause");
 
 			return;
 		}
 	}
 
 	cout << "No se ha encontrado ninguna Persona Autorizada con ese apellido" << endl;
+	system("pause");
 
 }
 void Gestor_Consultas::ResidentesporIdUnidad() {
@@ -181,12 +146,17 @@ void Gestor_Consultas::ResidentesporIdUnidad() {
 		if (res.getUnidad() == id) {
 			a = true;
 			res.mostrar();
+			system("pause");
+
+			return;
 		}
 
 	}
 	if (!a) {
 		cout << "No se ha encontrado ningun residente junto a ese id " << endl;
 	}
+	system("pause");
+
 }
 void Gestor_Consultas::ResidentesporApellido() {
 	system("cls");
@@ -203,7 +173,7 @@ void Gestor_Consultas::ResidentesporApellido() {
 
 	bool a = false;
 	for (int x = 0;x < total;x++) {
-		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, 0);
+		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, x);
 		string aperes = res.getApellidos();
 
 		pasarMayus(aperes);
@@ -219,33 +189,10 @@ void Gestor_Consultas::ResidentesporApellido() {
 	if (!a) {
 		cout << "No se ha encontrado ningun residente con ese apellido" << endl;
 	}
-}
-void Gestor_Consultas::ProveedoresporRazonSocial() {
-	system("cls");
-
-	//mostrar razones sociales existentes
-	//1 
-	vector <string > vec;
-	int opc = mostrarrazonessociales(vec); // ahora esta cargado el vector y se que razon social trabajar!
-
-	// realziar busqueda 
-	   //2
-	ArchivosTemplate archiprov;
-	Proveedor prov;
-
-	bool a = true;
-	int total = archiprov.contarRegistros(utilidad._archivoProveedores, prov);
-	for (int x = 0;x < total;x++) {
-
-		prov = archiprov.ObtenerObjeto(utilidad._archivoProveedores, prov, x);
-		if (strcmp(vec[opc].c_str(), prov.getEmpresa().c_str()) == 0) {
-			prov.mostrar();
-			a = false;
-		}
-	}
-	if (a) { cout << "No hay ningun proveedor con esa razon social " << endl; }
+	system("pause");
 
 }
+
 
 void Gestor_Consultas::ProveedoresporDni() {
 	system("cls");
@@ -268,11 +215,15 @@ void Gestor_Consultas::ProveedoresporDni() {
 		prov = archiprov.ObtenerObjeto(utilidad._archivoProveedores, prov, x);
 		if (prov.getDni() == dni) {
 			prov.mostrar();
+			system("pause");
+
 			return;
 		}
 	}
 
 	cout << "No se ha encontrado ningun proveedor con dicho Dni" << endl;
+	system("pause");
+
 }
 void Gestor_Consultas::EmpleadoporNroLegajo() {
 	system("cls");
@@ -291,13 +242,18 @@ void Gestor_Consultas::EmpleadoporNroLegajo() {
 	Empleado emp;
 	int totemp = archiemp.contarRegistros(utilidad._archivoEmpleados, emp);
 	for (int x = 0;x < totemp;x++) {
+		emp = archiemp.ObtenerObjeto(utilidad._archivoEmpleados, emp, x);
 
 		if (emp.getLegajo() == nrolegajo) {
 			emp.mostrar();
+			system("pause");
+
 			return;
 		}
 	}
 	cout << "No existe ningun empleado con ese numero de legajo " << endl;
+	system("pause");
+
 	return;
 
 }
@@ -313,6 +269,8 @@ void Gestor_Consultas::EmpleadoporApellido() {
 	int totemp = archiemp.contarRegistros(utilidad._archivoEmpleados, emp);
 
 	for (int x = 0;x < totemp;x++) {
+		emp = archiemp.ObtenerObjeto(utilidad._archivoEmpleados, emp, x);
+
 		string apeemp = emp.getApellidos();
 		pasarMayus(apeemp);
 		pasarMayus(apellido);
@@ -321,6 +279,8 @@ void Gestor_Consultas::EmpleadoporApellido() {
 			//podria haber mas de un empelado x apellido
 		}
 	}
+	system("pause");
+
 	return;
 }
 
@@ -352,11 +312,14 @@ void Gestor_Consultas::UnidadesporId() {
 
 			uni.mostrar();
 			fclose(file);
+			system("pause");
+
 			return;
 		}
 	}
 
 	cout << "No se ha encontrado una unidad bajo ese Id" << endl;
+	system("pause");
 	fclose(file);
 	return;
 
@@ -364,11 +327,12 @@ void Gestor_Consultas::UnidadesporId() {
 }
 void Gestor_Consultas::Ejecutar() {
 
-	system("cls");
 	Fecha_Hora f;
 
 	bool a = true;
 	while (a) {
+		system("cls");
+
 		char opcion;
 		cout << "----------------------------------------------------------------------" << endl;
 
@@ -380,13 +344,12 @@ void Gestor_Consultas::Ejecutar() {
 		cout << "3- Residentes por Id Unidad" << endl;
 		cout << "4- Residentes por Apellido" << endl;
 		cout << endl;
-		cout << "5- Proveedores por Razon Social " << endl;
-		cout << "6- Proveedores por Cuit " << endl;
+		cout << "5- Proveedores por Dni" << endl;
 		cout << endl;
-		cout << "7- Empleado por Numero Legajo" << endl;
-		cout << "8- Empleado por Apellido" << endl;
+		cout << "6- Empleado por Numero Legajo" << endl;
+		cout << "7- Empleado por Apellido" << endl;
 		cout << endl;
-		cout << "9- Unidades por Id" << endl;
+		cout << "8- Unidades por Id" << endl;
 		cout << endl;
 		cout << "0- Volver" << endl;
 		cout << "----------------------------------------------------------------------" << endl;
@@ -406,19 +369,17 @@ void Gestor_Consultas::Ejecutar() {
 		case '4':
 			ResidentesporApellido();
 			break;
+		
 		case '5':
-			ProveedoresporRazonSocial();
-			break;
-		case '6':
 			ProveedoresporDni();
 			break;
-		case '7':
+		case '6':
 			EmpleadoporNroLegajo();
 			break;
-		case '8':
+		case '7':
 			EmpleadoporApellido();
 			break;
-		case '9':
+		case '8':
 			UnidadesporId();
 			break;
 		case '0':
