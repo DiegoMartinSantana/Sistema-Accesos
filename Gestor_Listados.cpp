@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include "ArchivosTemplate.h"
+#include "ArchivosAutorizacion.h"
+#include "ArchivosMovimiento.h"
 #include "Gestor_Listados.h"
 #include "Residente.h"
 #include "Persona.h"
@@ -65,6 +67,7 @@ string retornarapellido(int dni) {
 }
 
 void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
+	system("cls");
 
 	Unidad uni;
 	ArchivosTemplate archiuni;
@@ -97,6 +100,7 @@ void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 	system("pause");
 }
 void Gestor_Listados::AutorizadosOrdenadosporApellido() {
+	system("cls");
 
 	Autorizaciones autorizado(0, 0);
 	ArchivosTemplate archiauto;
@@ -138,6 +142,7 @@ void Gestor_Listados::AutorizadosOrdenadosporApellido() {
 	vec.clear(); //libero la memoria
 }
 void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
+	system("cls");
 
 	Proveedor prov;
 	ArchivosTemplate archiprov;
@@ -160,9 +165,7 @@ void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
 			prov = archiprov.ObtenerObjeto(ut._archivoProveedores, prov, y);
 			
 				if (vec[x] == prov.getEmpresa()) {
-					cout << "Empresa :  " << prov.getEmpresa() << endl;
-					cout << "Apellido proveedor :  " << prov.getApellidos() << endl;
-					cout << "Tipo : " << prov.getTipo() << endl;
+					prov.mostrar();
 					cout << endl;
 
 				}
@@ -176,6 +179,8 @@ void Gestor_Listados::ProveedoreOrdenadosporRazonSocial() {
 
 void Gestor_Listados::AutorizadosOrdenadosporDni() {
 	//capturar todo 
+	system("cls");
+
 	Autorizaciones autorizado(0, 0);
 
 	ArchivosTemplate archiauto;
@@ -209,6 +214,7 @@ void Gestor_Listados::AutorizadosOrdenadosporDni() {
 }
 
 void Gestor_Listados::ResidentesOrdenadosporIdUnidad() {
+	system("cls");
 
 	Residente res;
 
@@ -284,6 +290,7 @@ void Gestor_Listados::EmpleadosOrdenadosporDni() {
 
 }
 void Gestor_Listados::UnidadesporId() {
+	system("cls");
 
 	Unidad uni;
 	ArchivosTemplate archiuni;
@@ -320,14 +327,15 @@ void Gestor_Listados::UnidadesporId() {
 void Gestor_Listados::MovimientosDiaHoy() {
 
 	//comparo vs la fecha del sistema!
+	system("cls");
 
 	Fecha fSistema;
 	Movimientos mov;
 	ArchivosTemplate archi;
 	int totalmov = archi.contarRegistros(ut._archivoMovimientos, mov);
-
+	ArchivosMovimiento archimov;
 	for (int x = 0;x < totalmov;x++) {
-		mov = archi.ObtenerMovimiento(ut._archivoMovimientos, mov, x);
+		mov = archimov.ObtenerMovimiento(x);
 
 		if (mov.getFechayHoraMovimiento().getFecha().getAnio() == fSistema.getAnio()) {
 
@@ -339,11 +347,9 @@ void Gestor_Listados::MovimientosDiaHoy() {
 
 			}
 		}
-
 	}
 	cout << endl;
 	system("pause");
-
 
 }
 void Gestor_Listados::Ejecutar() {

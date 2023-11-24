@@ -84,9 +84,6 @@
     <ClCompile Include="Visita.cpp">
       <Filter>Source Files\Clases\Persona Y Derivadas</Filter>
     </ClCompile>
-    <ClCompile Include="Empresa.cpp">
-      <Filter>Source Files\Clases\Manejo</Filter>
-    </ClCompile>
     <ClCompile Include="Ingreso.cpp">
       <Filter>Source Files\Sistema\Ingreso %281%29</Filter>
     </ClCompile>
@@ -155,9 +152,6 @@
     <ClInclude Include="Visita.h">
       <Filter>Header Files\Clases\Persona y Derivadas</Filter>
     </ClInclude>
-    <ClInclude Include="Empresa.h">
-      <Filter>Header Files\Clases\Manejo</Filter>
-    </ClInclude>
     <ClInclude Include="ArchivosTemplate.h">
       <Filter>Header Files\Archivos</Filter>
     </ClInclude>
@@ -211,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="Gestor_Ayuda.h">
       <Filter>Header Files\Sistema\Gestion %283%29</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivosMovimiento.h">
+      <Filter>Header Files\Archivos</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivosAutorizacion.h">
+      <Filter>Header Files\Archivos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

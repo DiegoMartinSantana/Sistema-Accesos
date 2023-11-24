@@ -1,7 +1,6 @@
 #pragma once
 #include <cstring>
 #include "Persona.h"
-#include "Empresa.h"
 
 class Empleado :public Persona {
 public:
@@ -21,5 +20,5 @@ private:
     char _categoria; //a-b-c-d
     int _legajo;
     char _descripcion[100];
-    Empresa _perteneciente;
+    char _perteneciente[100];
 };

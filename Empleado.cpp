@@ -87,7 +87,7 @@ void Empleado::CargarEmpleado() {
 	string descripcion;
 
 
-	cargarPersona();
+	cargarPersona(3);
 
 
 	cout << "Ingrese el legajo 0 - 100 :  ";
@@ -137,22 +137,29 @@ void Empleado::CargarEmpleado() {
 	setDescripcion(descripcion);
 	if (tipo == 2) {
 		cout << endl;
-		cout << "Es empleado ajeno ,se precisa registrar la empresa perteneciente : " << endl;
+		string a;
+		cout << "Ingrese nombre de la Empresa a la que pertenece : " << endl;
 		cout << endl;
-		_perteneciente.cargar();
-	}
+		getline(cin, a);
+		strcpy(_perteneciente, a.c_str());
 
+	}
+	else {
+		string a = "Empleado Propio";
+		strcpy(_perteneciente, a.c_str());
+	}
 }
 
 void Empleado::mostrar() {
 
 	mostrarPersona();
-	cout << " Legajo empleado : " << getLegajo() << endl;
+	cout << "Legajo empleado : " << getLegajo() << endl;
 	cout << "Tipo  : " << getTipo() << endl;
 	cout << "Categoria : " << getCategoria() << endl;
 	cout << "Descripcion : " << getDescripcion() << endl;
 	if (_tipo == 2) {
-		_perteneciente.mostrar();
+		cout << "Empresa :" << _perteneciente << endl;
 	}
+	cout << endl;
 
 }

@@ -6,9 +6,14 @@ public :
 	void validarInt(int &n);
 	int contarDigitosInt(int a);
 	void validarChar(char& a);
-	void validarDia(int& dia);
+	bool validarDia(int& _dia,int _mes,int _anio);
 	void validarMes(int& mes);
+	void validarMesActual(int& mes);
+	bool validarActualPersonaDiaAutorizacion(int _dia, int _mes, int _anio);
+
 	void validarAnio(int& anio);
+	bool validarDiaAutorizacion(int _dia, int _mes, int _anio);
+	bool validarActualDiaAutorizacion(int _dia, int _mes, int _anio);
 
 	void validarAnioActual(int& anio,int actual);
 
@@ -20,7 +25,7 @@ public :
 	std::string _archivoAutorizados = "Autorizados.dat";
 	std::string _archivoEmpresas = "Empresas.dat";
 	std::string _archivoUnidades = "Unidades.dat";
-	std::string _archivoPersonas = "Personas.dat";
+
 
 };
 

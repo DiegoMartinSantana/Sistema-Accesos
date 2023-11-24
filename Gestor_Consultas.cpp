@@ -8,7 +8,6 @@
 #include "Residente.h"
 #include "Proveedor.h"
 #include "Empleado.h"
-#include "Empresa.h" 
 #include "Unidad.h"
 #include "Utilidades.h"
 #include "Fecha_Hora.h"

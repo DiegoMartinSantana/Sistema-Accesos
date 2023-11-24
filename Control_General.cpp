@@ -13,6 +13,7 @@ Control_General::Control_General(int tipo) {
 	_tipo = tipo;
 }
 
+
 void Control_General::Acceder() {
 	bool a = true;
 	char opcion;

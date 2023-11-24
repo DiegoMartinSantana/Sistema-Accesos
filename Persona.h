@@ -21,7 +21,7 @@ public:
 	bool getEstado();
 	Fecha getObjectNacimiento();
 
-	void cargarPersona();
+	void cargarPersona(int llamado);
 	std::string mostrarPersonastring();
 	void mostrarPersona();
 	

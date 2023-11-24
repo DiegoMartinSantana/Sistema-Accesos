@@ -16,7 +16,7 @@ public :
 	void  setDniPersona(int dni);
 	void   setUnidad(int idunidad);
 	void  setResidente(bool res);
-    void  setHasta( int mes,int anio);
+    void  setHasta( int dia,int mes,int anio);
 	void mostrar();
 	void setEstado(bool estado);
 	bool getEstado();

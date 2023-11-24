@@ -44,14 +44,20 @@ string Visita::mostrarvisitastring() {
 	return retornar;
 }
 void Visita::mostrar() {
+	cout << endl;
 
 	cout << "Nombre: " << getNombres() << endl;
 	cout << "Apellido: " << getApellidos() << endl;
 	cout << "Documento: " << getDni() << endl;
+	if (getFamiliar()) {
+		cout << "Posee familia dentro del Recinto" << endl;
+	}
+	cout << endl;
+
 }
 void Visita::cargarvisita() {
 	Utilidades util;
-	cargarPersona();
+	cargarPersona(2);
 	int unidad;
 	int familiar;
 	cout << "Ingrese el numero de unidad que visita (1-200)" << endl;

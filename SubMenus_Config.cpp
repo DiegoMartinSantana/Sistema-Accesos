@@ -1,8 +1,11 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 #include "ArchivosTemplate.h"
+#include "ArchivosAutorizacion.h"
+#include "ArchivosMovimiento.h"
 #include "Gestion_General.h"
 #include "SubMenus_Config.h"
 #include "Persona.h"
@@ -19,6 +22,8 @@ using namespace std;
 ArchivosTemplate archivo;
 Utilidades uti;
 Gestion_General general;
+ArchivosAutorizacion archivoautorizado;
+ArchivosMovimiento archivomovimiento;
 
 void  SubMenus_Config::subMenuBajas() {
 	char opc;
@@ -75,11 +80,7 @@ void  SubMenus_Config::subMenuBajas() {
 	}
 }
 
-void  SubMenus_Config::copiaSegPersonas() {
-	Persona p;
-	 archivo.copiaSeguridad(uti._archivoPersonas, _bakArchivoPersonas, p);
-	
-}
+
 void  SubMenus_Config::copiaSegAutorizaciones() {
 	Autorizaciones a;
 	 archivo.copiaSeguridad(uti._archivoAutorizados, _bakArchivoAutorizados, a);
@@ -87,7 +88,8 @@ void  SubMenus_Config::copiaSegAutorizaciones() {
 }
 void  SubMenus_Config::copiaSegMovimientos() {
 	Movimientos m;
-	 archivo.copiaSeguridadMovimiento(uti._archivoMovimientos, _bakArchivoMovimientos, m);
+	
+	 archivomovimiento.copiaSeguridadMovimiento( _bakArchivoMovimientos);
 	
 }
 void  SubMenus_Config::copiaSegResidentes() {
@@ -113,9 +115,8 @@ void  SubMenus_Config::copiaSegProveedores() {
 	
 }
 void SubMenus_Config::copiaSegTodosArchivos() {
-			// SI TODAS DEVUELVEN TRUE
-	copiaSegPersonas();
-		copiaSegAutorizaciones();
+
+	copiaSegAutorizaciones();
 		copiaSegMovimientos();
 		copiaSegResidentes();
 		copiaSegVisitas();
@@ -154,14 +155,13 @@ void SubMenus_Config::subMenuCopiaSeg() {
 			cout << " CONFIGURACION - COPIAS DE SEGURIDAD                                  " << f.toString() << endl;
 			cout << " Realizar copia de seguridad de :  " << endl;
 			cout << endl;
-			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
-			cout << " 2. Movimientos. " << endl;
-			cout << " 3. Autorizaciones.  " << endl;
-			cout << " 4. Residentes y sus Unidades. " << endl;
-			cout << " 5. Proveedores. " << endl;
-			cout << " 6. Empleados. " << endl;
-			cout << " 7. Visitas." << endl;
-			cout << " 8. Todas. " << endl;
+			cout << " 1. Movimientos. " << endl;
+			cout << " 2. Autorizaciones.  " << endl;
+			cout << " 3. Residentes y sus Unidades. " << endl;
+			cout << " 4. Proveedores. " << endl;
+			cout << " 5. Empleados. " << endl;
+			cout << " 6. Visitas." << endl;
+			cout << " 7. Todas. " << endl;
 			cout << endl;
 			cout << " 0. Volver." << endl;
 			cout << "----------------------------------------------------------------------------------------" << endl;
@@ -169,39 +169,35 @@ void SubMenus_Config::subMenuCopiaSeg() {
 			cin >> opc;
 			switch (opc)
 			{
+			
 			case '1': {
-				copiaSegPersonas();
-				
-				break;
-			}
-			case '2': {
 				copiaSegMovimientos();
 
 
 				break;
 			}
-			case '3': {
+			case '2': {
 				copiaSegAutorizaciones();
 
 				break;
 			}
-			case '4': {
+			case '3': {
 				copiaSegResidentes();
 				break;
 			}
-			case '5': {
+			case '4': {
 				copiaSegProveedores();
 				break;
 			}
-			case '6': {
+			case '5': {
 				copiaSegEmpleados();
 				break;
 			}
-			case '7': {
+			case '6': {
 				copiaSegVisitas();
 				break;
 			}
-			case '8': {
+			case '7': {
 				copiaSegTodosArchivos();
 				break;
 			}
@@ -217,15 +213,8 @@ void SubMenus_Config::subMenuCopiaSeg() {
 	}
 }
 
-bool SubMenus_Config::resCopiaSegPersonas() {
-	Persona p;
-	if (archivo.restaurarCopiaSeguridad(_bakArchivoPersonas, uti._archivoPersonas, p)) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
+
+
 bool SubMenus_Config::resCopiaSegAutorizaciones() {
 	Autorizaciones a;
 	if (archivo.restaurarCopiaSeguridad(_bakArchivoAutorizados, uti._archivoAutorizados, a)) {
@@ -237,7 +226,7 @@ bool SubMenus_Config::resCopiaSegAutorizaciones() {
 }
 bool SubMenus_Config::resCopiaSegMovimientos() {
 	Movimientos mov;
-	if (archivo.restaurarCopiaSeguridadMovimiento(_bakArchivoMovimientos, uti._archivoMovimientos, mov)) {
+	if (archivomovimiento.restaurarCopiaSeguridadMovimiento(_bakArchivoMovimientos)) {
 		return true;
 	}
 	else {
@@ -285,12 +274,12 @@ bool SubMenus_Config::resCopiaSegProveedores() {
 
 bool SubMenus_Config::resCopiaSegTodosArchivos() {
 
-	if (resCopiaSegPersonas() &&
+	if (
 		resCopiaSegAutorizaciones() &&
 		resCopiaSegProveedores() &&
 		resCopiaSegEmpleados() &&
 		resCopiaSegVisitas() &&
-		resCopiaSegResidentes() &&
+		resCopiaSegResidentes() &&  
 		resCopiaSegMovimientos())
 	{
 		return true;
@@ -329,14 +318,13 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 			cout << endl;
 			cout << " Restaurar copia de seguridad de :  " << endl;
 			cout << endl;
-			cout << " 1. Todas las Personas que hayan ingresado en el Recinto historicamente. " << endl;
-			cout << " 2. Movimientos. " << endl;
-			cout << " 3. Autorizaciones.  " << endl;
-			cout << " 4. Residentes y sus unidades. " << endl;
-			cout << " 5. Proveedores. " << endl;
-			cout << " 6. Empleados. " << endl;
-			cout << " 7. Visitas." << endl;
-			cout << " 8. Todas. " << endl;
+			cout << " 1. Movimientos. " << endl;
+			cout << " 2. Autorizaciones.  " << endl;
+			cout << " 3. Residentes y sus unidades. " << endl;
+			cout << " 4. Proveedores. " << endl;
+			cout << " 5. Empleados. " << endl;
+			cout << " 6. Visitas." << endl;
+			cout << " 7. Todas. " << endl;
 			cout << endl;
 			cout << " 0. Volver. " << endl;
 			cout << "----------------------------------------------------------------------------------------" << endl;
@@ -344,15 +332,7 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 			cin >> opc;
 			switch (opc)
 			{
-			case 1: {
-				if (resCopiaSegPersonas()) {
-					cout << "Se ha restaurado la copia de seguridad de las Personas. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
-				break;
-			}
+			
 			case 2: {
 				if (resCopiaSegMovimientos()) {
 					cout << "Se ha restaurado  la copia de seguridad de los Movimientos. " << endl;

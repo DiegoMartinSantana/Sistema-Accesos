@@ -62,11 +62,10 @@ void Autorizaciones::setResidente(bool res)
     _residente =res ;
 }
 
-void Autorizaciones::setHasta( int mes ,int anio )
+void Autorizaciones::setHasta( int dia,int mes ,int anio )
 {
-    _hasta.setAnio(anio);
-    _hasta.setMes(mes);
-    _hasta.setDia(1);
+    _hasta.cargar(dia, mes, anio);
+
 }
 
 
@@ -97,11 +96,14 @@ void Autorizaciones::mostrar()
     cout << "Nombre y Apellido : " << nombreyapellido(getDniPersona()) << endl;
 
     if (_residente) {
-        cout << "Autorizacion Permanente" << endl;
+        cout << "Autorizacion Permanente  : " << endl;
     }
     else {
-        cout << "Autorizado hasta  " << _hasta.toString() << endl;
+        cout << "Autorizado hasta : " << _hasta.toString() << endl;
     }
+    cout << endl;
+
+    
 }
 
 

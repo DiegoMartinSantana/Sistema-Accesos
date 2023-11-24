@@ -37,7 +37,7 @@ void Residente::setPropietario_Inquilino(bool propietario) {
 
 void Residente::cargarResidente() {
 	Utilidades util;
-	cargarPersona();
+	cargarPersona(1);
 	int unidad;
 	int dia, mes, anio;
 	int propie;
@@ -55,24 +55,25 @@ void Residente::cargarResidente() {
 	}
 
 	setUnidad(unidad);
+	cout << "Ingrese anio de Ingreso  2021- 2030 : " << endl;
+	cin >> anio;
+	util.validarInt(anio);
+	while (anio < 2021 || anio > 2030) {
+		cout << "Anio Invalido " << endl;
+		cin >> anio;
+		util.validarInt(anio);
+	}
 
-	cout << "Ingrese dia de Ingreso : " << endl;
-	cin >> dia;
-	util.validarInt(dia);
-	util.validarDia(dia);
+	
 
 	cout << "Ingrese mes de Ingreso : " << endl;
 	cin >> mes;
 	util.validarInt(mes);
 	util.validarMes(mes);
-	cout << "Ingrese anio de Ingreso  2021- 2030 : " << endl;
-	cin >> anio;
-	util.validarInt(anio);
-	while ( anio < 2021 || anio > 2030) {
-		cout << "Anio Invalido " << endl;
-		cin >> anio;
-		util.validarInt(anio);
-	}
+	cout << "Ingrese dia de Ingreso : " << endl;
+	cin >> dia;
+	util.validarInt(dia);
+	util.validarDia(dia,mes,anio);
 
 	setIngreso(dia, mes, anio);
 
@@ -117,11 +118,12 @@ void Residente::mostrar() {
 
 	if (getPropietario_Inquilino()) {
 		cout << "Unidad del Residente : " << getUnidad()<< endl;
-		cout << " Fecha de Ingreso del Residente : " << getIngreso() << endl;
+		cout << "Fecha de Ingreso del Residente : " << getIngreso() << endl;
 	}
 	else {
 		cout << "Unidad del Inquilino : " << getUnidad() << endl;
 		cout << "Fecha de Ingreso del Inquilino : " << getIngreso() << endl;
 	}
+	cout << endl;
 
 }

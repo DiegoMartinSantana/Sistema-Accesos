@@ -105,12 +105,12 @@ void Unidad::cargar()
 	string observaciones;
 	
 	
-	cout << " Numero de Telefono de la familia : (10 digitos) " << endl;
+	cout << "Numero de Telefono de la familia : (10 digitos) " << endl;
 	cin >> telefono;
 	
 	util.validarInt(telefono);
 	while (util.contarDigitosInt(telefono) != 10) {
-		cout << " Numeracion erronea " << endl;
+		cout << "Numeracion erronea " << endl;
 		cin >> telefono;
 		util.validarInt(telefono);
 	}
@@ -129,6 +129,7 @@ void Unidad::cargar()
 }
 
 void Unidad::mostrar() {
+	cout << endl;
 
 	cout << "Id unidad : " << getId() << endl;
 	cout << "Tipo: " << getBase() << endl;
@@ -143,6 +144,7 @@ void Unidad::mostrar() {
 		es = "Inactiva";
 	}
 	cout << "Estado : " << es << endl;
+	cout << endl;
 }
 
 

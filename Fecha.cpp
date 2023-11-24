@@ -133,6 +133,7 @@ void Fecha::cargar(int dia, int mes, int anio) {
             _dia = 01;
             _mes = 01;
             _anio = 2023;
+            system("pause");
             break;
         }
 

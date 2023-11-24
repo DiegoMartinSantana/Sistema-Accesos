@@ -8,8 +8,7 @@ class ArchivosTemplate {
 		 //***cargar correctamente string de nombre, incluido su .dat , enviar un objeto STRING CON EL CONTENIDO //  ***
 
 public:
-	string insertar = "Dar Baja";
-
+	
 	template <typename tipo>
 	bool validarDni(string& nombre, tipo t, int dni) {
 
@@ -24,12 +23,12 @@ public:
 
 			if (t.getDni() == dni) {
 				fclose(file);
-				return false;
+				return true;
 			}
 		}
 
 		fclose(file);
-		return true;
+		return false;
 	}
 
 	template <typename tipo>
@@ -70,80 +69,20 @@ public:
 		return false;
 	}
 	
-	template <typename tipo>
-	bool cargarRegistrodeMovimiento(tipo &t) { //validado
-
-		string nombre = "Movimientos.dat";
-
-
-		FILE* file;
-		file = fopen(nombre.c_str(), "ab");
-		fseek(file, 0, SEEK_END);
-		if (file == NULL) {
-			return false;
-		}
-		bool escribio = fwrite(&t, sizeof t, 1, file);
-
-		fclose(file);
-		return escribio;
-	}
 	
 	template <typename tipo>
-	bool validarDniAut(string &nombre , tipo t,int dni) {
+	bool cargarRegistro(string& nombre, tipo& t) {
 
-		FILE* file;
-		file = fopen(nombre.c_str(), "rb");
-		
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return false;
-		}
-
-		while (fread(&t, sizeof t, 1, file)) {
-
-			if (t.getDniPersona() == dni) {
-				fclose(file);
-				return false;
-			}
-		}
-
-		fclose(file);
-		return true;
-	}
-	
-	template <typename tipo>
-	bool cargarRegistrodeAutorizacion(tipo& t) {
-
-		string nombre = "Autorizados.dat";
-		//validar existente
-		bool existe = validarDniAut(nombre,t,t.getDniPersona());
-
-		FILE* file;
-		file = fopen(nombre.c_str(), "ab");
-		bool escribio = false;
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return false;
-		}
-		if (existe) {
-			escribio = fwrite(&t, sizeof t, 1, file);
-		}
-		else {
-			fclose(file);
-			return escribio;
-		}
-		fclose(file);
-		return escribio;
-
-	}
-	template <typename tipo>
-
-	bool cargarUnidad(string& nombre, tipo& t) {
 		int id = t.getId();
 		bool existe = Idexistenteono(nombre, t, id);
+		int dni = t.getDni();
+
+		bool existeDni = validarDni(nombre, t, dni);
 
 		bool escribio = false;
-		FILE* file;
+		if (!existe && !existeDni ){
+			FILE* file;
+
 		file = fopen(nombre.c_str(), "ab");
 		if (file == NULL) {
 			cout << "No se pudo abrir el archivo" << endl;
@@ -152,31 +91,9 @@ public:
 
 
 		escribio = fwrite(&t, sizeof t, 1, file);
-
 		fclose(file);
-		return escribio;
 
 	}
-	template <typename tipo>
-	bool cargarRegistro(string& nombre, tipo &t) {
-		
-		int id = t.getId();
-		bool existe = Idexistenteono(nombre, t, id);
-		int dni = t.getDni();
-		bool existeDni = validarDni(nombre, t, dni);
-		
-		bool escribio = false;
-		FILE* file;
-		file = fopen(nombre.c_str(), "ab");
-		if (file == NULL) {
-			cout << "No se pudo abrir el archivo" << endl;
-			return false;
-		}
-
-			
-			escribio = fwrite(&t, sizeof t, 1, file);
-		
-		fclose(file);
 		return escribio;
 	}
 	
@@ -208,31 +125,6 @@ public:
 		return -2;
 
 	}	
-
-	template <typename tipo>
-	tipo ObtenerMovimiento(string& nombre, tipo& t, int pos) {  //validado
-
-		FILE* file;
-		file = fopen(nombre.c_str(), "rb");
-		t.setObservaciones(insertar);
-
-
-		if (file == NULL) {
-			return t;
-		}
-		fseek(file, sizeof t * pos, 0);
-		fread(&t, sizeof t, 1, file);
-		fclose(file);
-
-		if (strcmp(t.getObservaciones().c_str(), insertar.c_str()) != 0) {
-			return t;
-		}
-		else {
-			t.setObservaciones(insertar);
-			return t;
-		}
-
-	}
 
 	template <typename tipo>
 	tipo ObtenerObjeto(string& nombre, tipo t, int pos) {  //validado
@@ -401,32 +293,7 @@ public:
 		fclose(filebak);
 	}
 	
-	template <typename tipo>
-	void copiaSeguridadMovimiento(string& nombreoriginal, string& nombrebak, tipo& t) {
-		FILE* file;
-		file = fopen(nombreoriginal.c_str(), "rb");
-		if (file == NULL) {
-			return;
-		}
-		FILE* filebak;
-		filebak = fopen(nombrebak.c_str(), "wb");
-		if (filebak == NULL) {
-			fclose(file);
-
-			return;
-		}
-
-		while (fread(&t, sizeof t, 1, file)) {
-
-			fwrite(&t, sizeof t, 1, filebak);
-
-		}
-
-
-		fclose(file);
-		fclose(filebak);
-	}
-
+	
 	template <typename tipo>
 	void vaciarOriginal(string& nombreori, tipo t) {
 		FILE* file;
@@ -437,58 +304,28 @@ public:
 		}
 		fclose(file);
 	}
-
 	template <typename tipo>
-	void vaciarOriginalMovimiento(string& nombreori, tipo t) {
+
+	bool cargarUnidad(string& nombre, tipo& t) {
+		int id = t.getId();
+		bool existe = Idexistenteono(nombre, t, id);
+
+		bool escribio = false;
 		FILE* file;
-		file = fopen(nombreori.c_str(), "rb+");
-		while (fread(&t, sizeof t, 1, file)) {
-			t.setObservaciones(insertar); // reemplazo
-			fwrite(&t, sizeof t, 1, file);
+		file = fopen(nombre.c_str(), "ab");
+		if (file == NULL) {
+			cout << "No se pudo abrir el archivo" << endl;
+			return false;
 		}
+
+
+		escribio = fwrite(&t, sizeof t, 1, file);
+
 		fclose(file);
+		return escribio;
+
 	}
 	
-	template <typename tipo>
-	bool restaurarCopiaSeguridadMovimiento(string& nombrebak, string& nombreoriginal, tipo& t) {
-		
-
-		FILE* filebak;
-		filebak = fopen(nombrebak.c_str(), "rb");
-		if (filebak == NULL) {
-			return false;
-		}
-		int totalbak = contarRegistros(nombrebak, t);
-
-		FILE* fileoriginal;
-		fileoriginal = fopen(nombreoriginal.c_str(), "wb");
-		if (fileoriginal == NULL) {
-			fclose(filebak);
-			return false;
-		}
-		//pone todo en false
-		vaciarOriginalMovimiento(nombreoriginal, t);
-		int con = 0;
-		for (int x = 0;x < totalbak;x++) {
-
-			t = ObtenerMovimiento(nombrebak, t, x);
-			if (strcmp(t.getObservaciones().c_str(), insertar.c_str()) != 0) { //si es distinto de dar de baja guardo
-				bool escribio = fwrite(&t, sizeof t, 1, fileoriginal);
-				if (escribio) {
-					con++;
-				}
-			}
-		}
-
-		fclose(filebak);
-		fclose(fileoriginal);
-		if (con == totalbak) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 
 	//HACER RESTAURAR UNIDADES
 

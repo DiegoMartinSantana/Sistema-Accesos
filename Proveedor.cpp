@@ -2,9 +2,9 @@
 #include <cstring>
 #include "Utilidades.h"
 #include "Persona.h"
-#include "Empresa.h"
 #include "Fecha.h"
 #include "Proveedor.h"
+#include "ArchivosTemplate.h"
 
 using namespace std;
 Proveedor::Proveedor() {
@@ -43,14 +43,9 @@ string Proveedor::getTipo() const {
 	return retornar;
 }
 
-string Proveedor::getArt() {
-	string retornar = _art.toString();
-	return retornar;
-
-}
 
 std::string Proveedor::getEmpresa() {
-	return _perteneciente.getRazonSocial();
+	return _perteneciente;
 
 }
 
@@ -59,17 +54,14 @@ void Proveedor::setTipo(char tipo) {
 	_tipo = tipo;
 }
 
-void Proveedor::setArt(int dia, int mes, int anio) {
-	_art.cargar(dia, mes, anio);
-}
+
 
 void Proveedor::cargarProveedor() {
 	Utilidades util;
-	cargarPersona();
+	cargarPersona(4);
 	char tipo;
 	string empresa;
-	int dia, mes, anio;
-
+	
 	cout << "Ingrese Tipo del proveedor " << endl;
 	cout << " A - ALIMENTOS , B - BEBIDAS, S - SERVICIOS GENERALES " << endl;
 	cin >> tipo;
@@ -85,36 +77,20 @@ void Proveedor::cargarProveedor() {
 	}
 	setTipo(tipo);
 
+	cin.ignore();
+	string empresaprov;
+	cout << "Ingrese Empresa proveedora :  " << endl;
 
-	cout << "Ingrese datos de la Empresa proveedora :  " << endl;
-
-	_perteneciente.cargar();
-
+	getline(cin, empresaprov);
+	strcpy(_perteneciente, empresaprov.c_str());
 	cout << endl;
-	cout << "Ingrese dia de su Art " << endl;
-	cin >> dia;
-	util.validarInt(dia);
-
-	util.validarDia(dia);
-
-	cout << "Ingrese mes de su Art " << endl;
-	cin >> mes;
-	util.validarInt(mes);
-	util.validarMes(mes);
-
 	
-	cout << "Ingrese anio  de su Art" << endl;
-	cin >> anio;
-	util.validarAnio(anio);
-
-	setArt(dia, mes, anio);
 }
 
 string Proveedor::mostrarProveedorstring() {
 	string retornar = mostrarPersonastring();
 	retornar += "Tipo Proveedor : " + getTipo() + "\n"
-		+ " Empresa perteneciente : " + getEmpresa() + "\n"
-		+ "Fecha de su Art : " + getArt();
+		+ "Empresa perteneciente : " + getEmpresa() ;
 
 	return retornar;
 }
@@ -125,6 +101,7 @@ void Proveedor::mostrar() {
 	mostrarPersona();
 
 	cout << "Tipo Proveedor : " << getTipo() << endl;
-	cout << " Empresa perteneciente : " << getEmpresa() << endl;
-	cout << "Fecha de su Art : " << getArt() << endl;
+	cout << "Empresa perteneciente : " << getEmpresa() << endl;
+	cout << endl;
+
 }

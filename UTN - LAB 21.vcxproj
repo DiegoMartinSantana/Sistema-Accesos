@@ -143,7 +143,6 @@
     <ClCompile Include="Autorizaciones.cpp" />
     <ClCompile Include="Control_General.cpp" />
     <ClCompile Include="Empleado.cpp" />
-    <ClCompile Include="Empresa.cpp" />
     <ClCompile Include="Fecha.cpp" />
     <ClCompile Include="Fecha_Hora.cpp" />
     <ClCompile Include="Gestion_General.cpp" />
@@ -165,11 +164,12 @@
     <ClCompile Include="Visita.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArchivosAutorizacion.h" />
+    <ClInclude Include="ArchivosMovimiento.h" />
     <ClInclude Include="ArchivosTemplate.h" />
     <ClInclude Include="Autorizaciones.h" />
     <ClInclude Include="Control_General.h" />
     <ClInclude Include="Empleado.h" />
-    <ClInclude Include="Empresa.h" />
     <ClInclude Include="Fecha.h" />
     <ClInclude Include="Fecha_Hora.h" />
     <ClInclude Include="Gestion_General.h" />
