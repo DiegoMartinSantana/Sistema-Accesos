@@ -31,6 +31,7 @@ string Persona::getNombres() {
 
 string Persona::getApellidosyNombres() {
 	string nombrecompleto = _apellidos;
+
 	nombrecompleto += _nombres;
 	return nombrecompleto;
 }
@@ -195,10 +196,10 @@ void  Persona::cargarPersona(int llamado) {
 	cout << "Ingrese ID" << endl;
 	cin >> id;
 	util.validarInt(id);
-	while (id < 0) {
+	while (id <= 0) {
 		cout << "Id invalido. Ingrese nuevamente " << endl;
-		cin >> dni;
-		util.validarInt(dni);
+		cin >> id;
+		util.validarInt(id);
 
 	}
 	//valido la existencia del id x archivo.
@@ -218,11 +219,11 @@ void  Persona::cargarPersona(int llamado) {
 
 	setId(id);
 
-	cout << "Ingrese DNI ( 8 Digitos )  " << endl;
+	cout << "Ingrese DNI ( 7-8 Digitos )  " << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	while (util.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (util.contarDigitosInt(dni) <7  || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7 u 8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 
 		util.validarInt(dni);
@@ -236,14 +237,15 @@ void  Persona::cargarPersona(int llamado) {
 		cin >> dni;
 		util.validarInt(dni);
 
-		while (util.contarDigitosInt(dni) != 8) {
-			cout << "Dni Valido solo de 8 digitos , ingrese nuevamente : " << endl;
+		while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+			cout << "Dni Valido solo de 7 u 8 digitos , ingrese nuevamente : " << endl;
 			cin >> dni;
 
 			util.validarInt(dni);
 		}
-
 	}
+
+
 
 	setDni(dni);
 	cin.ignore();
@@ -255,28 +257,109 @@ void  Persona::cargarPersona(int llamado) {
 	setApellidos(apellidos);
 	Fecha actual;
 
-	cout << "Ingrese Anio de nacimiento : " << endl;
-	cin >> anio;
-	util.validarInt(anio);
-	util.validarAnioActual(anio, actual.getAnio());
+	if (llamado == 1 || llamado == 2) {
+		cout << "Ingrese Anio de nacimiento : " << endl;
+		cin >> anio;
+		util.validarInt(anio);
+		util.validarAnioActual(anio, actual.getAnio());
 
-	cout << "Ingrese Mes de nacimiento : " << endl;
-	cin >> mes;
-	util.validarInt(mes);
-	if (anio == actual.getAnio()) {
-		util.validarMesActual(mes);
+		cout << "Ingrese Mes de nacimiento : " << endl;
+		cin >> mes;
+		util.validarInt(mes);
+		if (anio == actual.getAnio()) {
+			util.validarMesActual(mes);
+		}
+		else {
+			util.validarMes(mes);
+		}
+		cout << "Ingrese Dia de nacimiento : " << endl;
+		cin >> dia;
+		util.validarInt(dia);
+		if (anio == actual.getAnio()) {
+			while (!util.validarActualPersonaDiaAutorizacion(dia, mes, anio)) {
+				cout << "Dia invalido, Ingrese nuevamente : " << endl;
+				cin >> dia;
+				util.validarInt(dia);
+			}
+		}
+		else {
+			while (!util.validarDia(dia, mes, anio)) {
+				cout << "Dia invalido, Ingrese nuevamente : " << endl;
+				cin >> dia;
+				util.validarInt(dia);
+			}
+		}
+
+
 	}
 	else {
-		util.validarMes(mes);
+
+		cout << "Ingrese Anio de nacimiento  : " << endl;
+		cin >> anio;
+		util.validarInt(anio);
+		int edad = actual.getAnio() - anio;
+		while (edad < 18 || anio < 1920 || anio > actual.getAnio()) {
+			if (edad < 18) {
+				cout << "Anio Invalido, se precisa la mayoria de edad : " << endl;
+
+			}
+			else {
+				cout << "Anio Invalido, ingrese nuevamente : " << endl;
+			}
+			cin >> anio;
+			util.validarInt(anio);
+			edad = actual.getAnio() - anio;
+		}
+
+
+		cout << "Ingrese Mes de nacimiento : " << endl;
+		cin >> mes;
+		util.validarInt(mes);
+		if (edad == 18) {
+
+			while (mes < actual.getMes() || mes < 1 || mes > 12) {
+				if (mes < actual.getMes() ){
+					cout << "Mes Invalido, se precisa la mayoria de edad : " << endl;
+
+				}
+				else {
+					cout << "Mes invalido ,ingrese nuevamente : " << endl;
+
+				}
+				cin >> mes;
+				util.validarInt(mes);
+			}
+
+
+		}
+		else {
+			util.validarMes(mes);
+
+		}
 	}
 	cout << "Ingrese Dia de nacimiento : " << endl;
 	cin >> dia;
 	util.validarInt(dia);
-	if (anio == actual.getAnio()) {
-		while (!util.validarActualPersonaDiaAutorizacion(dia, mes, anio)) {
-			cout << "Dia invalido, Ingrese nuevamente : " << endl;
+
+	if (mes == actual.getMes()) {
+		while (!util.validarDia(dia, mes, anio) ||  dia < actual.getDia()) {
+			if (dia < actual.getDia()) {
+				cout << "Dia invalido, No cumplio la mayoria de Edad Todavia : " << endl;
+			}
+			else {
+				cout << "Mes invalido ,ingrese nuevamente : " << endl;
+
+			}
 			cin >> dia;
 			util.validarInt(dia);
+
+		}
+		if (dia == actual.getDia()) {
+			cout << endl;
+			cout << " Feliz cumple! :) " << endl;
+			cout << endl;
+
+			system("pause");
 		}
 	}
 	else {
@@ -287,6 +370,7 @@ void  Persona::cargarPersona(int llamado) {
 		}
 	}
 
+	
 	setNacimiento(dia, mes, anio);
 	setEstado(true);
 }
@@ -324,7 +408,5 @@ void Persona::mostrarPersona() {
 	cout << "Apellido/s: " << _apellidos << endl;
 	cout << "DNI: " << to_string(_dni) << endl;
 	cout << "Fecha de Nacimiento: " << _nacimiento.toString() << endl;
-	cout << "Estado: " << estadoString << endl;
-	cout << endl;
 
 }

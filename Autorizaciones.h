@@ -12,7 +12,7 @@ public :
 	int  getIdUnidad();
 	bool getResidente();
 	std::string getHasta();
-
+	Fecha getFechaHasta();
 	void  setDniPersona(int dni);
 	void   setUnidad(int idunidad);
 	void  setResidente(bool res);

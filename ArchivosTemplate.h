@@ -21,7 +21,7 @@ public:
 
 		while (fread(&t, sizeof t, 1, file)) {
 
-			if (t.getDni() == dni) {
+			if (t.getDni() == dni && t.getEstado()) {
 				fclose(file);
 				return true;
 			}
@@ -60,11 +60,12 @@ public:
 			return false;
 		}
 		while (fread(&t, sizeof t, 1, file)) {
-			if (t.getId() == id) {
+			if (t.getId() == id && t.getEstado()) {
 				fclose(file);
 				return true;
 			}
 		}
+
 		fclose(file);
 		return false;
 	}
@@ -131,7 +132,9 @@ public:
 
 		FILE* file;
 		file = fopen(nombre.c_str(), "rb");
-		t.setEstado(false);
+		tipo t2 = t;
+		t2.setEstado(false);
+
 
 		if (file == NULL) {
 			return t;
@@ -147,7 +150,7 @@ public:
 			return t;
 		}
 		else {
-			return t;
+			return t2;
 		}
 	}
 
@@ -163,7 +166,7 @@ public:
 
 		while (fread(&t, sizeof t, 1, file)) {
 			if (t.getEstado()) {
-				t.mostrar();   //TODAS CLASES  MISMO METODO MOSTRAR, QUE DIRECTAMENTE HAGA EL COUT,asi puede funcionar el template!
+				t.mostrar();   
 			}
 		}
 		fclose(file);
@@ -240,10 +243,11 @@ public:
 
 		for (int x = 0;x < tot;x++) {
 			t = ObtenerObjeto(nombre, t, x);
-			if (t.getDniPersona() == dni) {
+			if (t.getDni() == dni && t.getEstado()) {
 				return x;
 			}
 		}
+
 		return -1;
 	}
 	
@@ -251,17 +255,17 @@ public:
 	bool BajalogicaxDni(string& nombre, tipo& t, int dni) {
 
 		int pos = PosxDni(nombre, t, dni);
-		tipo aux = ObtenerObjeto(nombre, t, pos);
+		t = ObtenerObjeto(nombre, t, pos);
 
 		FILE* f;
 		f = fopen(nombre.c_str(), "rb+");
 		if (f == NULL) {
 			return false;
 		}
-		fseek(f, (sizeof aux * pos), 0);
-		aux.setEstado(false);
+		fseek(f, (sizeof t * pos), 0);
+		t.setEstado(false);
 
-		bool escribio = fwrite(&aux, sizeof aux, 1, f);
+		bool escribio = fwrite(&t, sizeof t, 1, f);
 
 		fclose(f);
 		return escribio;
@@ -327,7 +331,6 @@ public:
 	}
 	
 
-	//HACER RESTAURAR UNIDADES
 
 	template <typename tipo>
 	bool restaurarCopiaSeguridad(string& nombrebak, string& nombreoriginal, tipo& t) {

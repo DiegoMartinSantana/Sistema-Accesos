@@ -14,6 +14,7 @@ public :
 	void validarAnio(int& anio);
 	bool validarDiaAutorizacion(int _dia, int _mes, int _anio);
 	bool validarActualDiaAutorizacion(int _dia, int _mes, int _anio);
+	bool validarAutorizacion(int dni);
 
 	void validarAnioActual(int& anio,int actual);
 

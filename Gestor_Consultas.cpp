@@ -10,7 +10,9 @@
 #include "Empleado.h"
 #include "Unidad.h"
 #include "Utilidades.h"
+#include "Visita.h"
 #include "Fecha_Hora.h"
+#include "ArchivosAutorizacion.h"
 using namespace std;
 Utilidades utilidad;
 void pasarMayus(string& nombre) {
@@ -19,25 +21,55 @@ void pasarMayus(string& nombre) {
 	}
 }
 string retornarapellidoxdni(int dni) {
+	int tote, totprov, totr, totv;
+	ArchivosTemplate archi;
+	Empleado emp; Visita v; Proveedor prov; Residente r;
+	Utilidades uti;
+	tote = archi.contarRegistros(uti._archivoEmpleados, emp);
+	totv = archi.contarRegistros(uti._archivoVisitas, v);
+	totprov = archi.contarRegistros(uti._archivoProveedores, prov);
+	totr = archi.contarRegistros(uti._archivoResidentes, r);
 
-	ArchivosTemplate archipersona;
-	Persona p;
-	string ret;
-	string nombrearchi = "Personas.dat";
-	int totp = archipersona.contarRegistros(nombrearchi, p);
+	for (int x = 0;x < tote;x++) {
 
-	for (int x = 0;x < totp;x++) {
-		p = archipersona.ObtenerObjeto(nombrearchi, p, x);
-		if (p.getDni() == dni) {
+		emp = archi.ObtenerObjeto(uti._archivoEmpleados, emp, x);
+		if (emp.getDni() == dni && emp.getEstado()) {
 
-			ret = p.getApellidos();
-			return ret;
+			string nombreape = emp.getApellidosyNombres();
+			return nombreape;
 		}
-
 	}
-	ret = "Invalido";
 
-	return ret;
+	for (int x = 0;x < totv;x++) {
+
+		v = archi.ObtenerObjeto(uti._archivoVisitas, v, x);
+		if (v.getDni() == dni && v.getEstado()) {
+
+			string nombreape = v.getApellidosyNombres();
+			return nombreape;
+		}
+	}
+
+	for (int x = 0;x < totprov;x++) {
+
+		prov = archi.ObtenerObjeto(uti._archivoProveedores, prov, x);
+		if (prov.getDni() == dni && prov.getEstado()) {
+
+			string nombreape = prov.getApellidosyNombres();
+			return nombreape;
+		}
+	}
+	for (int x = 0;x < totr;x++) {
+
+		r = archi.ObtenerObjeto(uti._archivoResidentes, r, x);
+		if (r.getDni() == dni && r.getEstado()) {
+
+			string nombreape = r.getApellidosyNombres();
+			return nombreape;
+		}
+	}
+	return "Invalido";
+
 }
 bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle el con y listo..
 	for (int x = 0;x < vec.size();x++)
@@ -50,31 +82,32 @@ bool comparar(const string compare, vector<string>& vec) { // mas facil pasarle 
 	return true;
 }
 
-//muestra las razones sociales existentes para hacer la consulta
+
 
 
 void Gestor_Consultas::AutorizadosporDni() {
 	system("cls");
 
 	int dni;
-	cout << "Ingrese Dni ( 8 digitos ) " << endl;
+	cout << "Ingrese Dni ( 7-8 digitos ) " << endl;
 	cin >> dni;
 	utilidad.validarInt(dni);
-	while (utilidad.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (utilidad.contarDigitosInt(dni) < 7 || utilidad.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7 u8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		utilidad.validarInt(dni);
 	}
 
 	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
-
-	int total = archiauto.contarRegistros(utilidad._archivoAutorizados, autorizado);
+	ArchivosAutorizacion archivoaut;
+	int total = archivoaut.contarRegistrosAut();
 
 	for (int x = 0;x < total;x++) {
 
-		autorizado = archiauto.ObtenerObjeto(utilidad._archivoAutorizados, autorizado, x);
-		if (autorizado.getDniPersona() == dni) {
+		autorizado = archivoaut.obtenerAutorizacion( x);
+		if (autorizado.getDniPersona() == dni && autorizado.getEstado() && utilidad.validarAutorizacion(autorizado.getDniPersona())) {
+
 			autorizado.mostrar();
 			system("pause");
 
@@ -83,6 +116,7 @@ void Gestor_Consultas::AutorizadosporDni() {
 	}
 
 	cout << "No se ha encontrado ninguna Persona Autorizada junto a ese Dni" << endl;
+	system("pause");
 
 }
 
@@ -95,24 +129,30 @@ void Gestor_Consultas::AutorizadosporApellido() {
 	getline(cin, apellido);
 	Autorizaciones autorizado;
 	ArchivosTemplate archiauto;
+	ArchivosAutorizacion archivoaut;
 
-	int total = archiauto.contarRegistros(utilidad._archivoAutorizados, autorizado);
+	int total = archivoaut.contarRegistrosAut();
 	//sigo tenienod nombre y apellido pero en el registro personas .. no como propiedad
 	//entonces lo busco por coincidencia dentro del for!
 
 	for (int x = 0;x < total;x++) {
 
-		autorizado = archiauto.ObtenerObjeto(utilidad._archivoAutorizados, autorizado, x);
-		string autoapellido = retornarapellidoxdni(autorizado.getDniPersona());
-		pasarMayus(autoapellido);
-		pasarMayus(apellido);
+		ArchivosAutorizacion archivoaut;
+		autorizado = archivoaut.obtenerAutorizacion(x);
+		if (autorizado.getEstado() && utilidad.validarAutorizacion(autorizado.getDniPersona())) {
 
-		int igual = strcmp(apellido.c_str(), autoapellido.c_str());
-		if (igual == 0) {
-			autorizado.mostrar();
-			system("pause");
+			string autoapellido = retornarapellidoxdni(autorizado.getDniPersona());
+			pasarMayus(autoapellido);
+			pasarMayus(apellido);
+			int igual = strcmp(apellido.c_str(), autoapellido.c_str());
 
-			return;
+			if (igual == 0) {
+
+				autorizado.mostrar();
+				system("pause");
+
+				return;
+			}
 		}
 	}
 
@@ -141,8 +181,8 @@ void Gestor_Consultas::ResidentesporIdUnidad() {
 
 	bool a = false;
 	for (int x = 0;x < total;x++) {
-		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, 0);
-		if (res.getUnidad() == id) {
+		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, x);
+		if (res.getUnidad() == id && res.getEstado()  ) {
 			a = true;
 			res.mostrar();
 			system("pause");
@@ -174,14 +214,16 @@ void Gestor_Consultas::ResidentesporApellido() {
 	for (int x = 0;x < total;x++) {
 		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, x);
 		string aperes = res.getApellidos();
+		if (res.getEstado() && utilidad.validarAutorizacion(res.getDni())) {
 
-		pasarMayus(aperes);
-		pasarMayus(apellido);
+			pasarMayus(aperes);
+			pasarMayus(apellido);
 
-		int igual = strcmp(apellido.c_str(), aperes.c_str());
-		if (igual == 0) {
-			res.mostrar();
-			a = true;
+			int igual = strcmp(apellido.c_str(), aperes.c_str());
+			if (igual == 0) {
+				res.mostrar();
+				a = true;
+			}
 		}
 	}
 
@@ -197,11 +239,11 @@ void Gestor_Consultas::ProveedoresporDni() {
 	system("cls");
 
 	int dni;
-	cout << "Ingrese Dni (8 Digitos)  " << endl;
+	cout << "Ingrese Dni (7-8 Digitos)  " << endl;
 	cin >> dni;
 	utilidad.validarInt(dni);
-	while (utilidad.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (utilidad.contarDigitosInt(dni) < 7 || utilidad.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7 u 8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		utilidad.validarInt(dni);
 	}
@@ -212,7 +254,7 @@ void Gestor_Consultas::ProveedoresporDni() {
 	int total = archiprov.contarRegistros(utilidad._archivoProveedores, prov);
 	for (int x = 0;x < total;x++) {
 		prov = archiprov.ObtenerObjeto(utilidad._archivoProveedores, prov, x);
-		if (prov.getDni() == dni) {
+		if (prov.getDni() == dni && prov.getEstado() && utilidad.validarAutorizacion(prov.getDni())) {
 			prov.mostrar();
 			system("pause");
 
@@ -232,7 +274,7 @@ void Gestor_Consultas::EmpleadoporNroLegajo() {
 	cin >> nrolegajo;
 	utilidad.validarInt(nrolegajo);
 
-	while (nrolegajo< 1|| nrolegajo> 100) { // nacimiento hasta actual 
+	while (nrolegajo < 1 || nrolegajo> 100) { // nacimiento hasta actual 
 		cout << "Legajo Invalido " << endl;
 		cin >> nrolegajo;
 		utilidad.validarInt(nrolegajo);
@@ -243,7 +285,7 @@ void Gestor_Consultas::EmpleadoporNroLegajo() {
 	for (int x = 0;x < totemp;x++) {
 		emp = archiemp.ObtenerObjeto(utilidad._archivoEmpleados, emp, x);
 
-		if (emp.getLegajo() == nrolegajo) {
+		if (emp.getLegajo() == nrolegajo && emp.getEstado() && utilidad.validarAutorizacion(emp.getDni())) {
 			emp.mostrar();
 			system("pause");
 
@@ -269,13 +311,14 @@ void Gestor_Consultas::EmpleadoporApellido() {
 
 	for (int x = 0;x < totemp;x++) {
 		emp = archiemp.ObtenerObjeto(utilidad._archivoEmpleados, emp, x);
-
-		string apeemp = emp.getApellidos();
-		pasarMayus(apeemp);
-		pasarMayus(apellido);
-		if (strcmp(apellido.c_str(),apeemp.c_str()) == 0) {
-			emp.mostrar();
-			//podria haber mas de un empelado x apellido
+		if (emp.getEstado()&& utilidad.validarAutorizacion(emp.getDni())) {
+			string apeemp = emp.getApellidos();
+			pasarMayus(apeemp);
+			pasarMayus(apellido);
+			if (strcmp(apellido.c_str(), apeemp.c_str()) == 0) {
+				emp.mostrar();
+				//podria haber mas de un empelado x apellido
+			}
 		}
 	}
 	system("pause");
@@ -307,9 +350,10 @@ void Gestor_Consultas::UnidadesporId() {
 	}
 	while (fread(&uni, sizeof uni, 1, file)) {
 
-		if (id == uni.getId()) {
+		if (id == uni.getId() && uni.getEstado()) {
 
 			uni.mostrar();
+
 			fclose(file);
 			system("pause");
 
@@ -324,6 +368,43 @@ void Gestor_Consultas::UnidadesporId() {
 
 
 }
+
+void Gestor_Consultas::VisitaporDni() {
+	int dni;
+	system("cls");
+
+	cout << "Ingrese Dni (7-8 digitos ) " << endl;
+	cin >> dni;
+	utilidad.validarInt(dni);
+	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de  7 u 8 digitos , ingrese nuevamente   " << endl;
+		cin >> dni;
+		utilidad.validarInt(dni);
+	}
+
+	Visita v;
+	ArchivosTemplate archivisi;
+
+	int totvisi = archivisi.contarRegistros(utilidad._archivoVisitas, v);
+
+	bool a = true;
+	for (int x = 0;x < totvisi;x++) {
+
+		v = archivisi.ObtenerObjeto(utilidad._archivoVisitas, v, x);
+		if (v.getDni() == dni && v.getEstado() && utilidad.validarAutorizacion(v.getDni())) {
+			v.mostrar();
+			a = false;
+		}
+
+	}
+	if (a) {
+		cout << endl;
+		cout << "No hay Visitas junto a ese Dni. " << endl;
+		cout << endl;
+	}
+	system("pause");
+
+}
 void Gestor_Consultas::Ejecutar() {
 
 	Fecha_Hora f;
@@ -335,7 +416,7 @@ void Gestor_Consultas::Ejecutar() {
 		char opcion;
 		cout << "----------------------------------------------------------------------" << endl;
 
-		cout << " Seleccione su Consulta " << "                   " << f.toString()<< endl;
+		cout << " Seleccione su Consulta " << "                   " << f.toString() << endl;
 		cout << endl;
 		cout << "1- Autorizados por Dni " << endl;
 		cout << "2- Autorizados por Apellido " << endl;
@@ -350,6 +431,9 @@ void Gestor_Consultas::Ejecutar() {
 		cout << endl;
 		cout << "8- Unidades por Id" << endl;
 		cout << endl;
+		cout << "9- Visitantes por Dni" << endl;
+		cout << endl;
+
 		cout << "0- Volver" << endl;
 		cout << "----------------------------------------------------------------------" << endl;
 
@@ -368,7 +452,7 @@ void Gestor_Consultas::Ejecutar() {
 		case '4':
 			ResidentesporApellido();
 			break;
-		
+
 		case '5':
 			ProveedoresporDni();
 			break;
@@ -380,6 +464,9 @@ void Gestor_Consultas::Ejecutar() {
 			break;
 		case '8':
 			UnidadesporId();
+			break;
+		case '9':
+			VisitaporDni();
 			break;
 		case '0':
 			return;

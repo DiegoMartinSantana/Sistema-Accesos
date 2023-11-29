@@ -25,7 +25,7 @@ class Movimientos
 		void setSentido(bool sentido); //true entra , false sale.
 		void setObservaciones(std::string observaciones);
 		void setTipoAutorizacion(int  tipoautorizacion);
-		void cargar();
+		bool cargar();
 		void mostrar();
 	private:
 		int  _idunidad;

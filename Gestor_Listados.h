@@ -12,6 +12,7 @@ class Gestor_Listados
 	void EmpleadosOrdenadosporDni();
 	void UnidadesporId();
 	void UnidadesOrdenadasporApellidoFamilia();
+	void VisitasxDni();
 
 public:
 	void Ejecutar();

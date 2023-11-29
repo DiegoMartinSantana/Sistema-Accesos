@@ -12,6 +12,7 @@ class Gestor_Consultas
 	void EmpleadoporNroLegajo();
 	void EmpleadoporApellido();
 	void UnidadesporId();
+	void VisitaporDni();
 
 public:
 	void Ejecutar();

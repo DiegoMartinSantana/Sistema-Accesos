@@ -68,7 +68,7 @@ void Gestor_Informes::UnidadesMayor50movs() {
 			// si es mayor busco el id!
 			for (int y = 0;y < totaluni;y++) {	//recorro unidades
 
-				if (uni.getId() == vecidunidad[x]) {
+				if (uni.getId() == vecidunidad[x] ) {
 					uni.mostrar();	//si coinciden los id de unidades muestro!
 				}
 
@@ -131,6 +131,7 @@ void Gestor_Informes::InformeProveedoresIngresados() {
 					if (mov.getFechayHoraMovimiento().getFecha().getMes() >= mes1 && mov.getFechayHoraMovimiento().getFecha().getMes() <= mes2) { //  y es menor al segundo mes y mayor al primero ( estoy entre esos )
 						if (mov.getUnidad() == 0 && mov.getDni() == prov.getDni()) { // si coinciden los dni y me paro en la unidad "Base"
 							//muestro prov 
+							if(prov.getEstado())
 							prov.mostrar();
 						}
 					}

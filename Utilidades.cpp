@@ -2,9 +2,8 @@
 #include "ArchivosTemplate.h"
 #include "Utilidades.h"
 #include "Fecha.h"
+#include "Autorizaciones.h"
 using namespace std;
-
-
 
 
 void Utilidades::validarInt(int &n) {
@@ -273,7 +272,64 @@ bool Utilidades::validarActualPersonaDiaAutorizacion(int _dia, int _mes, int _an
         return false;
     }
 }
+bool Utilidades::validarAutorizacion(int dni) {
 
+    Fecha actual;
+    Autorizaciones aut;
+    Utilidades u;
+    ArchivosTemplate archi;
+    int tot = archi.contarRegistros(u._archivoAutorizados, aut);
+
+    for (int x = 0;x < tot;x++) {
+
+        aut = archi.ObtenerObjeto(u._archivoAutorizados, aut, x);
+        if (aut.getDniPersona() == dni && aut.getEstado()) {
+
+            if (aut.getFechaHasta().getAnio() == actual.getAnio()) {
+
+                if (aut.getFechaHasta().getMes() == actual.getMes()) {
+
+                    if (aut.getFechaHasta().getDia() == actual.getDia()) {
+                        return true;
+                    }
+                    else if (aut.getFechaHasta().getDia() < actual.getDia()) {
+                        return false;
+
+                    }
+                    else {
+                        return true;
+                    }
+
+
+
+                }
+                else if (aut.getFechaHasta().getMes() < actual.getMes()) {
+                    return false;
+
+                }
+                else {
+                    return true;
+                }
+
+
+
+
+            }
+            else if (aut.getFechaHasta().getAnio() < actual.getAnio()) {
+                return false;
+            }
+            else {
+                return true;
+
+            }
+
+
+        }
+
+    }
+
+
+}
 bool Utilidades::validarActualDiaAutorizacion(int _dia, int _mes, int _anio) {
 
     Fecha f;

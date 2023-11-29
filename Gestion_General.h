@@ -15,6 +15,6 @@ public:
 	void altaEmpleado();
 	void altaResidente_inquilino();
 	void altaProveedor();
-
+	
 };
 

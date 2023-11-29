@@ -46,6 +46,7 @@ void Gestor_Altas::Imprimiraltas() {
 		case '5':
 			altas.altaProveedor();
 			break;
+		
 		case '0':
 			return;
 			break;

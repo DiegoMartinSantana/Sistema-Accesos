@@ -3,6 +3,7 @@
 #include "Persona.h"
 #include "Empleado.h"
 #include "Utilidades.h"
+#include "ArchivosTemplate.h"
 using namespace std;
 
 Empleado::Empleado() {
@@ -68,8 +69,28 @@ string Empleado::getCategoria() const {
 	return retornar;
 }
 
+
 int Empleado::getLegajo() const {
 	return _legajo;
+}
+
+bool validarLegajo(int legajo) {
+	Utilidades u;
+	ArchivosTemplate a;
+	Empleado e;
+	int tot = a.contarRegistros(u._archivoEmpleados, e);
+		for (int x = 0;x < tot;x++) {
+
+			e = a.ObtenerObjeto(u._archivoEmpleados, e, x);
+			if (e.getLegajo() == legajo) {
+				return false;
+			}
+
+		}
+		return true;
+
+
+
 }
 
 string Empleado::getDescripcion() const {
@@ -90,35 +111,39 @@ void Empleado::CargarEmpleado() {
 	cargarPersona(3);
 
 
-	cout << "Ingrese el legajo 0 - 100 :  ";
+	cout << "Ingrese el legajo 0 - 100 :  " << endl;
 	cin >> legajo;
+
 	util.validarInt(legajo);
-	while (legajo < 1 || legajo > 100) {
-		cout << "Legajo invalido" << endl;
+	//valdiar no exista legajo
+
+	while (legajo < 1 || legajo > 100 || !validarLegajo(legajo)) {
+		cout << endl;
+		cout << "Legajo invalido o existente ,ingrese nuevamente : " << endl;
 		cin >> legajo;
 		util.validarInt(tipo);
 	}
 	setLegajo(legajo);
 
-	cout << "Ingrese el tipo: 1- Propio 2- Ajeno ";
+	cout << "Ingrese el tipo: 1- Propio 2- Ajeno " << endl;
 	cin >> tipo;
 	util.validarInt(tipo);
 	while (tipo < 0 || tipo >2) {
-		cout << "Tipo inexistente " << endl;
+		cout << "Tipo inexistente ,ingrese nuevamente :" << endl;
 		cin >> tipo;
 		util.validarInt(tipo);
 	}
 
 	setTipo(tipo);
 	if (tipo == 1) {
-		cout << "Ingrese la categoría: ";
+		cout << "Ingrese la categoria: " << endl;
 		cout << "  L - Limpieza  , S - Seguridad , A - Administrativo ." << endl;;
 		cin >> categoria;
 		util.validarChar(categoria);
 		while (categoria != 'A' && categoria != 'a' && categoria != 'S' && categoria != 's'
 			&& categoria != 'L' && categoria != 'l') { // mientras no sea una valida
 
-			cout << "Categoria Inexistente ,ingrese nuevamente " << endl;
+			cout << "Categoria Inexistente ,ingrese nuevamente : " << endl;
 			cin >> categoria;
 			util.validarChar(categoria);
 
@@ -132,7 +157,7 @@ void Empleado::CargarEmpleado() {
 
 
 	cin.ignore();
-	cout << "Ingrese descripcion del Empleado : ";
+	cout << "Ingrese descripcion del Empleado : " << endl;
 	getline(cin, descripcion);
 	setDescripcion(descripcion);
 	if (tipo == 2) {
@@ -148,6 +173,7 @@ void Empleado::CargarEmpleado() {
 		string a = "Empleado Propio";
 		strcpy(_perteneciente, a.c_str());
 	}
+	cout << endl;
 }
 
 void Empleado::mostrar() {
