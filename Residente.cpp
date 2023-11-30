@@ -55,10 +55,10 @@ void Residente::cargarResidente() {
 	}
 
 	setUnidad(unidad);
-	cout << "Ingrese anio de Ingreso  2021- 2030 : " << endl;
+	cout << "Ingrese anio de Ingreso  2022- 2030 : " << endl;
 	cin >> anio;
 	util.validarInt(anio);
-	while (anio < 2021 || anio > 2030) {
+	while (anio < 2022 || anio > 2030) {
 		cout << "Anio Invalido " << endl;
 		cin >> anio;
 		util.validarInt(anio);
@@ -73,7 +73,11 @@ void Residente::cargarResidente() {
 	cout << "Ingrese dia de Ingreso : " << endl;
 	cin >> dia;
 	util.validarInt(dia);
-	util.validarDia(dia,mes,anio);
+	while (!util.validarDia(dia, mes, anio)) {
+		cout << "Dia de Ingreso invalido, ingrese nuevamente : " << endl;
+		cin >> dia;
+		util.validarInt(dia);
+	}
 
 	setIngreso(dia, mes, anio);
 

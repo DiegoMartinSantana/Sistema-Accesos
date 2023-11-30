@@ -11,7 +11,7 @@ class ArchivosAutorizacion {
 	string nombre = "Autorizados.dat";
 	Utilidades ut;
 public:
-	Autorizaciones obtenerAutorizacion(int pos = -1, int dni = 0) {
+	Autorizaciones obtenerAutorizacion(int pos = -1) {
 		Autorizaciones aut;
 		FILE* file;
 		file = fopen(nombre.c_str(), "rb");
@@ -21,11 +21,7 @@ public:
 			return aut;
 
 		}
-		if(!dni==0){
-		//busco x dni si es distinto de cero
-
-
-		}
+		
 		if (pos != -1) {
 			//busco por pos si es disnto de -1
 			int con = 0;

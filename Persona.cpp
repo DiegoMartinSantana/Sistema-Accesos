@@ -1,7 +1,6 @@
 #include <cstring>
 #include <string>
 #include<iostream>
-using namespace std;
 
 #include "ArchivosTemplate.h"
 #include "Persona.h"
@@ -10,6 +9,7 @@ using namespace std;
 #include "Empleado.h"
 #include "Visita.h"
 #include "Utilidades.h"
+using namespace std;
 
 Persona::Persona() {
 
@@ -30,9 +30,9 @@ string Persona::getNombres() {
 }
 
 string Persona::getApellidosyNombres() {
-	string nombrecompleto = _apellidos;
-
-	nombrecompleto += _nombres;
+	string nombrecompleto = _nombres;
+	nombrecompleto += " ";
+	nombrecompleto += _apellidos;
 	return nombrecompleto;
 }
 void Persona::setApellidos(string apellidos) {
@@ -245,6 +245,7 @@ void  Persona::cargarPersona(int llamado) {
 		}
 	}
 
+	int edad;
 
 
 	setDni(dni);
@@ -276,7 +277,7 @@ void  Persona::cargarPersona(int llamado) {
 		cin >> dia;
 		util.validarInt(dia);
 		if (anio == actual.getAnio()) {
-			while (!util.validarActualPersonaDiaAutorizacion(dia, mes, anio)) {
+			while (!util.validarDiaAutorizacion(dia, mes, anio)) {
 				cout << "Dia invalido, Ingrese nuevamente : " << endl;
 				cin >> dia;
 				util.validarInt(dia);
@@ -297,7 +298,7 @@ void  Persona::cargarPersona(int llamado) {
 		cout << "Ingrese Anio de nacimiento  : " << endl;
 		cin >> anio;
 		util.validarInt(anio);
-		int edad = actual.getAnio() - anio;
+		edad = actual.getAnio() - anio;
 		while (edad < 18 || anio < 1920 || anio > actual.getAnio()) {
 			if (edad < 18) {
 				cout << "Anio Invalido, se precisa la mayoria de edad : " << endl;
@@ -317,8 +318,8 @@ void  Persona::cargarPersona(int llamado) {
 		util.validarInt(mes);
 		if (edad == 18) {
 
-			while (mes < actual.getMes() || mes < 1 || mes > 12) {
-				if (mes < actual.getMes() ){
+			while (mes > actual.getMes() || mes < 1 || mes > 12) {
+				if (mes > actual.getMes()) {
 					cout << "Mes Invalido, se precisa la mayoria de edad : " << endl;
 
 				}
@@ -336,41 +337,47 @@ void  Persona::cargarPersona(int llamado) {
 			util.validarMes(mes);
 
 		}
-	}
-	cout << "Ingrese Dia de nacimiento : " << endl;
-	cin >> dia;
-	util.validarInt(dia);
 
-	if (mes == actual.getMes()) {
-		while (!util.validarDia(dia, mes, anio) ||  dia < actual.getDia()) {
-			if (dia < actual.getDia()) {
-				cout << "Dia invalido, No cumplio la mayoria de Edad Todavia : " << endl;
-			}
-			else {
-				cout << "Mes invalido ,ingrese nuevamente : " << endl;
 
-			}
+
+		if (mes == actual.getMes() && edad == 18) {
+
+			cout << "Ingrese Dia de nacimiento " << endl;
 			cin >> dia;
 			util.validarInt(dia);
 
-		}
-		if (dia == actual.getDia()) {
-			cout << endl;
-			cout << " Feliz cumple! :) " << endl;
-			cout << endl;
+			while (!util.validarDia(dia, mes, anio) || dia < actual.getDia()) {
+				if (dia < actual.getDia()) {
+					cout << "Dia invalido, No cumplio la mayoria de Edad Todavia : " << endl;
+				}
+				else {
+					cout << "Dia invalido ,ingrese nuevamente : " << endl;
 
-			system("pause");
+				}
+				cin >> dia;
+				util.validarInt(dia);
+
+			}
+			if (dia == actual.getDia()) {
+				cout << endl;
+				cout << " Feliz cumple! :) " << endl;
+				cout << endl;
+
+				system("pause");
+			}
 		}
-	}
-	else {
-		while (!util.validarDia(dia, mes, anio)) {
-			cout << "Dia invalido, Ingrese nuevamente : " << endl;
+		else {
+			cout << "Ingrese Dia de nacimiento " << endl;
 			cin >> dia;
 			util.validarInt(dia);
+			while (!util.validarDia(dia, mes, anio)) {
+				cout << "Dia invalido, Ingrese nuevamente : " << endl;
+				cin >> dia;
+				util.validarInt(dia);
+			}
 		}
-	}
 
-	
+	}
 	setNacimiento(dia, mes, anio);
 	setEstado(true);
 }

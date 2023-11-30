@@ -91,7 +91,10 @@ string nombreyapellido(int dni) {
         emp = archi.ObtenerObjeto(uti._archivoEmpleados, emp, x);
         if (emp.getDni() == dni &&  emp.getEstado()) {
 
-            string nombreape = emp.getApellidosyNombres();
+            string nombreape = emp.getNombres();
+            nombreape += "  ";
+            nombreape += emp.getApellidos();
+
             return nombreape;
         }
     }
@@ -101,7 +104,10 @@ string nombreyapellido(int dni) {
         v = archi.ObtenerObjeto(uti._archivoVisitas, v, x);
         if (v.getDni() == dni && v.getEstado()) {
 
-            string nombreape = v.getApellidosyNombres();
+
+            string nombreape = v.getNombres();
+            nombreape += "  ";
+            nombreape += v.getApellidos();
             return nombreape;
         }
     }
@@ -111,7 +117,10 @@ string nombreyapellido(int dni) {
         prov = archi.ObtenerObjeto(uti._archivoProveedores, prov, x);
         if (prov.getDni() == dni && prov.getEstado()) {
 
-            string nombreape = prov.getApellidosyNombres();
+
+            string nombreape = prov.getNombres();
+            nombreape += "  ";
+            nombreape += prov.getApellidos();
             return nombreape;
         }
     }
@@ -120,7 +129,10 @@ string nombreyapellido(int dni) {
         r = archi.ObtenerObjeto(uti._archivoResidentes, r, x);
         if (r.getDni() == dni && r.getEstado()) {
 
-            string nombreape =r.getApellidosyNombres();
+
+            string nombreape = r.getNombres();
+            nombreape += "  ";
+            nombreape += r.getApellidos();
             return nombreape;
         }
     }

@@ -135,8 +135,11 @@ void Gestion_General::altaVisita() {
 		pedirhasta(dia, mes, anio);
 
 		//GENERA AUTORIZACION
-		Autorizaciones autorizado(visi.getDni(), visi.getUnidad(), mes, anio); // carga la autorizacion correspondiente
-		autorizado.setHasta(dia, mes, anio);
+		Autorizaciones autorizado(visi.getDni(), visi.getUnidad(),false, mes, anio); // carga la autorizacion correspondiente
+
+		//*****
+		autorizado.setHasta(dia, mes, anio);  
+		// ****
 		bool c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 		if (b && c) {
 			cout << endl;
@@ -190,7 +193,10 @@ void Gestion_General::altaEmpleado() {
 
 		pedirhasta(dia, mes, anio);
 
-		Autorizaciones autorizado(emp.getDni(), 0, 10, 2023); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
+		Autorizaciones autorizado(emp.getDni(), 0,false,mes,anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
+		autorizado.setHasta(dia,mes,anio);
+
+
 		bool c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 		if (b && c) {
 			cout << endl;
@@ -250,7 +256,7 @@ void Gestion_General::altaResidente_inquilino() {
 			Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Residente ", 1); //permanente
 			b = archimov.cargarRegistrodeMovimiento(movi);
 
-			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), true); // no paso mes y anio x ser residente.
+			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), true); // no paso hasta x ser residente.
 			c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 
 		}
@@ -259,7 +265,10 @@ void Gestion_General::altaResidente_inquilino() {
 			Movimientos movi(resi.getUnidad(), resi.getDni(), 1, "Alta nuevo Inquilino ", 1); //permanente con hasta
 			pedirhasta(dia, mes, anio);
 			b = archimov.cargarRegistrodeMovimiento(movi);
-			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(), mes, anio);
+			Autorizaciones autorizado(resi.getDni(), resi.getUnidad(),true ,mes, anio);
+
+			autorizado.setHasta(dia, mes, anio);
+
 			c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 		}
 
@@ -315,7 +324,9 @@ void Gestion_General::altaProveedor() {
 		int dia, mes, anio;
 		//GENERA AUTORIZACION
 		pedirhasta(dia, mes, anio);
-		Autorizaciones autorizado(prov.getDni(), 0, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
+		Autorizaciones autorizado(prov.getDni(),0,false, mes, anio); // UNIDAD 0 EMPLEADOS Y PROVEEDORES
+		autorizado.setHasta(dia, mes, anio);
+
 		bool c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 
 		if (!b) {
@@ -359,11 +370,11 @@ void Gestion_General::bajaResidente() {
 	Utilidades util;
 
 	int dni;
-	cout << "Ingrese Dni del Residente a dar de baja (8 Digitos) " << endl;
+	cout << "Ingrese Dni del Residente a dar de baja (7-8 Digitos) " << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	while (util.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7-8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		util.validarInt(dni);
 
@@ -405,14 +416,7 @@ void Gestion_General::bajaResidente() {
 
 			}
 		}
-		else {
-			cout << endl;
-
-			cout << "No se ha hecho la baja" << endl;
-			cout << endl;
-			system("pause");
-
-		}
+		
 	}
 	else {
 		cout << endl;
@@ -428,11 +432,11 @@ void Gestion_General::bajaProveedor() {
 	system("cls");
 	Utilidades util;
 	int dni;
-	cout << "Ingrese Dni del Proveedor a dar de baja (8 Digitos) " << endl;
+	cout << "Ingrese Dni del Proveedor a dar de baja (7-8 Digitos) " << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	while (util.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7-8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		util.validarInt(dni);
 
@@ -467,14 +471,7 @@ void Gestion_General::bajaProveedor() {
 
 			}
 		}
-		else {
-			cout << endl;
-
-			cout << "No se ha hecho la baja" << endl;
-			cout << endl;
-			system("pause");
-
-		}
+		
 	}
 	else {
 		cout << endl;
@@ -489,11 +486,11 @@ void Gestion_General::bajaEmpleado() {
 	system("cls");
 	Utilidades util;
 	int dni;
-	cout << "Ingrese Dni del Empleado a dar de baja  (8 Digitos) " << endl;
+	cout << "Ingrese Dni del Empleado a dar de baja  (7-8 Digitos) " << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	while (util.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente  " << endl;
+	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7-8 digitos , ingrese nuevamente  " << endl;
 		cin >> dni;
 		util.validarInt(dni);
 	}
@@ -526,14 +523,7 @@ void Gestion_General::bajaEmpleado() {
 
 			}
 		}
-		else {
-			cout << endl;
-
-			cout << "No se ha hecho la baja" << endl;
-			cout << endl;
-			system("pause");
-
-		}
+		
 	}
 	else {
 		cout << endl;
@@ -550,11 +540,11 @@ void Gestion_General::bajaVisitas() {
 	system("cls");
 	Utilidades util;
 	int dni;
-	cout << "Ingrese Dni de la visita a dar de baja (8 Digitos)" << endl;
+	cout << "Ingrese Dni de la visita a dar de baja (7-8 Digitos)" << endl;
 	cin >> dni;
 	util.validarInt(dni);
-	while (util.contarDigitosInt(dni) != 8) {
-		cout << "Dni Valido solo de 8 digitos , ingrese nuevamente   " << endl;
+	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+		cout << "Dni Valido solo de 7-8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		util.validarInt(dni);
 	}
@@ -591,14 +581,7 @@ void Gestion_General::bajaVisitas() {
 
 			}
 		}
-		else {
-			cout << endl;
-
-			cout << "No se ha hecho la baja" << endl;
-			cout << endl;
-			system("pause");
-
-		}
+		
 	}
 	else {
 		cout << endl;

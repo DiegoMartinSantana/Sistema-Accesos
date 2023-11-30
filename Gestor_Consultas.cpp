@@ -13,7 +13,9 @@
 #include "Visita.h"
 #include "Fecha_Hora.h"
 #include "ArchivosAutorizacion.h"
+
 using namespace std;
+
 Utilidades utilidad;
 void pasarMayus(string& nombre) {
 	for (int x = 0;x < nombre.length();x++) {
@@ -35,7 +37,7 @@ string retornarapellidoxdni(int dni) {
 		emp = archi.ObtenerObjeto(uti._archivoEmpleados, emp, x);
 		if (emp.getDni() == dni && emp.getEstado()) {
 
-			string nombreape = emp.getApellidosyNombres();
+			string nombreape = emp.getApellidos();
 			return nombreape;
 		}
 	}
@@ -45,7 +47,7 @@ string retornarapellidoxdni(int dni) {
 		v = archi.ObtenerObjeto(uti._archivoVisitas, v, x);
 		if (v.getDni() == dni && v.getEstado()) {
 
-			string nombreape = v.getApellidosyNombres();
+			string nombreape = v.getApellidos();
 			return nombreape;
 		}
 	}
@@ -55,7 +57,7 @@ string retornarapellidoxdni(int dni) {
 		prov = archi.ObtenerObjeto(uti._archivoProveedores, prov, x);
 		if (prov.getDni() == dni && prov.getEstado()) {
 
-			string nombreape = prov.getApellidosyNombres();
+			string nombreape = prov.getApellidos();
 			return nombreape;
 		}
 	}
@@ -64,7 +66,7 @@ string retornarapellidoxdni(int dni) {
 		r = archi.ObtenerObjeto(uti._archivoResidentes, r, x);
 		if (r.getDni() == dni && r.getEstado()) {
 
-			string nombreape = r.getApellidosyNombres();
+			string nombreape = r.getApellidos();
 			return nombreape;
 		}
 	}
@@ -98,22 +100,36 @@ void Gestor_Consultas::AutorizadosporDni() {
 		utilidad.validarInt(dni);
 	}
 
-	Autorizaciones autorizado;
-	ArchivosTemplate archiauto;
-	ArchivosAutorizacion archivoaut;
-	int total = archivoaut.contarRegistrosAut();
 
-	for (int x = 0;x < total;x++) {
+	ArchivosAutorizacion archiautor;
+	Autorizaciones ar;
+	int tota = archiautor.contarRegistrosAut();
 
-		autorizado = archivoaut.obtenerAutorizacion( x);
-		if (autorizado.getDniPersona() == dni && autorizado.getEstado() && utilidad.validarAutorizacion(autorizado.getDniPersona())) {
+	for (int x = 0;x < tota;x++) {
+		ar = archiautor.obtenerAutorizacion(x);
 
-			autorizado.mostrar();
+		if (ar.getDniPersona() == dni && ar.getEstado() && utilidad.validarAutorizacion(ar.getDniPersona())) {
+			ar.mostrar();
 			system("pause");
-
 			return;
 		}
+
 	}
+	Utilidades ut;
+	ArchivosTemplate archiauto;
+	Residente res;
+	int totres = archiauto.contarRegistros(ut._archivoResidentes, res);
+
+	for (int x = 0;x < totres;x++) {
+		res = archiauto.ObtenerObjeto(ut._archivoResidentes, res, x);
+		if (res.getEstado()&& res.getDni()==dni)
+			res.mostrar();
+		system("pause");
+		return;
+
+	}
+
+	
 
 	cout << "No se ha encontrado ninguna Persona Autorizada junto a ese Dni" << endl;
 	system("pause");
@@ -134,29 +150,43 @@ void Gestor_Consultas::AutorizadosporApellido() {
 	int total = archivoaut.contarRegistrosAut();
 	//sigo tenienod nombre y apellido pero en el registro personas .. no como propiedad
 	//entonces lo busco por coincidencia dentro del for!
-
+	bool a = false;
 	for (int x = 0;x < total;x++) {
 
-		ArchivosAutorizacion archivoaut;
 		autorizado = archivoaut.obtenerAutorizacion(x);
 		if (autorizado.getEstado() && utilidad.validarAutorizacion(autorizado.getDniPersona())) {
 
 			string autoapellido = retornarapellidoxdni(autorizado.getDniPersona());
-			pasarMayus(autoapellido);
+			
 			pasarMayus(apellido);
-			int igual = strcmp(apellido.c_str(), autoapellido.c_str());
-
-			if (igual == 0) {
+			pasarMayus(autoapellido);
+			if (apellido==autoapellido) {
 
 				autorizado.mostrar();
-				system("pause");
-
-				return;
+				a = true;
 			}
 		}
+
+	}
+	Utilidades ut;
+	Residente res;
+	int totres = archiauto.contarRegistros(ut._archivoResidentes, res);
+
+	for (int x = 0;x < totres;x++) {
+		res = archiauto.ObtenerObjeto(ut._archivoResidentes, res, x);
+
+		pasarMayus(apellido);
+		string ape = res.getApellidos();
+		pasarMayus(ape);
+		if (res.getEstado() && ape == apellido) {
+			res.mostrar();
+			a = true;
+		}
+	}
+	if (!a) {
+		cout << "No se ha encontrado ninguna Persona Autorizada con ese apellido" << endl;
 	}
 
-	cout << "No se ha encontrado ninguna Persona Autorizada con ese apellido" << endl;
 	system("pause");
 
 }
@@ -206,24 +236,22 @@ void Gestor_Consultas::ResidentesporApellido() {
 	getline(cin, apellido);
 
 	Residente res;
-	ArchivosTemplate archires;
+	ArchivosTemplate archiauto;
 
-	int total = archires.contarRegistros(utilidad._archivoResidentes, res);
-
+	int total = archiauto.contarRegistros(utilidad._archivoResidentes, res);
 	bool a = false;
-	for (int x = 0;x < total;x++) {
-		res = archires.ObtenerObjeto(utilidad._archivoResidentes, res, x);
-		string aperes = res.getApellidos();
-		if (res.getEstado() && utilidad.validarAutorizacion(res.getDni())) {
+	Utilidades ut;
+	int totres = archiauto.contarRegistros(ut._archivoResidentes, res);
 
-			pasarMayus(aperes);
-			pasarMayus(apellido);
+	for (int x = 0;x < totres;x++) {
+		res = archiauto.ObtenerObjeto(ut._archivoResidentes, res, x);
 
-			int igual = strcmp(apellido.c_str(), aperes.c_str());
-			if (igual == 0) {
-				res.mostrar();
-				a = true;
-			}
+		pasarMayus(apellido);
+		string ape = res.getApellidos();
+		pasarMayus(ape);
+		if (res.getEstado() && ape == apellido) {
+			res.mostrar();
+			a = true;
 		}
 	}
 

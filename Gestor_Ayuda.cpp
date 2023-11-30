@@ -9,7 +9,7 @@ void Gestor_Ayuda::infGeneral() {
 	cout << endl;
 	cout << "El Sistema de Accesos le permitira llevar el control del Recinto, registrando las entradas y salidas en el mismo " << endl;
 	cout << "en forma de movimiento." << endl;
-	cout << "Todo movimiento que se registre por primera vez implicara la Alta de una Persona ,"<< endl;
+	cout << "Todo movimiento que se registre por primera vez implicara la Alta de una Persona ," << endl;
 	cout << "que a su vez implicara la carga de una Autorizacion. " << endl;
 	cout << endl;
 	cout << "El sistema esta diseniado para trabajar con un maximo de 200 Unidades, en las cuales la unidad 0 sera perteneciente" << endl;
@@ -27,12 +27,13 @@ void Gestor_Ayuda::infGeneral() {
 	cout << "si usted se arrepiente de la misma podra restaurar los archivos , siempre y cuando haya generado la copia de seguridad." << endl;
 	cout << endl;
 	cout << "-------------------------------------------------------------------------------------------------------------------" << endl;
-	cout << " Ingrese una tecla para continuar " << endl;
-	cin >> o;
+	cout << endl;
+
+	system("pause");
+
 }
 void Gestor_Ayuda::comunicarErrores() {
 	system("cls");
-	char o;
 	cout << " ---------------------------------------------------------------------------------------------------------" << endl;
 	cout << endl;
 	cout << "En caso de presentarse errores en el sistema le pedimos porfavor que los comunique al siguiente E-mail: " << endl;
@@ -40,8 +41,8 @@ void Gestor_Ayuda::comunicarErrores() {
 	cout << endl;
 	cout << " ---------------------------------------------------------------------------------------------------------" << endl;
 	cout << endl;
-	cout << "Ingrese una tecla para continuar " << endl;
-	cin >> o;
+
+	system("pause");
 }
 void Gestor_Ayuda::consideraciones() {
 	system("cls");
@@ -50,16 +51,16 @@ void Gestor_Ayuda::consideraciones() {
 	cout << "                                 ************ IMPORTANTE ************" << endl;
 
 	cout << endl;
-	cout << " - Prestar atencion a la carga de datos, el sistema no le permitira registrar datos incorrectos, pero "<< endl; 
-	cout <<"    la informacion en los mismos es su responsabilidad. " << endl;
+	cout << " - Prestar atencion a la carga de datos, el sistema no le permitira registrar datos incorrectos, pero " << endl;
+	cout << "    la informacion en los mismos es su responsabilidad. " << endl;
 	cout << " - Si va a realizar una baja asegurese de haber generado una copia de seguridad de la misma. " << endl;
 	cout << " - La unidad 0 es perteneciente a los empleados y proveedores." << endl;
 	cout << endl;
-	cout <<"                               ***********************************" << endl;
+	cout << "                               ***********************************" << endl;
 
 	cout << endl;
-	cout << " Ingrese una tecla para continuar " << endl;
-	cin >> o;
+	system("pause");
+
 }
 void Gestor_Ayuda::Ejecutar() {
 

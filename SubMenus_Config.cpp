@@ -54,18 +54,31 @@ void  SubMenus_Config::subMenuBajas() {
 		{
 		case '1': {
 			general.bajaVisitas();
+			cout << endl;
+			cout << "Se ha Realizado la Baja . " << endl;
+			cout << endl;
+			system("pause");
 			break;
 		}
 		case '2': {
 			general.bajaEmpleado();
+			cout << endl;
+			cout << "Se ha Realizado la Baja . " << endl;
+			cout << endl;
 			break;
 		}
 		case '3': {
 			general.bajaResidente();
+			cout << endl;
+			cout << "Se ha Realizado la Baja . " << endl;
+			cout << endl;
 			break;
 		}
 		case '4': {
 			general.bajaProveedor();
+			cout << endl;
+			cout << "Se ha Realizado la Baja . " << endl;
+			cout << endl;
 			break;
 		}
 		case '0': {
@@ -165,40 +178,67 @@ void SubMenus_Config::subMenuCopiaSeg() {
 			cout << endl;
 			cout << " 0. Volver." << endl;
 			cout << "----------------------------------------------------------------------------------------" << endl;
-
 			cin >> opc;
 			switch (opc)
 			{
 			
 			case '1': {
+
 				copiaSegMovimientos();
-
-
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de los Movimientos " << endl;
+				cout << endl;
+				system("pause");
 				break;
 			}
 			case '2': {
 				copiaSegAutorizaciones();
-
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de los Autorizados " << endl;
+				cout << endl;
+				system("pause");
 				break;
 			}
 			case '3': {
 				copiaSegResidentes();
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de los Residentes " << endl;
+				cout << endl;
+				system("pause");
 				break;
 			}
 			case '4': {
 				copiaSegProveedores();
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de los Proveedores " << endl;
+				cout << endl;
+				system("pause");
 				break;
 			}
 			case '5': {
 				copiaSegEmpleados();
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de los Empleados" << endl;
+				cout << endl;
+				system("pause");
 				break;
 			}
 			case '6': {
 				copiaSegVisitas();
+				cout << endl;
+				cout << "Se ha Realizado la copia de Seguridad de las Visitas" << endl;
+				cout << endl;
+				system("pause");
+
 				break;
 			}
 			case '7': {
 				copiaSegTodosArchivos();
+				cout << endl;
+				cout << "Se ha Realizado una Copia de Seguridad General" << endl;
+				cout << endl;
+				system("pause");
+
 				break;
 			}
 			case '0': {
@@ -333,66 +373,100 @@ void SubMenus_Config::subMenuRestaurarCopiaSeg() {
 			switch (opc)
 			{
 			
-			case 2: {
+			case 1: {
 				if (resCopiaSegMovimientos()) {
+					cout << endl;
 					cout << "Se ha restaurado  la copia de seguridad de los Movimientos. " << endl;
+					system("pause");
+
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
+					cout << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
+
+				}
+				break;
+			}
+			case 2: {
+				if (resCopiaSegAutorizaciones()) {
+					cout << endl;
+					cout << "Se ha restaurado  la copia de seguridad de las Autorizaciones. " << endl;
+					system("pause");
+
+				}
+				else {
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
+
 				}
 				break;
 			}
 			case 3: {
-				if (resCopiaSegAutorizaciones()) {
-					cout << "Se ha restaurado  la copia de seguridad de las Autorizaciones. " << endl;
+				if (resCopiaSegResidentes()) {
+					cout << endl;
+					cout << "Se ha restaurado  la copia de seguridad de los Residentes existentes. " << endl;
+					system("pause");
+
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
+					cout << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
+
 				}
 				break;
 			}
 			case 4: {
-				if (resCopiaSegResidentes()) {
-					cout << "Se ha restaurado  la copia de seguridad de los Residentes existentes. " << endl;
+				if (resCopiaSegProveedores()) {
+					cout << endl;
+					cout << "Se ha restaurado  la copia de seguridad de los Proveedores. " << endl;
+					system("pause");
+
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
+					cout << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
+
 				}
 				break;
 			}
 			case 5: {
-				if (resCopiaSegProveedores()) {
-					cout << "Se ha restaurado  la copia de seguridad de los Proveedores. " << endl;
+				if (resCopiaSegEmpleados()) {
+					cout << endl;
+					cout << "Se ha restaurado  la copia de seguridad de los Empleados. " << endl;
+					system("pause");
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
+					cout << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad. " << endl;
+					system("pause");
 				}
 				break;
 			}
 			case 6: {
-				if (resCopiaSegEmpleados()) {
-					cout << "Se ha restaurado  la copia de seguridad de los Empleados. " << endl;
+				if (resCopiaSegVisitas()) {
+					cout << endl;
+					cout << "Se ha restaurado  la copia de seguridad de las Visitas. " << endl;
+					system("pause");
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad. " << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
 				}
 				break;
 			}
 			case 7: {
-				if (resCopiaSegVisitas()) {
-					cout << "Se ha restaurado  la copia de seguridad de las Visitas. " << endl;
-				}
-				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
-				}
-				break;
-			}
-			case 8: {
 				if (resCopiaSegTodosArchivos()) {
+					cout << endl;
 					cout << "Se ha restaurado  la copia de seguridad de Todos los Archivos Mencionados. " << endl;
+					system("pause");
 				}
 				else {
-					cout << "Se ha producido un error al realizar la copia de seguridad." << endl;
+					cout << endl;
+					cout << "Se ha producido un error al restaurar la copia de seguridad." << endl;
+					system("pause");
 				}
 				break;
 			}

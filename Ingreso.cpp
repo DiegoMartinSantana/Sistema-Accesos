@@ -4,19 +4,17 @@
 using namespace std;
 
 #include "Control_General.h"
-#include "Fecha_Hora.h"
+#include "Fecha_Hora.h" 
 #include "ArchivosAutorizacion.h"
 #include "Autorizaciones.h"
-#include "ArchivosTemplate.h"
-#include "Utilidades.h"
-#include "Residente.h"
-#include "Empleado.h"
 #include "Visita.h"
-
 
 
 int main() {
 	
+
+	
+
 	bool a = true;
 	Fecha_Hora f;
 	while (a) {

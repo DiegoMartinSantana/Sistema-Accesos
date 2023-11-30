@@ -131,8 +131,8 @@ void Gestor_Listados::UnidadesOrdenadasporApellidoFamilia() {
 			if (vec[x] == uni.getApellidoFamilia()) {
 				cout << endl;
 
-				cout << "Apellido :  " << uni.getApellidoFamilia() << endl;
 				cout << "Id unidad : " << uni.getId() << endl;
+				cout << "Apellido Familia :  " << uni.getApellidoFamilia() << endl;
 				cout << "Observaciones : " << uni.getObservaciones() << endl;
 				cout << "Telefono : " << uni.getNroTelefono() << endl;
 				cout << endl;
