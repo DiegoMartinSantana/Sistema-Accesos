@@ -16,41 +16,7 @@ using namespace std;
 
 
 int main() {
-	ArchivosTemplate archi;
-	ArchivosAutorizacion archiauto;
-	Visita visi;
-	//visi.setEstado(true);
-	//visi.setNombres("Arnaldo");
-	//visi.setApellidos("JOSE");
-	//visi.setDni(44221100);
-	Utilidades ut;
-	//archi.cargarRegistro(ut._archivoVisitas, visi); // valido en el template que exista
-
-
-	//Autorizaciones autorizado(visi.getDni(), visi.getUnidad()); // carga la autorizacion correspondiente
-	//autorizado.setHasta(27, 11, 2023);
-
-	//archiauto.cargarRegistrodeAutorizacion(autorizado);
-
-	/*int totalv = archi.contarRegistros(ut._archivoVisitas, visi);
-	for (int x = 0;x < totalv;x++) {
-
-		visi = archi.ObtenerObjeto(ut._archivoVisitas, visi, x);
-		if (visi.getEstado()) {
-			visi.mostrar();
-		}
-	}*/
-	Autorizaciones ar;
-	int tota = archi.contarRegistros(ut._archivoAutorizados, ar);
-
-	for (int x = 0;x < tota;x++) {
-		ar = archi.ObtenerObjeto(ut._archivoAutorizados, ar, x);
-		if (ar.getEstado())
-			ar.mostrar();
-
-
-	}
-	system("pause");
+	
 	bool a = true;
 	Fecha_Hora f;
 	while (a) {

@@ -376,7 +376,7 @@ void Gestor_Consultas::VisitaporDni() {
 	cout << "Ingrese Dni (7-8 digitos ) " << endl;
 	cin >> dni;
 	utilidad.validarInt(dni);
-	while (util.contarDigitosInt(dni) < 7 || util.contarDigitosInt(dni) > 8) {
+	while (utilidad.contarDigitosInt(dni) < 7 || utilidad.contarDigitosInt(dni) > 8) {
 		cout << "Dni Valido solo de  7 u 8 digitos , ingrese nuevamente   " << endl;
 		cin >> dni;
 		utilidad.validarInt(dni);
