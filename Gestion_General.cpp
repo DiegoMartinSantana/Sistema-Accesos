@@ -138,7 +138,8 @@ void Gestion_General::altaVisita() {
 		Autorizaciones autorizado(visi.getDni(), visi.getUnidad(),false, mes, anio); // carga la autorizacion correspondiente
 
 		//*****
-		autorizado.setHasta(dia, mes, anio);  
+		autorizado.setHasta(15,2,2022);  
+
 		// ****
 		bool c = archiauto.cargarRegistrodeAutorizacion(autorizado);
 		if (b && c) {
